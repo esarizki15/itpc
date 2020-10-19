@@ -1,7 +1,7 @@
 <?php
 class News_data_detail_query extends CI_Model{
 
-    public function get_detail($news_slug) {
+    public function get_detail($news_id) {
           require_once('Detail_news_page.php');
           $this->db->select([
     			'a.news_id ',
@@ -12,13 +12,14 @@ class News_data_detail_query extends CI_Model{
           'a.tag_id',
           'a.news_content',
     			'a.post_date',
+          'b.tag_id',
           'b.tag_slug',
     			'b.tag_title',
     			'c.admin_name'
     		]);
     		$this->db->where('a.status', 1);
     		$this->db->where('a.delete_date', null);
-        $this->db->where('a.news_slug', $news_slug);
+        $this->db->where('a.news_id', $news_id);
     		$this->db->join('itpc_tag b', 'a.tag_id = b.tag_id');
     		$this->db->join('itpc_admin c', 'a.post_by = c.admin_id');
     		$query = $this->db->get('itpc_news a');

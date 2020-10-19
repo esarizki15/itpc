@@ -1,7 +1,7 @@
 <?php
 class News_data_query extends CI_Model{
 
-    public function get($limit,$start,$Tag_slug = null) {
+    public function get($limit,$start,$tag_id = null) {
           require_once('News_page.php');
           $this->db->select([
     			'a.news_id ',
@@ -11,6 +11,7 @@ class News_data_query extends CI_Model{
     			'a.news_thumbnail_type',
     			'a.news_thumbnail',
     			'a.post_date',
+          'b.tag_id',
           'b.tag_slug',
     			'b.tag_title',
     			'c.admin_name'
@@ -18,8 +19,8 @@ class News_data_query extends CI_Model{
 
     		$this->db->where('a.status', 1);
     		$this->db->where('a.delete_date', null);
-        if(isset($Tag_slug)) {
-            $this->db->where('b.tag_slug', $Tag_slug);
+        if(isset($tag_id)) {
+            $this->db->where('b.tag_id', $tag_id);
         }
     		$this->db->join('itpc_tag b', 'a.tag_id = b.tag_id');
     		$this->db->join('itpc_admin c', 'a.post_by = c.admin_id');
@@ -35,6 +36,34 @@ class News_data_query extends CI_Model{
 
         return [
     			'data' => $news_list
+    		];
+    }
+
+    public function get_latest() {
+          require_once('News_latest.php');
+          $this->db->select([
+    			'news_id ',
+    			'news_title',
+    			'news_slug',
+          'news_order',
+    			'news_thumbnail',
+    			'post_date'
+    		]);
+
+    		$this->db->where('status', 1);
+    		$this->db->where('delete_date', null);
+        $this->db->limit(5);
+        $this->db->order_by('news_order','DESC');
+    		$query = $this->db->get('itpc_news');
+    		$news_latest = [];
+    		array_map(function($item) use(&$news_latest){
+    			$news_latest[] = (new News_latest($item))->to_array();
+    		}, $query->result_array());
+    		$query->free_result();
+    		$this->db->reset_query();
+
+        return [
+    			'data' => $news_latest
     		];
     }
 

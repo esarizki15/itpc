@@ -18,13 +18,13 @@ class Detail_news_page {
 				case 'news_thumbnail':
 					if(array_key_exists('news_thumbnail', $arr) AND $arr['news_thumbnail'] !== NULL) {
 						$CI =& get_instance();
-						$this->$key = $CI->config->item('website_assets').$arr['news_thumbnail'];
+						$this->$key = $CI->config->item('website_assets').'news/'.$arr['news_thumbnail'];
 					}
 					break;
 					case 'news_header':
 						if(array_key_exists('news_header', $arr) AND $arr['news_header'] !== NULL) {
 							$CI =& get_instance();
-							$this->$key = $CI->config->item('website_assets').$arr['news_header'];
+							$this->$key = $CI->config->item('website_assets').'news/'.$arr['news_header'];
 						}
 						break;
 					case 'post_date':

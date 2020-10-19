@@ -1,16 +1,12 @@
 <?php
-class News_page {
+class News_latest {
 	public $news_id;
 	public $news_title;
 	public $news_slug;
 	public $news_order;
 	public $news_thumbnail;
-	public $news_thumbnail_type;
 	public $post_date;
-	public $tag_id;
-	public $tag_slug;
-	public $tag_title;
-	public $admin_name;
+
 
 	public function __construct($arr) {
 		foreach(get_object_vars($this) as $key => $val) {
