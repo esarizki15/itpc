@@ -892,16 +892,15 @@ class API extends CI_Controller {
 	public function add_exporter_product()
 	{
 			$this->load->model('API/User/User_query','User_query', true);
-			$this->form_validation->set_rules('id', 'id', 'trim|required|numeric');
+			$this->form_validation->set_rules('exporter_id', 'exporter_id', 'trim|required|numeric');
 
 			if($this->form_validation->run() == TRUE)
 			{
 					$images = array();
-					$id = $this->input->post('id');
+					$id = $this->input->post('exporter_id');
 					$date = date_create();
 
 					$total = count($_FILES['files']['name']);
-
 
 					if ($total > 0) {
 						$upload_config['upload_path'] = 'assets/' . $this->config->item('exporter_product');
@@ -925,12 +924,40 @@ class API extends CI_Controller {
 
 							if ($_FILES['file']['error'] === 0) {
 								if ($this->upload->do_upload('file')) {
-									$product_img_path[] =  $this->upload->data('file_name');
-								} else {
-									$product_img_errors[] = "File [" . $_FILES['file']['name'] . "]: " . $this->upload->display_errors('', '');
+
+									$post_date = date("Y-m-d H:i:s");
+
+									$product[] = [
+										 'ex_pro_id' => null,
+										 'exporter_id' => $id,
+										 'ex_pro_image' => $this->upload->data('file_name'),
+										 'post_date' => $post_date,
+										 'post_by' => $id,
+										 'delete_date' => null,
+										 'delete_by' => null,
+										 'status' => 1,
+									];
+									$add_product = $this->User_query->add_exporter_product($product);
+
+									if($add_product){
+										$product_img_path['data'] = $this->upload->data('file_name');
+										$product_img_path['status'] = true;
+										$product_img_path['message'] = "managed to save the product image";
+									}else{
+										$product_img_path['data'] = null;
+										$product_img_path['status'] = false;
+										$product_img_path['message'] = "failed to save product images";
+									}
+								}else{
+									$product_img_path['data'] = null;
+									$product_img_path['status'] = false;
+									$product_img_path['message'] = "File [" . $_FILES['file']['name'] . "]: " . $this->upload->display_errors('', '');
 								}
-							} else if ($_FILES['file']['error'] !== 4) {
-								$product_img_errors[] = "File [" . $_FILES['file']['name'] . "]: " . $this->lang->line('upload_' . $_FILES['file']['error']);
+							}else if ($_FILES['file']['error'] !== 4) {
+								$product_img_path['data'] = null;
+								$product_img_path['status'] = false;
+								//$product_img_path['message'] = "File [" . $_FILES['file']['name'] . "]: " . $this->lang->line('upload_' . $_FILES['file']['error']);
+								$product_img_path['message'] = "eror 4";
 							}
 
 						}
@@ -938,11 +965,57 @@ class API extends CI_Controller {
 					}
 
 			}else{
-					$report = "ada yang salah";
+					$product_img_path['data'] = null;
+					$product_img_path['status'] = false;
+					$product_img_path['message'] = "an error occurred in uploading the file, make sure the form contains the correct contents";
 			}
-
-			//echo json_encode($product_img_path); //send data to script
-		//	return json_encode($product_img_path);
+			echo json_encode($product_img_path); //send data to script
+			return json_encode($product_img_path);
 
 		}
+
+
+		public function delete_exporter_product(){
+			$this->load->model('API/User/User_query','User_query', true);
+			$this->form_validation->set_rules('ex_pro_id', 'ex_pro_id', 'trim|required|numeric');
+
+			if($this->form_validation->run() == TRUE)
+			{
+
+				$ex_pro_id = $this->input->post('ex_pro_id');
+				$delete_date = date("Y-m-d H:i:s");
+
+
+				$update = [
+						'ex_pro_id' => $ex_pro_id,
+						'delete_date' => $delete_date,
+						'delete_by' => $delete_by,
+						'status' => 3
+				];
+
+				$product_delete['data'] = $this->User_query->delete_exporter_product($update);
+
+				if($product_delete['data']){
+					$product_delete['status'] = true;
+					$product_delete['message'] = "Data delete is successful";
+				}else{
+					$product_delete['data'] = null;
+					$product_delete['status'] = true;
+					$product_delete['message'] = "Data delete is failed";
+				}
+
+
+
+			}else{
+				$product_delete['data'] = null;
+				$product_delete['status'] = false;
+				$product_delete['message'] = validation_errors();
+			}
+
+			echo json_encode($product_delete); //send data to script
+			return json_encode($product_delete);
+
+		}
+
+
 }

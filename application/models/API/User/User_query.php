@@ -313,9 +313,7 @@ class User_query extends CI_Model{
   }
 
   public function Cek_category_id($category){
-    var_dump($category);
-    echo $category['exporter_id'];
-    die();
+    $category['exporter_id'];
     $this->db->select([
         'ex_cat_id'
       ]);
@@ -387,6 +385,26 @@ public function get_exporter_product($exporter_id){
   }, $query->result_array());
 
   return $exporter_product;
+}
+
+public function add_exporter_product($product){
+//$result = $this->db->insert('zambert_user',$user);
+$result =	$this->db->insert_batch('itpc_exporter_product',$product);
+if(!$result)
+   $this->session->set_flashdata('error', 'Gagal menyimpan data');
+return $result;
+}
+
+public function delete_exporter_product($update) {
+  $this->db->where('ex_pro_id',$update['ex_pro_id']);
+  $result = $this->db->update('itpc_exporter_product',$update);
+
+  if($result){
+    return true;
+  }else{
+    return false;
+  }
+
 }
 
 
