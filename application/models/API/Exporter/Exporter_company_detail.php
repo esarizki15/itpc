@@ -5,6 +5,7 @@ class Exporter_company_detail{
 	public $title;
 	public $slug;
 	public $logo;
+	public $address;
 	public $phone;
 	public $office_phone;
 	public $fax;

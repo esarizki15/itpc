@@ -4,6 +4,9 @@ class Exporter_category {
 	public $title;
 	public $slug;
 	public $sum;
+	public $category;
+	//public $category_title;
+	public $curr_category = "category";
 
 
 	public function __construct($arr) {

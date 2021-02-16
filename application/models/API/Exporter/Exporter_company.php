@@ -10,6 +10,8 @@ class Exporter_company{
 	public $fax;
 	public $email;
 	public $link;
+	public $curr_category = "exporter";
+
 
 	public function __construct($arr) {
 		foreach(get_object_vars($this) as $key => $val) {

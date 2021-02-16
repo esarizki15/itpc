@@ -1,7 +1,81 @@
 <?php
 class Exporter_company_query extends CI_Model{
 
-    public function get($limit,$start,$title,$id) {
+  public $exporter_id;
+  public $exporter_name;
+  public $exporter_slug;
+  public $exporter_logo;
+  public $exporter_address;
+  public $exporter_phone;
+  public $exporter_office_phone;
+  public $exporter_fax;
+  public $exporter_email;
+  public $exporter_link;
+  public $category_id;
+  public $subcategory_id;
+  public $post_date;
+  public $post_by;
+  public $delete_date;
+  public $delete_by;
+  public $status;
+
+  public function register_exporter($exporter){
+  //$result = $this->db->insert('zambert_user',$user);
+  $result =	$this->db->insert_batch('itpc_exporter', $exporter);
+  if(!$result)
+     $this->session->set_flashdata('error', 'Gagal menyimpan data');
+  return $result;
+  }
+
+  public function get($limit,$start,$title,$id){
+      require_once('Exporter_company.php');
+      $this->db->select([
+        'b.exporter_id as id',
+        'b.exporter_name as title',
+        'b.exporter_slug as slug',
+        'b.exporter_logo as logo',
+        'b.exporter_phone as phone',
+        'b.exporter_office_phone as office_phone',
+        'b.exporter_fax as fax',
+        'b.exporter_email as email',
+        'a.subcategory_id as subcategory',
+        'c.subcategory_title as subcategory_title',
+      ]);
+      if(isset($title)) {
+        $this->db->like('b.exporter_name',$title);
+      }
+      $this->db->where('a.status', 1);
+      $this->db->where('a.delete_date', null);
+      $this->db->where('a.subcategory_id', $id);
+      $this->db->join('itpc_exporter b','a.exporter_id = b.exporter_id');
+      $this->db->join('itpc_subcategory c','a.subcategory_id = c.subcategory_id');
+      $this->db->limit($limit, $start);
+      $this->db->order_by('b.exporter_name','ASC');
+      $query = $this->db->get('itpc_exporter_category a');
+
+      if($query->num_rows() > 0){
+        $exporter_list = [];
+        array_map(function($item) use(&$exporter_list){
+          $exporter_list[] = (new Exporter_company($item))->to_array();
+        }, $query->result_array());
+        $query->free_result();
+        $this->db->reset_query();
+
+
+
+        return [
+          'data' => $exporter_list
+        ];
+      }else{
+        return false;
+      }
+
+
+
+
+  }
+
+    /*public function get($limit,$start,$title,$id){
         require_once('Exporter_company.php');
         require_once('Exporter_company_detail.php');
         $this->db->select([
@@ -32,7 +106,7 @@ class Exporter_company_query extends CI_Model{
         return [
     			'data' => $exporter_list
     		];
-    }
+    }*/
 
 
     public function get_detail($id,$icon_group) {
@@ -45,6 +119,7 @@ class Exporter_company_query extends CI_Model{
     			'a.exporter_name as title',
           'a.exporter_slug as slug',
           'a.exporter_logo as logo',
+          'a.exporter_address as address',
           'a.exporter_phone as phone',
           'a.exporter_office_phone as office_phone',
           'a.exporter_fax as fax',
