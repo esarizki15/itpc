@@ -169,6 +169,7 @@ class User_query extends CI_Model{
     {
       require_once('User_data.php');
       require_once('Category_data.php');
+      require_once('Exporter_detail.php');
 
 
       $this->db->select([
@@ -200,6 +201,21 @@ class User_query extends CI_Model{
       $exporter_id = $user_data[0]['user_id'];
 
       $this->db->select([
+        'a.exporter_name as name',
+        'a.exporter_phone as phone',
+        'a.exporter_email as email'
+      ]);
+      $this->db->where('a.exporter_id', $exporter_id);
+      $query = $this->db->get('itpc_exporter a');
+      $exporter_data = [];
+      array_map(function($item) use(&$exporter_data){
+        $exporter_data[] = (new Exporter_detail($item))->to_array();
+      }, $query->result_array());
+
+      $query->free_result();
+      $this->db->reset_query();
+
+      $this->db->select([
         'b.category_title as category',
         'c.subcategory_title as subcategory'
       ]);
@@ -216,6 +232,7 @@ class User_query extends CI_Model{
 
       return [
         'user_data' => $user_data,
+        'exporter_data' => $exporter_data,
         'category_data' => $category_data
       ];
 
@@ -404,6 +421,37 @@ public function delete_exporter_product($update) {
   }else{
     return false;
   }
+
+}
+
+public function get_add_inquiry($exporter_id){
+  require_once('Exporter_inquiry.php');
+  //require_once('Subcategory_inquiry.php');
+
+  $this->db->select([
+    'a.exporter_id as exporter_id',
+    'a.exporter_name as exporter_name',
+    'a.exporter_address as exporter_address',
+    'b.username as username',
+    'a.exporter_phone as exporter_phone',
+    'b.email as email'
+  ]);
+  $this->db->where('a.exporter_id', $exporter_id);
+  $this->db->where('a.delete_date', null);
+  $this->db->join('itpc_user b', 'a.exporter_id = b.user_id');
+  $query = $this->db->get('itpc_exporter a');
+  $exporter_inquiry = [];
+  array_map(function($item) use(&$exporter_inquiry){
+    $exporter_inquiry[] = (new Exporter_inquiry($item))->to_array();
+  }, $query->result_array());
+
+  $query->free_result();
+  $this->db->reset_query();
+
+  return [
+      'exporter_inquiry' => $exporter_inquiry
+  ];
+
 
 }
 

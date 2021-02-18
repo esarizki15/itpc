@@ -69,10 +69,6 @@ class Exporter_company_query extends CI_Model{
       }else{
         return false;
       }
-
-
-
-
   }
 
     /*public function get($limit,$start,$title,$id){

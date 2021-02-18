@@ -358,6 +358,13 @@ class API extends CI_Controller {
 
 			$account_status['category_data'][0]['category'];
 			$account_status['category_data'][0]['subcategory'];
+			
+			if($account_status['exporter_data'][0]['name'] == NULL || $account_status['exporter_data'][0]['phone'] == NULL || $account_status['exporter_data'][0]['email'] == NULL){
+					 $category_menu = false;
+			}else{
+					 $category_menu = true;
+			}
+
 		 	if($account_status['category_data'][0]['category'] == NULL || $account_status['category_data'][0]['subcategory'] == NULL)
 				 {
 					 $inquery_menu = false;
@@ -370,6 +377,7 @@ class API extends CI_Controller {
  					"username" => $account_status['user_data'][0]['username'],
  					"email" => $account_status['user_data'][0]['email'],
  					"status" => $account_status['user_data'][0]['status'],
+					"category_menu" => $category_menu,
  					"inquery_menu" => $inquery_menu
  				];
 
@@ -1015,6 +1023,156 @@ class API extends CI_Controller {
 			echo json_encode($product_delete); //send data to script
 			return json_encode($product_delete);
 
+		}
+
+
+		public function add_inquiry(){
+			$this->load->model('API/User/User_query','User_query', true);
+			$this->load->model('API/Exporter/Exporter_category_query','Exporter_category_query', true);
+			$this->load->model('API/Exporter/Exporter_subcategory_query','Exporter_subcategory_query', true);
+			$this->load->model('API/Authentication/Auth','Auth', true);
+
+			$this->form_validation->set_rules('expoter_id', 'expoter_id', 'required|integer');
+
+			if($this->form_validation->run() == TRUE)
+			{
+				$auth_code = $this->input->get_request_header('auth_code');
+				$exporter_id = $this->input->post('expoter_id', true);
+				$get_auth_code = $this->Auth->cek_auth($auth_code);
+				if($get_auth_code){
+					if($get_auth_code['user_id'] == $exporter_id){
+
+						$inquiry['data'] = $this->User_query->get_add_inquiry($exporter_id);
+						$inquiry['data']['category'] = $this->Exporter_category_query->category_inquiry_list($exporter_id);
+						$inquiry['data']['subcategory'] = $this->Exporter_subcategory_query->subcategory_inquiry_list($exporter_id);
+
+						if($inquiry['data']){
+							$inquiry['status'] = true;
+							$inquiry['message'] = "Data displayed successfully";
+						}else{
+							$inquiry['data'] = null;
+							$inquiry['status'] = false;
+							$inquiry['message'] = "Data is not displayed";
+
+						}
+
+					}else{
+						$inquiry['data'] = null;
+						$inquiry['status'] = false;
+						$inquiry['message'] = "Your exporter ID cannot be found, please contact the admin";
+					}
+				}else{
+					$inquiry['data'] = null;
+					$inquiry['status'] = false;
+					$inquiry['message'] = "Wrong auth code please re-login";
+				}
+
+			}else{
+				$inquiry['data'] = null;
+				$inquiry['status'] = false;
+				$inquiry['message'] = validation_errors();
+			}
+			echo json_encode($inquiry); //send data to script
+			return json_encode($inquiry);
+		}
+
+		public function submit_inquiry()
+		{
+				$this->load->model('API/Inquiry/Inquiry_query','Inquiry_query', true);
+
+				$this->form_validation->set_rules('exporter_id', 'exporter_id', 'trim|required|integer');
+				$this->form_validation->set_rules('inquiry_title', 'inquiry_title', 'trim|required|min_length[3]');
+				$this->form_validation->set_rules('exporter_name', 'exporter_name', 'trim|required|min_length[3]');
+				$this->form_validation->set_rules('exporter_address', 'exporter_address', 'trim|required|min_length[3]');
+				$this->form_validation->set_rules('category_id', 'category_id', 'trim|required|integer');
+				$this->form_validation->set_rules('subcategory_id', 'subcategory_id', 'trim|required|integer');
+				$this->form_validation->set_rules('product_detail', 'product_detail', 'trim|required|min_length[3]');
+				$this->form_validation->set_rules('product_capacity', 'product_capacity', 'trim|required|integer');
+				$this->form_validation->set_rules('have_export', 'have_export', 'trim|required|integer');
+				$this->form_validation->set_rules('contact_name', 'contact_name', 'trim|required|min_length[3]');
+				$this->form_validation->set_rules('contact_email', 'contact_email', 'trim|required|valid_email');
+				$this->form_validation->set_rules('contact_phone', 'contact_phone', 'trim|required');
+
+				if($this->form_validation->run() == TRUE)
+				{
+					$exporter_id = $this->input->post('exporter_id', true);
+					$inquiry_title = $this->input->post('inquiry_title', true);
+					$exporter_name = $this->input->post('exporter_name', true);
+					$exporter_address = $this->input->post('exporter_address', true);
+					$category_id = $this->input->post('category_id', true);
+					$subcategory_id = $this->input->post('subcategory_id', true);
+					$product_detail = $this->input->post('product_detail', true);
+					$product_capacity = $this->input->post('product_capacity', true);
+					$have_export = $this->input->post('have_export', true);
+					$contact_name = $this->input->post('contact_name', true);
+					$contact_email = $this->input->post('contact_email', true);
+					$contact_phone = $this->input->post('contact_phone', true);
+					$progress = 25;
+
+					$post_date = date("Y-m-d H:i:s");
+
+					$inquiry_data[] = [
+						 'inquiry_id' => null,
+						 'exporter_id' => $exporter_id,
+						 'inquiry_title' => $inquiry_title,
+						 'exporter_name' => $exporter_name,
+						 'exporter_address' => $exporter_address,
+						 'progress' => $progress,
+						 'category_id' => $category_id,
+						 'subcategory_id' => $subcategory_id,
+						 'product_detail' => $product_detail,
+						 'product_capacity' => $product_capacity,
+						 'have_export' => $have_export,
+						 'contact_name' => $contact_name,
+						 'contact_email' => $contact_email,
+						 'contact_phone' => $contact_phone,
+						 'post_date' => $post_date,
+						 'post_by' => $exporter_id,
+						 'update_date' => null,
+						 'update_by' => null,
+						 'delete_date' => null,
+						 'delete_by' => null,
+						 'admin_change' => 0,
+						 'status' => 1
+					];
+
+					$submit_inquiry = $this->Inquiry_query->Submit_inquiry($inquiry_data);
+
+					$notif_status = 'submit';
+					$already_read = 0;
+
+					$notif[] = [
+						'notif_id' => null,
+						'notif_status' => $notif_status,
+						'inquiry_id' => $submit_inquiry,
+						'exporter_id' => $exporter_id,
+						'already_read' => $already_read,
+						'post_date' => $post_date,
+						'delete_date' => null,
+						'status' => 1
+					];
+
+					$submit_notif = $this->Inquiry_query->Submit_notif_inquiry($notif);
+
+					if($submit_inquiry && $submit_notif){
+						$inquiry['data'] = "";
+						$inquiry['status'] = true;
+						$inquiry['message'] = "Congratulations, your inquiry has been successfully submitted";
+					}else{
+						$inquiry['data'] = "";
+						$inquiry['status'] = false;
+						$inquiry['message'] = "Sorry the inquiry failed to be submitted, please contact the administrator";
+					}
+
+
+				}else{
+					$inquiry['data'] = null;
+					$inquiry['status'] = false;
+					$inquiry['message'] = validation_errors();
+				}
+
+				echo json_encode($inquiry); //send data to script
+				return json_encode($inquiry);
 		}
 
 

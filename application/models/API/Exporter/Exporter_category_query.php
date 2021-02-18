@@ -79,6 +79,28 @@ class Exporter_category_query extends CI_Model{
 
     }
 
+
+    public function category_inquiry_list($expoter_id){
+      $this->db->select([
+        'a.category_id as id',
+        'a.category_title as title'
+      ]);
+      $this->db->where('a.status', 1);
+      $this->db->where('a.delete_date', null);
+      $this->db->where('b.exporter_id', $expoter_id);
+      $this->db->join('itpc_exporter_category b','a.category_id = b.category_id','Right');
+      $this->db->group_by('a.category_id');
+      $this->db->order_by('a.category_title','ASC');
+      $query = $this->db->get('itpc_category a');
+      if($query)
+  	 	{
+        return $query->result_array();
+  	 	}else{
+        return false;
+      }
+    }
+
+
     /*
     $this->db->limit($limit, $start);
   $query = $this->db->get('form');

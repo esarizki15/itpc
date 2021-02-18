@@ -73,6 +73,30 @@ class Exporter_subcategory_query extends CI_Model{
 
     }
 
+
+    public function subcategory_inquiry_list($exporter_id) {
+      $this->db->select([
+        'a.subcategory_id as id',
+        'a.category_id as category_id',
+        'a.subcategory_title as title'
+      ]);
+      $this->db->where('a.status', 1);
+      $this->db->where('a.delete_date', null);
+      $this->db->where('b.exporter_id', $exporter_id);
+      $this->db->join('itpc_exporter_category b','a.subcategory_id = b.subcategory_id','Right');
+      $this->db->group_by('a.subcategory_id');
+      $this->db->order_by('a.subcategory_id ASC','a.subcategory_title ASC');
+      $query = $this->db->get('itpc_subcategory a');
+      if($query)
+  	 	{
+        return $query->result_array();
+  	 	}else{
+        return false;
+      }
+
+
+    }
+
     /*
     $this->db->limit($limit, $start);
   $query = $this->db->get('form');
