@@ -358,7 +358,7 @@ class API extends CI_Controller {
 
 			$account_status['category_data'][0]['category'];
 			$account_status['category_data'][0]['subcategory'];
-			
+
 			if($account_status['exporter_data'][0]['name'] == NULL || $account_status['exporter_data'][0]['phone'] == NULL || $account_status['exporter_data'][0]['email'] == NULL){
 					 $category_menu = false;
 			}else{
@@ -591,6 +591,37 @@ class API extends CI_Controller {
 
 	}
 
+	public function submit_image_logo(){
+
+		$date = date_create();
+		if($_FILES['logo']['error'] === 0) {
+		 $upload_config['upload_path'] = 'assets/' . $this->config->item('exporter_logo_path');
+		 $upload_config['allowed_types'] = 'jpg|jpeg|png|svg';
+		 $upload_config['max_height'] = 500;
+		 $upload_config['max_width'] = 500;
+		 $upload_config['file_name'] = "logo"."-".date_timestamp_get($date);
+		 $this->upload->initialize($upload_config);
+		 if ($this->upload->do_upload('logo')) {
+			 $exporter_logo['data'] = $this->upload->data('file_name');
+			 $exporter_logo['status'] = true;
+			 $exporter_logo['message'] = "Image submit successful";
+		 }else{
+			 $exporter_logo['data'] ="";
+			 $exporter_logo['status'] = false;
+			 $exporter_logo['message'] =  $this->session->set_flashdata('error', 'File thumbnail image: ' . $this->upload->display_errors('', ''));
+		 }
+	 }else{
+		 $exporter_logo['data'] = $this->upload->data('file_name');
+		 $exporter_logo['status'] = false;
+		 $exporter_logo['message'] = "Image submit failed";
+	 }
+
+	echo json_encode($exporter_logo); //send data to script
+	return json_encode($exporter_logo);
+
+
+	}
+
 	public function update_detail_exporter()
 	{
 			$this->load->model('API/User/User_query','User_query', true);
@@ -612,6 +643,8 @@ class API extends CI_Controller {
 				 $exporter_address = $this->input->post('address');
 				 $exporter_phone = $this->input->post('phone');
 				 $exporter_office_phone = $this->input->post('office_phone');
+				 $exporter_phone = $this->input->post('phone');
+				 $exporter_logo = $this->input->post('exporter_logo');
 				 if($exporter_office_phone == null || $exporter_office_phone == ""){
 					 $exporter_office_phone = null;
 				 }
@@ -630,7 +663,7 @@ class API extends CI_Controller {
 
 				 $date = date_create();
 
-
+				 /*
 				 if($_FILES['logo']['error'] === 0) {
 					$upload_config['upload_path'] = 'assets/' . $this->config->item('exporter_logo_path');
 					$upload_config['allowed_types'] = 'jpg|jpeg|png|svg';
@@ -645,6 +678,11 @@ class API extends CI_Controller {
 						$save_status = false;
 					}
 				}else{
+					$image_defalut = rand(1,3);
+					$exporter_logo = "dummy-".$image_defalut.".png";
+				}*/
+
+				if(empty($exporter_logo)){
 					$image_defalut = rand(1,3);
 					$exporter_logo = "dummy-".$image_defalut.".png";
 				}
@@ -1011,18 +1049,13 @@ class API extends CI_Controller {
 					$product_delete['status'] = true;
 					$product_delete['message'] = "Data delete is failed";
 				}
-
-
-
 			}else{
 				$product_delete['data'] = null;
 				$product_delete['status'] = false;
 				$product_delete['message'] = validation_errors();
 			}
-
 			echo json_encode($product_delete); //send data to script
 			return json_encode($product_delete);
-
 		}
 
 
@@ -1107,7 +1140,8 @@ class API extends CI_Controller {
 					$contact_name = $this->input->post('contact_name', true);
 					$contact_email = $this->input->post('contact_email', true);
 					$contact_phone = $this->input->post('contact_phone', true);
-					$progress = 25;
+					$progress = 0;
+					$approved = "waiting";
 
 					$post_date = date("Y-m-d H:i:s");
 
@@ -1132,18 +1166,18 @@ class API extends CI_Controller {
 						 'update_by' => null,
 						 'delete_date' => null,
 						 'delete_by' => null,
-						 'admin_change' => 0,
+						 'approved' => 	$approved,
 						 'status' => 1
 					];
 
 					$submit_inquiry = $this->Inquiry_query->Submit_inquiry($inquiry_data);
 
-					$notif_status = 'submit';
+					$log_status = 'submit';
 					$already_read = 0;
+					$action_role = "user";
 
 					$notif[] = [
 						'notif_id' => null,
-						'notif_status' => $notif_status,
 						'inquiry_id' => $submit_inquiry,
 						'exporter_id' => $exporter_id,
 						'already_read' => $already_read,
@@ -1152,9 +1186,19 @@ class API extends CI_Controller {
 						'status' => 1
 					];
 
-					$submit_notif = $this->Inquiry_query->Submit_notif_inquiry($notif);
+					$log[] = [
+						'log_id' => null,
+						'inquiry_id' => $submit_inquiry,
+						'action' => $log_status,
+						'action_by' => $exporter_id,
+						'action_date' => $post_date,
+						'action_role' => $action_role
+					];
 
-					if($submit_inquiry && $submit_notif){
+					$submit_notif = $this->Inquiry_query->Submit_notif_inquiry($notif);
+					$log_inquiry = $this->Inquiry_query->Submit_log_inquiry($log);
+
+					if($submit_inquiry && $submit_notif && $log_inquiry){
 						$inquiry['data'] = "";
 						$inquiry['status'] = true;
 						$inquiry['message'] = "Congratulations, your inquiry has been successfully submitted";
@@ -1174,6 +1218,458 @@ class API extends CI_Controller {
 				echo json_encode($inquiry); //send data to script
 				return json_encode($inquiry);
 		}
+
+		public function list_inquiry()
+		{
+			$this->load->model('API/Inquiry/Inquiry_query','Inquiry_query', true);
+			$this->load->model('API/Authentication/Auth','Auth', true);
+			$this->form_validation->set_rules('exporter_id', 'exporter_id', 'trim|required|integer');
+
+			if($this->form_validation->run() == TRUE)
+			{
+				$auth_code = $this->input->get_request_header('auth_code');
+				$exporter_id = $this->input->post('exporter_id', true);
+				$title = $this->input->post('title', true);
+				$get_auth_code = $this->Auth->cek_auth($auth_code);
+
+				if($get_auth_code){
+					if($get_auth_code['user_id'] == $exporter_id){
+
+						$page = $this->input->post('page',true);
+						$limit = 10;
+						$list_inquiry['data'] = $this->Inquiry_query->get_list_inquiry($limit,$page,$exporter_id);
+
+						if($list_inquiry['data']){
+							$list_inquiry['status'] = true;
+							$list_inquiry['message'] = "Data displayed successfully";
+						}else{
+							$list_inquiry['data'] = null;
+							$list_inquiry['status'] = false;
+							$list_inquiry['message'] = "Data is not displayed";
+						}
+
+					}else{
+						$list_inquiry['data'] = null;
+						$list_inquiry['status'] = false;
+						$list_inquiry['message'] = "Your exporter ID cannot be found, please contact the admin";
+					}
+				}else{
+					$list_inquiry['data'] = null;
+					$list_inquiry['status'] = false;
+					$list_inquiry['message'] = "Wrong auth code please re-login";
+				}
+			}else{
+				$list_inquiry['data'] = "";
+				$list_inquiry['status'] = false;
+				$list_inquiry['message'] = "Sorry the inquiry failed to be submitted, please contact the administrator";
+			}
+
+			echo json_encode($list_inquiry); //send data to script
+			return json_encode($list_inquiry);
+		}
+
+		public function detail_inquiry()
+		{
+			$this->load->model('API/Inquiry/Inquiry_query','Inquiry_query', true);
+			$this->load->model('API/Authentication/Auth','Auth', true);
+			$this->form_validation->set_rules('inquiry_id', 'inquiry_id', 'trim|required|integer');
+
+			if($this->form_validation->run() == TRUE)
+			{
+				$auth_code = $this->input->get_request_header('auth_code');
+				$inquiry_id = $this->input->post('inquiry_id', true);
+				$get_auth_code = $this->Auth->cek_auth($auth_code);
+
+				if($get_auth_code){
+					if($get_auth_code['user_id']){
+
+						$page = $this->input->post('page',true);
+						$limit = 10;
+						$detail_inquiry['data'] = $this->Inquiry_query->get_detail_inquiry($inquiry_id);
+
+						if($detail_inquiry['data']){
+							$detail_inquiry['status'] = true;
+							$detail_inquiry['message'] = "Data displayed successfully";
+
+							if(!empty($detail_inquiry['data']['inbox'])){
+								$detail_inquiry['data']['inbox'] = true;
+							}else{
+								$detail_inquiry['data']['inbox'] = false;
+							}
+
+							$progress[] = $detail_inquiry['data']['detail'][0];
+							if($progress[0]['progress'] > 99){
+									$detail_inquiry['data']['importer_access'] = true;
+							}else{
+									$detail_inquiry['data']['importer_access'] = false;
+							}
+						}else{
+							$detail_inquiry['data'] = null;
+							$detail_inquiry['status'] = false;
+							$detail_inquiry['message'] = "Data is not displayed";
+						}
+
+					}else{
+						$detail_inquiry['data'] = null;
+						$detail_inquiry['status'] = false;
+						$detail_inquiry['message'] = "Your exporter ID cannot be found, please contact the admin";
+					}
+				}else{
+					$detail_inquiry['data'] = null;
+					$detail_inquiry['status'] = false;
+					$detail_inquiry['message'] = "Wrong auth code please re-login";
+				}
+			}else{
+				$detail_inquiry['data'] = "";
+				$detail_inquiry['status'] = false;
+				$detail_inquiry['message'] = "Sorry  inquiry detail failed to be load, please contact the administrator";
+			}
+
+			echo json_encode($detail_inquiry); //send data to script
+			return json_encode($detail_inquiry);
+		}
+
+		public function inbox(){
+			$this->load->model('API/Inquiry/Inquiry_query','Inquiry_query', true);
+			$this->load->model('API/Authentication/Auth','Auth', true);
+			$this->form_validation->set_rules('inquiry_id', 'inquiry_id', 'trim|integer');
+
+
+			if($this->form_validation->run() == TRUE)
+			{
+				$auth_code = $this->input->get_request_header('auth_code');
+				$inquiry_id = $this->input->post('inquiry_id', true);
+				$get_auth_code = $this->Auth->cek_auth($auth_code);
+
+				if($get_auth_code){
+					if($get_auth_code['user_id']){
+
+						$page = $this->input->post('page',true);
+						$limit = 10;
+						$inbox['data'] = $this->Inquiry_query->get_inbox_inquiry($limit,$page,$inquiry_id);
+
+						if($inbox['data']){
+							$inbox['status'] = true;
+							$inbox['message'] = "Data displayed successfully";
+
+						}else{
+							$inbox['data'] = null;
+							$inbox['status'] = false;
+							$inbox['message'] = "Data is not displayed";
+						}
+
+					}else{
+						$inbox['data'] = null;
+						$v['status'] = false;
+						$inbox['message'] = "Your exporter ID cannot be found, please contact the admin";
+					}
+				}else{
+					$inbox['data'] = null;
+					$inbox['status'] = false;
+					$inbox['message'] = "Wrong auth code please re-login";
+				}
+			}else{
+				$inbox['data'] = "";
+				$inbox['status'] = false;
+				$inbox['message'] = "Sorry the inbox failed to be load, please contact the administrator";
+			}
+			echo json_encode($inbox); //send data to script
+			return json_encode($inbox);
+		}
+
+		public function inbox_read(){
+			$this->load->model('API/Inquiry/Inquiry_query','Inquiry_query', true);
+			$this->form_validation->set_rules('inquiry_id', 'inquiry_id', 'trim|integer');
+			$this->form_validation->set_rules('inbox_id', 'inbox_id', 'trim|integer');
+
+			if($this->form_validation->run() == TRUE)
+			{
+					$inquiry_id = $this->input->post('inquiry_id', true);
+					$inbox_id = $this->input->post('inbox_id', true);
+					$inbox_read = 1;
+					$update = date("Y-m-d H:i:s");
+
+					if(!empty($inbox_id)){
+
+						$update = [
+							'inbox_id' => $inbox_id,
+							'inbox_read' => $inbox_read,
+							'update_date' => $update
+						];
+
+
+						$inbox['data'] = $this->Inquiry_query->update_inbox_inquiry($update);
+					}else{
+						$update = [
+							'inquiry_id' => $inquiry_id,
+							'inbox_read' => $inbox_read,
+							'update_date' => $update
+						];
+						$inbox['data'] = $this->Inquiry_query->update_inbox_inquiry_all($update);
+					}
+
+					if($inbox['data']){
+						$inbox['status'] = true;
+						$inbox['message'] = " inbox on inquiry have been read";
+
+					}else{
+						$inbox['data'] = null;
+						$inbox['status'] = false;
+						$inbox['message'] = "failed to read all";
+					}
+
+			}else{
+				$inbox['data'] = "";
+				$inbox['status'] = false;
+				$inbox['message'] = "Sorry the inbox failed to be read, please contact the administrator";
+			}
+			echo json_encode($inbox); //send data to script
+			return json_encode($inbox);
+		}
+
+
+
+		public function inquiry_file(){
+			$this->load->model('API/Inquiry/Inquiry_query','Inquiry_query', true);
+			$this->load->model('API/Authentication/Auth','Auth', true);
+			$this->form_validation->set_rules('inquiry_id', 'inquiry_id', 'trim|required|integer');
+			if($this->form_validation->run() == TRUE)
+			{
+				$auth_code = $this->input->get_request_header('auth_code');
+				$get_auth_code = $this->Auth->cek_auth($auth_code);
+				$inquiry_id = $this->input->post('inquiry_id', true);
+				$inquiry_file['data'] = $this->Inquiry_query->list_file_inquiry($inquiry_id);
+
+				if($get_auth_code){
+					if($inquiry_file['data']){
+						$inquiry_file['status'] = true;
+						$inquiry_file['message'] = "successful file load";
+					}else{
+						$inquiry_file['data'] = "";
+						$inquiry_file['status'] = false;
+						$inquiry_file['message'] = "file not available";
+					}
+				}else{
+					$inbox['data'] = null;
+					$inbox['status'] = false;
+					$inbox['message'] = "Wrong auth code please re-login";
+				}
+			}else{
+				$inquiry_file['data'] = "";
+				$inquiry_file['status'] = false;
+				$inquiry_file['message'] = "Sorry the inbox failed to be load, please contact the administrator";
+			}
+			echo json_encode($inquiry_file); //send data to script
+			return json_encode($inquiry_file);
+		}
+
+
+		public function submit_inquiry_file(){
+			$date = date_create();
+			if($_FILES['files']['error'] === 0) {
+			 $upload_config['upload_path'] = 'assets/' . $this->config->item('inquiry_file');
+			 $upload_config['allowed_types'] = 'jpg|jpeg|png|svg';
+			 //$upload_config['max_height'] = 500;
+			 //$upload_config['max_width'] = 500;
+			 $upload_config['file_name'] = "inquiry"."-".date_timestamp_get($date);
+			 $this->upload->initialize($upload_config);
+			 if ($this->upload->do_upload('files')) {
+				 $inquiry_file['data'] = $this->upload->data('file_name');
+				 $inquiry_file['status'] = true;
+				 $inquiry_file['message'] = "File submit successful";
+			 }else{
+				 $inquiry_file['data'] ="";
+				 $inquiry_file['status'] = false;
+				 $inquiry_file['message'] =  $this->session->set_flashdata('error', 'File thumbnail image: ' . $this->upload->display_errors('', ''));
+			 }
+		 }else{
+			 $inquiry_file['data'] = $this->upload->data('file_name');
+			 $inquiry_file['status'] = false;
+			 $inquiry_file['message'] = "file submit failed";
+		 }
+
+		echo json_encode($inquiry_file); //send data to script
+		return json_encode($inquiry_file);
+		}
+
+
+		public function submit_data_inquiry_file()
+		{
+				$this->load->model('API/Inquiry/Inquiry_query','Inquiry_query', true);
+				$this->form_validation->set_rules('inquiry_id', 'inquiry_id', 'trim|required|numeric');
+				$this->form_validation->set_rules('user_id', 'user_id', 'trim|required|numeric');
+				$this->form_validation->set_rules('file_patch', 'file_patch', 'trim|required');
+
+				if($this->form_validation->run() == TRUE)
+				{
+						$images = array();
+						$inquiry_id = $this->input->post('inquiry_id');
+						$user_id = $this->input->post('user_id');
+						$file_patch = $this->input->post('file_patch');
+						$date = date_create();
+
+						$post_date = date("Y-m-d H:i:s");
+						$file_device = "ios";
+
+						$inquiryfile[] = [
+							 'file_id' => null,
+							 'file_patch' => $file_patch,
+							 'inquiry_id' => $inquiry_id,
+							 'file_device' => $file_device,
+							 'post_date' => $post_date,
+							 'post_by' => $user_id,
+							 'update_date' => null,
+							 'update_by' => null,
+							 'delete_date' => null,
+							 'delete_by' => null,
+							 'status' => 1,
+						];
+						$file_submit = $this->Inquiry_query->submit_inquiry_file($inquiryfile);
+
+						if($file_submit){
+							$inquiry_file['data'] = $this->upload->data('file_name');
+							$inquiry_file['status'] = true;
+							$inquiry_file['message'] = "managed to save the inquiry file";
+						}else{
+							$inquiry_file['data'] = null;
+							$inquiry_file['status'] = false;
+							$inquiry_file['message'] = "failed to save inquiry file";
+						}
+
+
+				}else{
+						$inquiry_file['data'] = null;
+						$inquiry_file['status'] = false;
+						$inquiry_file['message'] = "an error occurred in uploading the file, make sure the form contains the correct contents";
+				}
+				echo json_encode($inquiry_file);
+				return json_encode($inquiry_file);
+			}
+
+			public function delete_inquiry_file(){
+				$this->load->model('API/Inquiry/Inquiry_query','Inquiry_query', true);
+				$this->form_validation->set_rules('file_id', 'file_id', 'trim|required|numeric');
+
+
+				if($this->form_validation->run() == TRUE)
+				{
+					$file_id = $this->input->post('file_id');
+					$file_user_id = $this->Inquiry_query->file_user_id($file_id);
+					
+					$delete_date = date("Y-m-d H:i:s");
+					$update = [
+							'file_id' => $file_id,
+							'delete_date' => $delete_date,
+							'delete_by' => $file_user_id,
+							'status' => 3
+					];
+
+					$file_delete['data'] = $this->Inquiry_query->inquiry_file_delete($update);
+
+					if($file_delete['data']){
+						$file_delete['status'] = true;
+						$file_delete['message'] = "Data delete is successful";
+					}else{
+						$file_delete['data'] = null;
+						$file_delete['status'] = true;
+						$file_delete['message'] = "Data delete is failed";
+					}
+				}else{
+					$file_delete['data'] = null;
+					$file_delete['status'] = false;
+					$file_delete['message'] = validation_errors();
+				}
+				echo json_encode($file_delete); //send data to script
+				return json_encode($file_delete);
+			}
+
+		/*public function submit_data_inquiry_file()
+		{
+				$this->load->model('API/Inquiry/Inquiry_query','Inquiry_query', true);
+				$this->form_validation->set_rules('inquiry_id', 'inquiry_id', 'trim|required|numeric');
+				$this->form_validation->set_rules('user_id', 'user_id', 'trim|required|numeric');
+
+				if($this->form_validation->run() == TRUE)
+				{
+						$images = array();
+						$inquiry_id = $this->input->post('inquiry_id');
+						$user_id = $this->input->post('user_id');
+						$date = date_create();
+
+						$total = count($_FILES['files']['name']);
+
+						if ($total > 0) {
+							$upload_config['upload_path'] = 'assets/' . $this->config->item('inquiry_file');
+							$upload_config['allowed_types'] = 'jpg|jpeg|png';
+
+							for ($i = 0; $i < $total; $i++){
+
+								$_FILES['file']['name'] = $_FILES['files']['name'][$i];
+								$_FILES['file']['type'] = $_FILES['files']['type'][$i];
+								$_FILES['file']['tmp_name'] = $_FILES['files']['tmp_name'][$i];
+								$_FILES['file']['error'] = $_FILES['files']['error'][$i];
+								$_FILES['file']['size'] = $_FILES['files']['size'][$i];
+
+								$upload_config['file_name'] = $inquiry_id."-".date_timestamp_get($date);
+								$this->upload->initialize($upload_config);
+								$file_type = "image";
+
+								if ($_FILES['file']['error'] === 0) {
+									if ($this->upload->do_upload('file')) {
+
+										$post_date = date("Y-m-d H:i:s");
+										$file_device = "ios";
+
+										$inquiryfile[] = [
+											 'file_id' => null,
+											 'file_patch' => $this->upload->data('file_name'),
+											 'inquiry_id' => $inquiry_id,
+											 'file_device' => $file_device,
+											 'post_date' => $post_date,
+											 'post_by' => $user_id,
+											 'update_date' => null,
+											 'update_by' => null,
+											 'delete_date' => null,
+											 'delete_by' => null,
+											 'status' => 1,
+										];
+										$file_submit = $this->Inquiry_query->submit_inquiry_file($inquiryfile);
+
+										if($file_submit){
+											$inquiry_file['data'] = $this->upload->data('file_name');
+											$inquiry_file['status'] = true;
+											$inquiry_file['message'] = "managed to save the inquiry file";
+										}else{
+											$inquiry_file['data'] = null;
+											$inquiry_file['status'] = false;
+											$inquiry_file['message'] = "failed to save inquiry file";
+										}
+									}else{
+										$inquiry_file['data'] = null;
+										$inquiry_file['status'] = false;
+										$inquiry_file['message'] = "File [" . $_FILES['file']['name'] . "]: " . $this->upload->display_errors('', '');
+									}
+								}else if ($_FILES['file']['error'] !== 4) {
+									$inquiry_file['data'] = null;
+									$inquiry_file['status'] = false;
+									//$product_img_path['message'] = "File [" . $_FILES['file']['name'] . "]: " . $this->lang->line('upload_' . $_FILES['file']['error']);
+									$inquiry_file['message'] = "eror 4";
+								}
+
+							}
+
+						}
+
+				}else{
+						$inquiry_file['data'] = null;
+						$inquiry_file['status'] = false;
+						$inquiry_file['message'] = "an error occurred in uploading the file, make sure the form contains the correct contents";
+				}
+				echo json_encode($inquiry_file);
+				return json_encode($inquiry_file);
+			}*/
+
+
 
 
 }

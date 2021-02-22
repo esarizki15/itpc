@@ -1,17 +1,21 @@
 <?php
-class Inquiry_list {
+class Inquiry_detail {
 	public $inquiry_id;
 	public $inquiry_title;
+	public $exporter_name;
 	public $progress;
-	public $contact_name;
-	public $post_date;
-	public $status;
 	public $category_title;
 	public $subcategory_title;
-
-
-
-	public function __construct($arr) {
+	public $product_detail;
+	public $product_capacity;
+	public $have_export;
+	public $contact_name;
+	public $contact_email;
+	public $contact_phone;
+	public $post_date;
+	public $update_date;
+	public $status;
+	public function __construct($arr){
 		foreach(get_object_vars($this) as $key => $val) {
 			switch($key) {
 					case 'post_date':
@@ -20,36 +24,23 @@ class Inquiry_list {
 							$date = (new DateTime())->createFromFormat('Y-m-d H:i:s', $arr[$key])->format('d F Y');
 							//$this->$key = date($arr[$key],strtotime('-1 hour'));
 							$this->$key = $date;
+
 						}
 						break;
-
-						case 'have_export':
-							if(array_key_exists($key, $arr)) {
-								if($arr[$key] == 1){
-									$have_export = "Yes";
-								}else{
-									$have_export = "No";
-								}
-
-								$this->$key = $status ;
-							}
-							break;
 
 						case 'update_date':
 							if(array_key_exists($key, $arr)) {
 								date_default_timezone_set('Asia/Jakarta');
-								$date = (new DateTime())->createFromFormat('Y-m-d H:i:s', $arr[$key])->format('d F Y');
-								//$this->$key = date($arr[$key],strtotime('-1 hour'));
-								if($arr[$key] == null){
-
+								if($arr[$key] != null){
+									$date = (new DateTime())->createFromFormat('Y-m-d H:i:s', $arr[$key])->format('d F Y');
+									//$this->$key = date($arr[$key],strtotime('-1 hour'));
+									$this->$key = $date;
 								}else{
-										$this->$key = $date;
+									$date = "no update yet";
+									$this->$key = $date;
 								}
-
-
 							}
 							break;
-
 						case 'status':
 							if(array_key_exists($key, $arr)) {
 								if($arr[$key] == 1){

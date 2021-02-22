@@ -30,6 +30,9 @@ $config['website_assets'] = $root.'assets/website/';
 $config['exporter_logo_path'] = 'website/exporter';
 $config['exporter_product'] = 'website/exporter_product';
 $config['admin_source'] = $root.'assets/admin/';
+$config['inquiry_file'] = 'website/inquiry';
+
+
 
 
 /*
