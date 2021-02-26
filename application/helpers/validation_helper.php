@@ -20,11 +20,3 @@ function valid_comma_separated_emails(&$val) {
 	return true;
 }
 
-
-function pr($var){
-
-	echo '<pre>';
-	print_r($var);
-	echo '<pre>';
-	
-	}

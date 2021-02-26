@@ -25,6 +25,7 @@ class WEB extends CI_Controller {
     private function render()
     {
         $lang = $this->uri->segment(1);
+        pr($lang);exit;
         $this->lang->load('content',$lang=='' ? 'en' : $lang);
         $this->master["language"] = $this->lang->line('language');
         $this->master["main_css"] = $this->load->view('web/main_css.php', [], TRUE);
