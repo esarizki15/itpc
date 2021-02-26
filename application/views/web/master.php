@@ -10,6 +10,11 @@
 		?>
 </head>
 <body>
+		<!-- Disini untuk Header Bahasa -->
+		<?php echo $language['greeting']; ?> <br>
+		<?php echo $language['menu1']; ?> <br>
+		<?php echo $language['menu2']; ?> <br>
+
 		<!-- Disini untuk Content -->
 		<?php echo $content; ?>
 </body>
