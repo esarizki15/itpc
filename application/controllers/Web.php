@@ -34,12 +34,13 @@ class WEB extends CI_Controller {
     public function index($lang = '')
 	{
         $News = $this->Home_data_query->get_news();
-        //pr($News);exit;
+        pr($News);exit;
         $this->master["content"] = $this->load->view("web/home/home.php",[], TRUE);
         $this->render();
 	}
-    public function exporter($lang = '')
+    public function exporter()
 	{
+        //pr('masuk');exit;
         $this->master["custume_css"] = NULL;
         $this->master["custume_js"] = NULL;
         $this->load->model('Admin/Exporter/Exporter_query','Exporter_query', true);
