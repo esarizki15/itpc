@@ -55,3 +55,15 @@ $route['translate_uri_dashes'] = FALSE;
 $route['assets'] = '';
 $route[':any'] = 'web/index';
 $route[':any/exporter'] = 'web/exporter';
+$route[':any/news'] = 'web/news';
+$route[':any/news_detail'] = 'web/news_detail';
+$route[':any/welcome_login'] = 'web/welcome_login';
+$route[':any/login'] = 'web/login';
+$route[':any/register'] = 'web/register';
+
+
+
+
+
+
+
