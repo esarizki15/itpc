@@ -18,14 +18,13 @@ class WEB extends CI_Controller {
            $this->load->library('upload');
            $this->load->library('form_validation');
            $this->load->helper('validation');
-           
+           $this->load->model('Web/Home/Home_data_query','Home_data_query', true);
            error_reporting(E_ALL ^ (E_NOTICE | E_WARNING));
     }
 
     private function render()
     {
         $lang = $this->uri->segment(1);
-        pr($lang);exit;
         $this->lang->load('content',$lang=='' ? 'en' : $lang);
         $this->master["language"] = $this->lang->line('language');
         $this->master["main_css"] = $this->load->view('web/main_css.php', [], TRUE);
@@ -34,12 +33,20 @@ class WEB extends CI_Controller {
     }
     public function index($lang = '')
 	{
-     
-        $this->master["custume_css"] = NULL;
-        $this->master["custume_js"] = NULL;
+        $News = $this->Home_data_query->get_news();
+        //pr($News);exit;
         $this->master["content"] = $this->load->view("web/home/home.php",[], TRUE);
         $this->render();
-			
 	}
+    public function exporter($lang = '')
+	{
+        $this->master["custume_css"] = NULL;
+        $this->master["custume_js"] = NULL;
+        $this->load->model('Admin/Exporter/Exporter_query','Exporter_query', true);
+        $this->master["content"] = $this->load->view("web/home/home.php",[], TRUE);
+        $this->render();
+	}
+
+
 
 }
