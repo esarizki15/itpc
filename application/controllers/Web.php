@@ -74,6 +74,142 @@ class WEB extends CI_Controller {
         $this->master["content"] = $this->load->view("web/login/register.php",[], TRUE);
         $this->render();
   }
+
+  public function store_register(){
+
+		$this->load->model('API/User/User_query','User_query', true);
+		$this->load->model('API/Exporter/Exporter_company_query','Exporter_company_query', true);
+          //  pr($_REQUEST);exit;
+		$this->form_validation->set_rules('email', 'email', 'trim|required|valid_email|is_unique[itpc_user.email]', array('is_unique' => 'This email already exists. Please choose another one.'));
+ 		$this->form_validation->set_rules('password', 'password', 'trim|required|min_length[6]');
+ 		$this->form_validation->set_rules('conf_password', 'confirm password', 'trim|required|min_length[6]|matches[password]' , array('matches' => 'Password does not match.'));
+
+		if($this->form_validation->run() == TRUE)
+		{
+			$email = $this->input->post('email');
+			$explode_email = explode("@", $email);
+			$username = $explode_email[0];
+  		      $password = $this->input->post('password');
+			$password_text = $password;
+			$post_date = date("Y-m-d H:i:s");
+			$post_by = "user";
+			$status = 2;
+
+			$user[] = [
+						"user_id " => null,
+						"username" => $username,
+						"password" => $this->hash_password($password),
+						"password_text" => $password_text,
+						"email" => $email,
+						"expoter_id" => null,
+						"post_date" => $post_date,
+						"post_by" => $post_by,
+						"delete_date" => null,
+						"delete_by" => null,
+						"status" => $status
+			];
+
+			$submit_user = $this->User_query->save($user);
+
+			if($submit_user)
+			{
+				$expoter_id = $this->User_query->get_id_user($email);
+
+				$update_exporter_id = $this->User_query->update_exporter_id($expoter_id);
+
+				$exporter[] = [
+					"exporter_id" => $expoter_id,
+					"exporter_name" => null,
+					"exporter_slug" => null,
+					"exporter_logo" => null,
+					"exporter_address" => null,
+					"exporter_phone" => null,
+					"exporter_office_phone" => null,
+					"exporter_fax" => null,
+					"exporter_email" => $email,
+					"exporter_link" => null,
+					"post_date" => $post_date,
+					"post_by" => $post_by,
+					"delete_date" => null,
+					"delete_by" => null,
+					"status" => $status
+
+				];
+
+				 $regis_exporter = $this->Exporter_company_query->register_exporter($exporter);
+
+				if($regis_exporter){
+
+					$this->load->library('email');
+					$actived_link = base_url()."API/Actived_account/".$exporter[0]['exporter_id'];
+
+					$this->data['data']['username'] = $user[0]['username'];
+					$this->data['data']['email'] = $user[0]['email'];
+					$this->data['data']['password'] = $user[0]['password_text'];
+					$this->data['data']['link'] = $actived_link;
+
+					$send_to = $user[0]['email'];
+
+					$message = $this->load->view('email/actived_account.php',$this->data,TRUE);
+					$this->email->from('itpcmaster2020@gmail.com', 'ITPC system');
+					$this->email->to($send_to);
+					$this->email->cc('itpcmaster2020@gmail.com');
+					$this->email->reply_to('itpcmaster2020@gmail.com');
+					$this->email->subject('ITPC Actived account');
+					$this->email->message($message);
+					//$this->email->attach(base_url().'assets/confirm/'.$name_file);
+					$this->email->send();
+
+					if($this->email->send(FALSE)){
+						$register['data'] = null;
+						$register['status'] = true;
+						$register['message'] = "Sorry, your message not send to ".$email.",please contact administrator ";
+					}else{
+						$register['data'] = null;
+						$register['status'] = true;
+						$register['message'] = "Congratulations, you have successfully registered, please check your email (".$email.") for account activation";
+					}
+
+
+
+				}else{
+					$register['data'] = null;
+					$register['status'] = false;
+					$register['message'] = "failed to register exporter data, please contact the admin";
+				}
+
+			}else{
+				$register['data'] = null;
+				$register['status'] = false;
+				$register['message'] = "failed to register user data, please contact the admin";
+
+			}
+
+		}else{
+
+			$register['data'] = null;
+			$register['status'] = false;
+			$register['message'] = validation_errors();
+		}
+		//echo json_encode($register); 
+            $this->session->set_flashdata('flsh_msg',$register['message']);
+		redirect('en/register');
+  }
+
+      public function confirm_success(){
+      
+      echo "Congratulations, your account activation is successful";
+      }
+
+      public function confirm_failed(){
+            //$this->load->view('email/confirm_failed.php',[],TRUE);
+            echo "Sorry your account activation failed";
+      }
+
+      private function hash_password($password) {
+      return password_hash($password, PASSWORD_DEFAULT);
+      }
+
     public function exporter()
 	{
         //pr('masuk');exit;
