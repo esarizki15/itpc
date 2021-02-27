@@ -60,6 +60,7 @@ $route[':any/news_detail/(:any)'] = 'web/news_detail/$1';
 $route[':any/welcome_login'] = 'web/welcome_login';
 $route[':any/login'] = 'web/login';
 $route[':any/register'] = 'web/register';
+$route[':any/exporter_account'] = 'web/exporter_account';
 
 
 
