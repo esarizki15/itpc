@@ -7,7 +7,7 @@
 				</div>
 				<div class="main_menu">
 					<ul>
-						<li><a href="#" class="active"><?php echo $language['home']; ?></a></li>
+						<li><a href="<?php echo base_url();?>" class="active"><?php echo $language['home']; ?></a></li>
 						<li><a href="#"><?php echo $language['aboutus']; ?></a></li>
 						<li><a href="#"><?php echo $language['trade']; ?></a></li>
 						<li><a href="#"><?php echo $language['news']; ?></a></li>
