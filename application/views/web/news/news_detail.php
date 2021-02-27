@@ -1,3 +1,5 @@
+<?php foreach($news_detail as $item) { ?>
+
 <div id="middle-content" class="innerPage">
   <section id="bannerPages" class="section">
      <div class="doodle_dots">
@@ -11,7 +13,7 @@
           </div>
           <div class="caption_banner">
           	<span class="category">News</span>
-            <h3>Embassy of The Republic of Indonesia in Spain and Trade Attache Madrid Will Participate in Bisutex Madrid 2019</h3>
+            <h3><?php echo $item['title'];?></h3>
           </div>
         </div>
 
@@ -22,13 +24,9 @@
   <section id="detail_news" class="section padSection">
   	<div class="wrapper">
   		<div class="content_news">
-  			<span class="published">Published 5 hours ago by ITPC Barcelona</span>
+  			<span class="published"><?php echo $item['date'];?></span>
   			<div class="isi_news">
-  				<p>The high quality and design of the collections are the hallmarks of Bisutex, the International Fashion Jewellery and Accessories Fair, which reopens its doors at Hall 8 at Feria de Madrid to present the latest products and trends from 550 companies and brands. The event is marked by its growing international character, which this year brings together companies from 20 countries, as well as especially invited participants from France and Brazil.</p>
-<p>
-There will be a wide assortmnet of new products ranging from the latest fashion jewellery collections to fantasy watch lines, glasses, handbags, belts, hair ornaments, handkerchiefs, hats, trimmings, etc. As usual, the leather and  travel goods sector is also well represented at the event.</p>
-<p>
-The show  has space to promote and encourage young designers and brands. The Bisutex Minis have established themselves as a key point of reference for new creators seeking to position themselves in the market. </p>
+  				<p> <?php echo $item['content'];?> </p>
   			</div>
   			<div class="share_row">
   				<span>Share to</span>
@@ -44,3 +42,5 @@ The show  has space to promote and encourage young designers and brands. The Bis
   </section>
 
  </div>
+
+ <?php } ?>

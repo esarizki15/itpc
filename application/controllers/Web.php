@@ -48,8 +48,9 @@ class WEB extends CI_Controller {
 
   public function news_detail($slug)
   {         
-        $News = $this->Home_data_query->get_news_detail($slug);
-        $this->master["content"] = $this->load->view("web/news/news_detail.php",[], TRUE);
+        $NewsDetail = $this->Home_data_query->get_news_detail($slug);
+        //pr($NewsDetail );exit;
+        $this->master["content"] = $this->load->view("web/news/news_detail.php", $NewsDetail , TRUE);
         $this->render();
   }
   public function welcome_login($lang = '')
