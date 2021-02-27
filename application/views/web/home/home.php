@@ -43,48 +43,17 @@
       </div>
       <div class="client_list">
         <div class="row-list">
+        
+        <?php foreach($useful_link as $useful) { ?>
           <div class="cols6">
             <div class="item_client">
-              <a href="#">
-                <img  src="<?php echo $this->config->item('frontend'); ?>images/thumb_client1.png">
+              <a href="<?php echo $useful['link']; ?>">
+              <img src="<?php echo $useful['logo']; ?>"   />
               </a>
             </div>
           </div><!--end.cols6-->
-          <div class="cols6">
-            <div class="item_client">
-              <a href="#">
-                <img  src="<?php echo $this->config->item('frontend'); ?>images/thumb_client2.png">
-              </a>
-            </div>
-          </div><!--end.cols6-->
-          <div class="cols6">
-            <div class="item_client">
-              <a href="#">
-                <img  src="<?php echo $this->config->item('frontend'); ?>images/thumb_client3.png">
-              </a>
-            </div>
-          </div><!--end.cols6-->
-          <div class="cols6">
-            <div class="item_client">
-              <a href="#">
-                <img  src="<?php echo $this->config->item('frontend'); ?>images/thumb_client4.png">
-              </a>
-            </div>
-          </div><!--end.cols6-->
-          <div class="cols6">
-            <div class="item_client">
-              <a href="#">
-                <img  src="<?php echo $this->config->item('frontend'); ?>images/thumb_client5.png">
-              </a>
-            </div>
-          </div><!--end.cols6-->
-          <div class="cols6">
-            <div class="item_client">
-              <a href="#">
-                <img  src="<?php echo $this->config->item('frontend'); ?>images/thumb_client6.png">
-              </a>
-            </div>
-          </div><!--end.cols6-->
+          <?php } ?>
+         
         </div>
       </div>
     </div>

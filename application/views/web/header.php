@@ -19,8 +19,8 @@
 			<div class="right_header">
 				<div class="select_lang">
 					<div class="btn_lang">
-						<img class="lang_img" src="<?php echo $this->config->item('frontend'); ?>images/lang_<?php  if($lang == 'en') { echo 'en'; }elseif( $lang == 'id') { echo 'ina'; }else{ echo 'sp';} ?>.png">
-						<span class="lang_caption"><?php  if($lang == 'en') { echo "English"; }elseif( $lang == 'id') { echo "Bahasa"; }else{ echo "Spanish";}  ?></span>
+						<img class="lang_img" src="<?php echo $this->config->item('frontend'); ?>images/lang_<?php  if($lang == 'en' || $lang == '') { echo 'en'; }elseif( $lang == 'id') { echo 'ina'; }else{ echo 'sp';} ?>.png">
+						<span class="lang_caption"><?php  if($lang == 'en' || $lang == '') { echo "English"; }elseif( $lang == 'id') { echo "Bahasa"; }else{ echo "Spanish";}  ?></span>
 
 						
 					</div>
