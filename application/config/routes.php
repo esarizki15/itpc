@@ -61,6 +61,7 @@ $route[':any/welcome_login'] = 'web/welcome_login';
 $route[':any/login'] = 'web/login';
 $route[':any/register'] = 'web/register';
 $route[':any/exporter_account'] = 'web/exporter_account';
+$route[':any/add_account'] = 'web/add_account';
 
 
 

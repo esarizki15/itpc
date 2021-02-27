@@ -87,8 +87,14 @@ class WEB extends CI_Controller {
   public function exporter_account($lang = '')
   {
         $News = $this->Home_data_query->get_news();
-       // pr($News);exit;
         $this->master["content"] = $this->load->view("web/dashboard/exporter_account.php",[], TRUE);
+        $this->render();
+  }
+
+  public function add_account($lang = '')
+  {
+        $News = $this->Home_data_query->get_news();
+        $this->master["content"] = $this->load->view("web/dashboard/add_account.php",[], TRUE);
         $this->render();
   }
 

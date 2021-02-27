@@ -603,7 +603,7 @@ section {
 }
 .full_section{
 	width: 100%;
-	height: 80vh;
+	min-height: 80vh;
 	display: block;
 	position: relative;
 }
@@ -624,7 +624,9 @@ section {
 .inner_flex_middle{
 	display: table;
 	width: 100%;
-	height: 80vh;
+	min-height: 80vh;
+	position: relative;
+	z-index: 2;
 }
 .inner_flex{
 	display: table-cell;
@@ -636,6 +638,14 @@ section {
 	max-width: 400px;
 	width: 400px;
 	text-align: left;
+}
+.box_exporter{
+	max-width: 800px;
+	display: block;
+	margin: 0 auto;
+	text-align: left;
+	padding-top: 50px;
+	padding-bottom: 50px;
 }
 .login_title{
 	display: block;
@@ -719,6 +729,62 @@ section {
 .rememberRow .right a{
 	font-size: 14px;
 	color: #2A62E8;
+}
+.infoSmall{
+	display: block;
+	font-size: 13px;
+	color: #2C2C2E;
+	margin-bottom: 15px;
+}
+.infoSmall strong{
+	font-size: 15px;
+}
+.row_action_button{
+	display: block;
+	margin-bottom: 15px;
+}
+.button_with_icon{
+	max-width: 300px;
+	padding: 8px 10px;
+	border: 2px solid #EDEDED;
+	display: block;
+	margin-bottom: 15px;
+	height: 50px;
+}
+.button_with_icon img{
+	display: inline-block;
+	max-width: 25px;
+	vertical-align: middle;
+	margin-right: 10px;
+}
+.button_with_icon span{
+	display: inline-block;
+	padding-top: 3px;
+	font-size: 16px;
+	color: #000000;
+	vertical-align: middle;
+}
+.title_upload{
+	display: block;
+	margin-bottom: 15px;
+}
+.title_upload span{
+	font-weight: 600;
+	font-size: 14px;
+	color: #3A3A3C;
+}
+.preview_img{
+	max-width: 73px;
+}
+.preview_img img{
+	width: 100%;
+}
+.row-block-button{
+	display: block;
+	margin: 25px 0;
+}
+.row-block-button button{
+	margin-bottom: 15px;
 }
 /*------------- footer -----------------*/
 #footer{
