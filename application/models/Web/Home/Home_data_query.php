@@ -116,8 +116,8 @@ class Home_data_query extends CI_Model{
     		];
     }
 
-    public function get_news_detail() {
-      require_once('News_latest.php');
+    public function get_news_detail($slug) {
+      require_once('News_detail.php');
       require_once('Exporter_home.php');
       require_once('Indonesia_product.php');
       require_once('Useful_link.php');
@@ -128,6 +128,7 @@ class Home_data_query extends CI_Model{
         'news_id as id',
         'news_title as title',
         'news_slug as slug',
+        'news_content as content',
         'news_order as order',
         'news_thumbnail as thumbnail',
         'post_date as date'
@@ -135,18 +136,18 @@ class Home_data_query extends CI_Model{
 
       $this->db->where('status', 1);
       $this->db->where('delete_date', null);
-      $this->db->limit(5);
+      $this->db->where('news_slug', $slug);
       $this->db->order_by('news_order','DESC');
       $query = $this->db->get('itpc_news');
+      //pr($query->result_array());exit;
       $news_latest = [];
       array_map(function($item) use(&$news_latest){
         $news_latest[] = (new News_latest($item))->to_array();
       }, $query->result_array());
 
-      $query->free_result();
      
       return [
-        'news_latest' => $news_latest
+        'news_detail' => $news_latest
       ];
 
     }

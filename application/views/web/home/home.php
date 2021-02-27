@@ -123,7 +123,7 @@
             <div class="cols2">
               <div class="item_news">
                 <div class="thumb_news">
-                  <img class="object-fit" src="<?php echo $this->config->item('frontend'); ?>images/thumb_news1.png">
+                  <img class="object-fit" src="<?php echo $item['thumbnail']; ?>">
                 </div>
                 <div class="caption_news">
                   <span class="category">NEWS</span>
