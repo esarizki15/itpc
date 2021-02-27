@@ -96,7 +96,7 @@
       </div>
       
       <div class="exporter_carousel owl-carousel owl-theme">
-      <!-- <?php foreach($exporter_home as $item) { ?>
+      <?php foreach($exporter_home as $item) { ?>
         <div class="item">
           <div class="item_exporter">
             <a href="#">
@@ -104,77 +104,8 @@
             </a>
           </div>
         </div>
-      <?php } ?> -->
-        <div class="item">
-          <div class="item_exporter">
-            <a href="#">
-              <img src="<?php echo $this->config->item('frontend'); ?>images/exporter1.png" />
-            </a>
-          </div>
-        </div><!--end.item-->
-        <div class="item">
-          <div class="item_exporter">
-            <a href="#">
-              <img src="<?php echo $this->config->item('frontend'); ?>images/exporter2.png" />
-            </a>
-          </div>
-        </div><!--end.item-->
-        <div class="item">
-          <div class="item_exporter">
-            <a href="#">
-              <img src="<?php echo $this->config->item('frontend'); ?>images/exporter3.png" />
-            </a>
-          </div>
-        </div><!--end.item-->
-        <div class="item">
-          <div class="item_exporter">
-            <a href="#">
-              <img src="<?php echo $this->config->item('frontend'); ?>images/exporter4.png" />
-            </a>
-          </div>
-        </div><!--end.item-->
-        <div class="item">
-          <div class="item_exporter">
-            <a href="#">
-              <img src="<?php echo $this->config->item('frontend'); ?>images/exporter1.png" />
-            </a>
-          </div>
-        </div><!--end.item-->
-        <div class="item">
-          <div class="item_exporter">
-            <a href="#">
-              <img src="<?php echo $this->config->item('frontend'); ?>images/exporter1.png" />
-            </a>
-          </div>
-        </div><!--end.item-->
-        <div class="item">
-          <div class="item_exporter">
-            <a href="#">
-              <img src="<?php echo $this->config->item('frontend'); ?>images/exporter2.png" />
-            </a>
-          </div>
-        </div><!--end.item-->
-        <div class="item">
-          <div class="item_exporter">
-            <a href="#">
-              <img src="<?php echo $this->config->item('frontend'); ?>images/exporter3.png" />
-            </a>
-          </div>
-        </div><!--end.item-->
-        <div class="item">
-          <div class="item_exporter">
-            <a href="#">
-              <img src="<?php echo $this->config->item('frontend'); ?>images/exporter4.png" />
-            </a>
-          </div>
-        </div><!--end.item-->
-        <div class="item">
-          <div class="item_exporter">
-            <a href="#">
-              <img src="<?php echo $this->config->item('frontend'); ?>images/exporter1.png" />
-            </a>
-          </div>
-        </div><!--end.item-->
+      <?php } ?>
+
       </div>
 
   </section>
@@ -187,6 +118,8 @@
         </div>
         <div class="list_news">
           <div class="row-list">
+
+          <?php foreach($news_latest as $item) { ?>
             <div class="cols2">
               <div class="item_news">
                 <div class="thumb_news">
@@ -194,47 +127,14 @@
                 </div>
                 <div class="caption_news">
                   <span class="category">NEWS</span>
-                  <h3>Business Meeting With Importer Seafood, Cocedero De Mariscos</h3>
-                  <a href="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en' : $this->uri->segment(1)."/news_detail") ?>" class="readMore">Read more ></a>
+                  <h3><?php echo $item['title'];?></h3>
+                  <a href="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en' : $this->uri->segment(1)."/news_detail/".$item['slug']) ?>" class="readMore">Read more ></a>
                 </div>
               </div>
             </div><!--end.cols2-->
-            <div class="cols2">
-              <div class="item_news">
-                <div class="thumb_news">
-                  <img class="object-fit" src="<?php echo $this->config->item('frontend'); ?>images/thumb_news2.png">
-                </div>
-                <div class="caption_news">
-                  <span class="category">NEWS</span>
-                  <h3>Business Meeting With Importer Seafood, Cocedero De Mariscos</h3>
-                  <a href="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en' : $this->uri->segment(1)."/news_detail") ?>" class="readMore">Read more ></a>
-                </div>
-              </div>
-            </div><!--end.cols2-->
-            <div class="cols2">
-              <div class="item_news">
-                <div class="thumb_news">
-                  <img class="object-fit" src="<?php echo $this->config->item('frontend'); ?>images/thumb_news3.png">
-                </div>
-                <div class="caption_news">
-                  <span class="category">NEWS</span>
-                  <h3>Business Meeting With Importer Seafood, Cocedero De Mariscos</h3>
-                  <a href="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en' : $this->uri->segment(1)."/news_detail") ?>" class="readMore">Read more ></a>
-                </div>
-              </div>
-            </div><!--end.cols2-->
-            <div class="cols2">
-              <div class="item_news">
-                <div class="thumb_news">
-                  <img class="object-fit" src="<?php echo $this->config->item('frontend'); ?>images/thumb_news4.png">
-                </div>
-                <div class="caption_news">
-                  <span class="category">NEWS</span>
-                  <h3>Business Meeting With Importer Seafood, Cocedero De Mariscos</h3>
-                  <a href="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en' : $this->uri->segment(1)."/news_detail") ?>" class="readMore">Read more ></a>
-                </div>
-              </div>
-            </div><!--end.cols2-->
+
+            <?php } ?>
+            
           </div>
         </div>
       </div>

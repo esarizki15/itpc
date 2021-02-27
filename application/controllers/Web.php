@@ -36,22 +36,19 @@ class WEB extends CI_Controller {
     public function index($lang = '')
 	{
         $data = $this->Home_data_query->get_news();
-        //pr($data);exit;
         $this->master["content"] = $this->load->view("web/home/home.php",$data, TRUE);
         $this->render();
 	}
-   public function news($lang = '')
-  {
-        $News = $this->Home_data_query->get_news();
-       // pr($News);exit;
-        $this->master["content"] = $this->load->view("web/news/news.php",[], TRUE);
-        $this->render();
-  }
+      public function news($lang = '')
+      {
+            $News = $this->Home_data_query->get_news();
+            $this->master["content"] = $this->load->view("web/news/news.php",[], TRUE);
+            $this->render();
+      }
 
-  public function news_detail($lang = '')
-  {
-        $News = $this->Home_data_query->get_news();
-       // pr($News);exit;
+  public function news_detail($slug)
+  {         
+        $News = $this->Home_data_query->get_news_detail($slug);
         $this->master["content"] = $this->load->view("web/news/news_detail.php",[], TRUE);
         $this->render();
   }
