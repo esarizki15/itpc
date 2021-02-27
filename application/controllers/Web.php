@@ -27,16 +27,17 @@ class WEB extends CI_Controller {
         $lang = $this->uri->segment(1);
         $this->lang->load('content',$lang=='' ? 'en' : $lang);
         $this->master["language"] = $this->lang->line('language');
+        $this->master["lang"] = $lang;
         $this->master["main_css"] = $this->load->view('web/main_css.php', [], TRUE);
         $this->master["main_js"] = $this->load->view("web/main_js.php", [], TRUE);
-        $this->master["header"] = $this->load->view("web/header.php", [], TRUE);
+        $this->master["header"] = $this->load->view("web/header.php",$this->master, TRUE);
         $this->load->view("web/master", $this->master);
     }
     public function index($lang = '')
 	{
-        $News = $this->Home_data_query->get_news();
-       // pr($News);exit;
-        $this->master["content"] = $this->load->view("web/home/home.php",[], TRUE);
+        $data = $this->Home_data_query->get_news();
+        //pr($data);exit;
+        $this->master["content"] = $this->load->view("web/home/home.php",$data, TRUE);
         $this->render();
 	}
    public function news($lang = '')

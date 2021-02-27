@@ -13,9 +13,7 @@
 		<?php echo $header; ?>
 		<div style="position: absolute;left: 0;top: 0;z-index: -1">
 		<!-- Disini untuk Header Bahasa -->
-		<?php echo $language['greeting']; ?> <br>
-		<?php echo $language['menu1']; ?> <br>
-		<?php echo $language['menu2']; ?> <br>
+	
 	</div>
 
 		<!-- Disini untuk Content -->

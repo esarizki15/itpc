@@ -7,20 +7,22 @@
 				</div>
 				<div class="main_menu">
 					<ul>
-						<li><a href="#" class="active">Home</a></li>
-						<li><a href="#">ABOUT US</a></li>
-						<li><a href="#">trade with indonesia</a></li>
-						<li><a href="#">NEWS & exhibitionS</a></li>
-						<li><a href="#">CONTACT US</a></li>
-						<li><a href="#">LOGIN</a></li>
+						<li><a href="#" class="active"><?php echo $language['home']; ?></a></li>
+						<li><a href="#"><?php echo $language['aboutus']; ?></a></li>
+						<li><a href="#"><?php echo $language['trade']; ?></a></li>
+						<li><a href="#"><?php echo $language['news']; ?></a></li>
+						<li><a href="#"><?php echo $language['contactus']; ?></a></li>
+						<li><a href="#"><?php echo $language['login']; ?></a></li>
 					</ul>
 				</div>
 			</div>
 			<div class="right_header">
 				<div class="select_lang">
 					<div class="btn_lang">
-						<img class="lang_img" src="<?php echo $this->config->item('frontend'); ?>images/lang_ina.png">
-						<span class="lang_caption">Bahasa</span>
+						<img class="lang_img" src="<?php echo $this->config->item('frontend'); ?>images/lang_<?php  if($lang == 'en') { echo 'en'; }elseif( $lang == 'id') { echo 'ina'; }else{ echo 'sp';} ?>.png">
+						<span class="lang_caption"><?php  if($lang == 'en') { echo "English"; }elseif( $lang == 'id') { echo "Bahasa"; }else{ echo "Spanish";}  ?></span>
+
+						
 					</div>
 					<ul class="dropdown-lang" role="menu">
 					   <li>
@@ -30,7 +32,7 @@
 					   		</a>
 					   </li>
 					   <li>
-					   		<a href="sp" class="trigger_lang" data-img="<?php echo $this->config->item('frontend'); ?>images/lang_sp.png" data-lang="Spanish">
+					   		<a href="sp" class="trigger_lang active" data-img="<?php echo $this->config->item('frontend'); ?>images/lang_sp.png" data-lang="Spanish">
 								<img class="lang_img_menu" src="<?php echo $this->config->item('frontend'); ?>images/lang_sp.png">
 								<span class="lang_caption_menu">Spanish</span>
 					   		</a>

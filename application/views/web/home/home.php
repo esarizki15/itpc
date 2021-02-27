@@ -96,84 +96,25 @@
     </div>
 
       <div class="product_carousel owl-carousel owl-theme">
+       
+       <?php foreach($indonesia_product as $item) { ?>
         <div class="item">
           <div class="item_product">
             <a href="#">
               <div class="thumb_product">
-                <img src="<?php echo $this->config->item('frontend'); ?>images/book1.jpg">
+              <img src="<?php echo $item['thumbnail']; ?>"   />
               </div>
               <div class="caption_product">
-                <p>Indonesian Coconut Products</p>
+                <p><?php echo $item['title']; ?></p>
               </div>
             </a>
           </div>
         </div><!--end.item-->
+      <?php } ?>
+       
 
-        <div class="item">
-          <div class="item_product">
-            <a href="#">
-              <div class="thumb_product">
-                <img src="<?php echo $this->config->item('frontend'); ?>images/book2.jpg">
-              </div>
-              <div class="caption_product">
-                <p>Indonesian Coffee</p>
-              </div>
-            </a>
-          </div>
-        </div><!--end.item-->
-
-        <div class="item">
-          <div class="item_product">
-            <a href="#">
-              <div class="thumb_product">
-                <img src="<?php echo $this->config->item('frontend'); ?>images/book1.jpg">
-              </div>
-              <div class="caption_product">
-                <p>Indonesian Coconut Products</p>
-              </div>
-            </a>
-          </div>
-        </div><!--end.item-->
-
-        <div class="item">
-          <div class="item_product">
-            <a href="#">
-              <div class="thumb_product">
-                <img src="<?php echo $this->config->item('frontend'); ?>images/book2.jpg">
-              </div>
-              <div class="caption_product">
-                <p>Indonesian Coffee</p>
-              </div>
-            </a>
-          </div>
-        </div><!--end.item-->
-
-        <div class="item">
-          <div class="item_product">
-            <a href="#">
-              <div class="thumb_product">
-                <img src="<?php echo $this->config->item('frontend'); ?>images/book1.jpg">
-              </div>
-              <div class="caption_product">
-                <p>Indonesian Coconut Products</p>
-              </div>
-            </a>
-          </div>
-        </div><!--end.item-->
-
-        <div class="item">
-          <div class="item_product">
-            <a href="#">
-              <div class="thumb_product">
-                <img src="<?php echo $this->config->item('frontend'); ?>images/book2.jpg">
-              </div>
-              <div class="caption_product">
-                <p>Indonesian Coffee</p>
-              </div>
-            </a>
-          </div>
-        </div><!--end.item-->
-      </div>
+        </div>
+        
   </section>
 
 
@@ -186,6 +127,15 @@
       </div>
       
       <div class="exporter_carousel owl-carousel owl-theme">
+      <!-- <?php foreach($exporter_home as $item) { ?>
+        <div class="item">
+          <div class="item_exporter">
+            <a href="#">
+              <img src="<?php echo $item['logo']; ?>" width="200" height="40"  />
+            </a>
+          </div>
+        </div>
+      <?php } ?> -->
         <div class="item">
           <div class="item_exporter">
             <a href="#">
