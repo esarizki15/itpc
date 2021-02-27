@@ -178,7 +178,7 @@ $(document).ready(function() {
     center: true,
     loop:true,
     autoplay:false,
-    autoWidth:true,
+    autoWidth:false,
     autoplayTimeout:5000,
     nav:false,
     pagination: false,
