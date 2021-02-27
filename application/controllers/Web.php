@@ -234,6 +234,34 @@ class WEB extends CI_Controller {
         $this->render();
   }
 
+  public function add_category($lang = '')
+  {
+        $News = $this->Home_data_query->get_news();
+        $this->master["content"] = $this->load->view("web/dashboard/add_category.php",[], TRUE);
+        $this->render();
+  }
+
+  public function add_product($lang = '')
+  {
+        $News = $this->Home_data_query->get_news();
+        $this->master["content"] = $this->load->view("web/dashboard/add_product.php",[], TRUE);
+        $this->render();
+  }
+
+  public function add_inquiry($lang = '')
+  {
+        $News = $this->Home_data_query->get_news();
+        $this->master["content"] = $this->load->view("web/dashboard/add_inquiry.php",[], TRUE);
+        $this->render();
+  }
+
+  public function inquiry_list($lang = '')
+  {
+        $News = $this->Home_data_query->get_news();
+        $this->master["content"] = $this->load->view("web/dashboard/inquiry_list.php",[], TRUE);
+        $this->render();
+  }
+
 
 
 }

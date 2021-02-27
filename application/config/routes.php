@@ -63,6 +63,10 @@ $route[':any/login'] = 'web/login';
 $route[':any/register'] = 'web/register';
 $route[':any/exporter_account'] = 'web/exporter_account';
 $route[':any/add_account'] = 'web/add_account';
+$route[':any/add_category'] = 'web/add_category';
+$route[':any/add_product'] = 'web/add_product';
+$route[':any/add_inquiry'] = 'web/add_inquiry';
+$route[':any/inquiry_list'] = 'web/inquiry_list';
 
 
 

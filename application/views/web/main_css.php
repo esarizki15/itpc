@@ -23,6 +23,7 @@
 <script src="<?php echo $this->config->item('frontend'); ?>js/vendor/modernizr-2.6.2.min.js"></script>
 <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 <script src="<?php echo $this->config->item('frontend'); ?>js/owl.carousel.min.js"></script>
+<script src="<?php echo $this->config->item('frontend'); ?>js/sweetalert2@8.js"></script>
 <!--CDN link for  TweenMax-->
 <script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/1.19.0/TweenMax.min.js"></script>
 <script src="<?php echo $this->config->item('frontend'); ?>js/js_lib.js"></script>

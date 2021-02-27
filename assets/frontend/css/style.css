@@ -419,6 +419,14 @@ section {
 	padding-left: 15px;
 	margin-bottom: 30px;
 }
+.cols3{
+	float: left;
+	position: relative;
+	width: 33.33%;
+	padding-right: 15px;
+	padding-left: 15px;
+	margin-bottom: 30px;
+}
 #product_home{
 	 background: url(../images/bg_product.png) no-repeat top center; 
   -webkit-background-size: 100%;
@@ -665,6 +673,30 @@ section {
 .form_inner a{
 	margin-bottom: 10px;
 }
+.list_added_category,.list_added_product{
+	display: block;
+}
+.row_added_cat{
+	display: block;
+	position: relative;
+	width: 100%;
+	position: relative;
+	padding: 10px 20px 10px 10px;
+	font-weight: 500;
+	font-size: 17px;
+	color: #3A3A3C;
+	border: 1px solid #AEAEB2;
+	border-radius: 5px;
+	margin-bottom: 15px;
+}
+.trigger_remove{
+	cursor: pointer;
+	position: absolute;
+	width: 15px;
+	top: 40%;
+	right: 10px;
+	margin-top: -7.5px;
+}
 .form_group{
 	display: block;
 	width: 100%;
@@ -730,6 +762,62 @@ section {
 	font-size: 14px;
 	color: #2A62E8;
 }
+
+/* Reset Select */
+.custom_select select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  -ms-appearance: none;
+  appearance: none;
+  outline: 0;
+  box-shadow: none;
+  border: 0 !important;
+  background: #fff;
+  background-image: none;
+}
+/* Remove IE arrow */
+.custom_select select::-ms-expand {
+  display: none;
+}
+/* Custom Select */
+.custom_select {
+  position: relative;
+  display: flex;
+  width: 100%;
+  height: 3em;
+  line-height: 3;
+  background: #fff;
+  overflow: hidden;
+  border-radius:5px;
+  border: 1px solid #AEAEB2;
+}
+.custom_select select {
+  flex: 1;
+  padding: 0 .5em;
+  color: #999999;
+  cursor: pointer;
+  font-size: 18px;
+}
+/* Arrow */
+.custom_select::after {
+  content: '\25BC';
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 0 1em;
+  background: #fff;
+  cursor: pointer;
+  pointer-events: none;
+  -webkit-transition: .25s all ease;
+  -o-transition: .25s all ease;
+  transition: .25s all ease;
+}
+/* Transition */
+.custom_select:hover::after {
+  color: #000;
+}
+
+
 .infoSmall{
 	display: block;
 	font-size: 13px;
@@ -785,6 +873,53 @@ section {
 }
 .row-block-button button{
 	margin-bottom: 15px;
+}
+.thumb_add_product{
+	display: block;
+	border-radius: 5px;
+	overflow: hidden;
+	margin-bottom: 10px;
+}
+.thumb_add_product img{
+	object-fit: cover;
+	width: 100%;
+	height: 100%;
+}
+.del_button{
+	display: inline-block;
+	background: #EB5757;
+	border-radius: 5px;
+	text-align: center;
+	padding:5px 20px;
+	font-size: 17px;
+	border: none;
+	color: #FFFFFF;
+}
+.titleProgress{
+	display: block;
+	font-weight: 600;
+	font-size: 17px;
+	color: #3A3A3C;
+}
+.progress-bar{
+	margin: 10px 0;
+	display: block;
+}
+.progress-bar .ui-widget-header{
+	background: #81E870;
+}
+.group_inquiry{
+	display: block;
+	margin-bottom: 5px;
+}
+.group_inquiry label{
+	font-size: 16px;
+	color: #828282;
+}
+.group_inquiry p{
+	font-size: 16px;
+	color: #000;
+	margin-bottom: 0;
 }
 /*------------- footer -----------------*/
 #footer{
