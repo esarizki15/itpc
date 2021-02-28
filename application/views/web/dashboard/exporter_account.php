@@ -13,7 +13,7 @@
   				<div class="box_exporter">
   					<div class="login_title">
   						<h3>Hello</h3>
-  						<p>dharmasaputra@gmail.com!</p>
+  						<p><?php echo $this->session->user_logged['username'].' !' ?></p>
   					</div>
   					
             <div class="action_exporter_account">

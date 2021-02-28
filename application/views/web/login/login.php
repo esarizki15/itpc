@@ -14,15 +14,16 @@
   				<div class="box_login">
   					<div class="login_title">
   						<h3>Login</h3>
-  						<p>Sign in to your account <br />Didn’t have an account? <a href="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en' : $this->uri->segment(1)."/register") ?>" class="blue_teks">Register here</a></p>
+              <?php echo '<b><i>'.$this->session->flashdata('flsh_msg').'</i></b>'; ?>
+  						<p>Sign in to your account<br />Didn’t have an account? <a href="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en' : $this->uri->segment(1)."/register") ?>" class="blue_teks">Register here</a></p>
   					</div>
   					<div class="form_inner">
-              <form >
+            <form action="<?php echo base_url(). 'store_login'; ?>" method="post">
               <div class="form_group icon_group">
-                <input type="email" name="email" class="input_form email_icon" placeholder="Email" required />
+                <input type="email" name="email" class="input_form email_icon email" placeholder="Email" required />
               </div>
               <div class="form_group icon_group">
-                <input type="password" name="password" class="input_form password_icon passwordInput" placeholder="Password" required />
+                <input type="password" name="password" class="input_form password_icon passwordInput pass" placeholder="Password" required />
                 <span class="eye_trigger trigger_showPassword">
                   <img class="non_eye" src="<?php echo $this->config->item('frontend'); ?>images/icon_eye.png" />
                   <img class="non_eye_active" src="<?php echo $this->config->item('frontend'); ?>images/icon_eye_slash.png" />
@@ -42,7 +43,8 @@
               </div>
 
               <div class="form_group button_row">
-                <button type="submit" class="bt_block_blue">Login</button>
+                <input type="hidden" name="csrf_token_reg" value="<?=$token;?>" />
+                <button type="submit" class="bt_block_blue loginsubmit">Login</button>
               </div>
               </form>
 
@@ -53,3 +55,19 @@
   	</div>
   </section>
 </div>
+
+<script>
+  
+  $( ".loginsubmit" ).click(function() {
+    
+    var email=$('.email').val();
+    var pass=$('.pass').val();
+
+    if(email == '' || pass == '' {
+      return false;
+    }else{
+      $(this).prop( "disabled" );
+      $(this).html('<i class="fa fa-spinner fa-spin"></i> Loading');
+    }
+  });
+  </script>

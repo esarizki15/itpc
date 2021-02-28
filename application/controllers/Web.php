@@ -9,7 +9,7 @@ class WEB extends CI_Controller {
     public $password_text;
     public $email;
 
-    function __construct(){
+      function __construct(){
            parent::__construct();
            $this->load->helper(array('url','html','form','slug'));
            $this->load->library('cart');
@@ -20,10 +20,10 @@ class WEB extends CI_Controller {
            $this->load->helper('validation');
            $this->load->model('Web/Home/Home_data_query','Home_data_query', true);
            error_reporting(E_ALL ^ (E_NOTICE | E_WARNING));
-    }
+      }
 
-    private function render()
-    {
+      private function render()
+      {
         $lang = $this->uri->segment(1);
         $this->lang->load('content',$lang=='' ? 'en' : $lang);
         $this->master["language"] = $this->lang->line('language');
@@ -32,50 +32,168 @@ class WEB extends CI_Controller {
         $this->master["main_js"] = $this->load->view("web/main_js.php", [], TRUE);
         $this->master["header"] = $this->load->view("web/header.php",$this->master, TRUE);
         $this->load->view("web/master", $this->master);
-    }
-    public function index($lang = '')
-	{
-        $data = $this->Home_data_query->get_news();
-        $this->master["content"] = $this->load->view("web/home/home.php",$data, TRUE);
-        $this->render();
-	}
-      public function news($lang = '')
+      }
+      public function index($lang = '')
       {
-            $News = $this->Home_data_query->get_news();
-            $this->master["content"] = $this->load->view("web/news/news.php",[], TRUE);
-            $this->render();
+      $data = $this->Home_data_query->get_news();
+      $this->master["content"] = $this->load->view("web/home/home.php",$data, TRUE);
+      $this->render();
+      }
+      public function news($lang = '')
+      {    
+      $News = $this->Home_data_query->get_news();
+      $this->master["content"] = $this->load->view("web/news/news.php",[], TRUE);
+      $this->render();
       }
 
-  public function news_detail($slug)
-  {         
+      public function news_detail($slug)
+      {         
         $NewsDetail = $this->Home_data_query->get_news_detail($slug);
         //pr($NewsDetail );exit;
         $this->master["content"] = $this->load->view("web/news/news_detail.php", $NewsDetail , TRUE);
         $this->render();
-  }
-  public function welcome_login($lang = '')
-  {
-        $News = $this->Home_data_query->get_news();
-       // pr($News);exit;
+      }
+      public function welcome_login($lang = '')
+      {
+     
         $this->master["content"] = $this->load->view("web/login/welcome_login.php",[], TRUE);
         $this->render();
-  }
-  public function login($lang = '')
-  {
-        $News = $this->Home_data_query->get_news();
-       // pr($News);exit;
-        $this->master["content"] = $this->load->view("web/login/login.php",[], TRUE);
+      }
+      public function login($lang = '')
+      {
+        session_start();
+        $_SESSION['token'] = bin2hex(random_bytes(32));
+        $data['token'] = $_SESSION['token'];
+        $this->master["content"] = $this->load->view("web/login/login.php",$data, TRUE);
         $this->render();
+      }
+
+      public function store_login(){
+
+      if($this->input->post('csrf_token_reg') !== $_SESSION['token']) {
+            $this->session->set_flashdata('flsh_msg','failed to register user data, please contact the admin');
+            redirect('en/login');
+      } 
+    
+
+      $this->load->model('API/User/User_query','User_query', true);
+      $this->form_validation->set_rules('email', 'email', 'trim|required|valid_email');
+      $this->form_validation->set_rules('password', 'password', 'trim|required|min_length[6]');
+      
+      if($this->form_validation->run() == TRUE)
+      {
+
+         
+                  $email = $this->input->post('email');
+                  $password = $this->input->post('password');
+
+                  $get_hash = $this->User_query->cek_email($email);
+                  //pr($email);exit;
+                  if($get_hash){
+
+                              if(password_verify($password, $get_hash)){
+                                          $login_user = $this->User_query->login($email,$get_hash);
+
+                                           $cek_active = $login_user['user_data'][0]['status'];
+                                           $user_id = $login_user['user_data'][0]['user_id'];
+
+                                          $cek_auth = $this->User_query->cek_auth($user_id);
+                                          if($cek_auth){
+                                                $auth_code = $this->User_query->get_auth($user_id);
+                                          }else{
+                                                $post_date = date("Y-m-d H:i:s");
+                                                $auth[] = [
+                                                                  "auth_id " => null,
+                                                                  "auth_code" => $this->hash_password($password),
+                                                                  "user_id" => $user_id,
+                                                                  "post_date" => $post_date,
+                                                ];
+                                                $create_auth_code = $this->User_query->create_auth($auth);
+                                                if($create_auth_code){
+                                                      $auth_code = $this->User_query->get_auth($user_id);
+                                                }
+                                          }
+
+                                          if($login_user && $cek_active == 1){
+                                                 $login_user['category_data'][0]['category'];
+                                                 $login_user['category_data'][0]['subcategory'];
+                                                if($login_user['category_data'][0]['category'] == NULL || $login_user['category_data'][0]['subcategory'] == NULL)
+                                                {
+                                                      $inquery_menu = false;
+                                                }else{
+                                                      $inquery_menu = true;
+                                                }
+
+
+                                                $login['data'] = [
+                                                      "user_id" => $login_user['user_data'][0]['user_id'],
+                                                      "username" => $login_user['user_data'][0]['username'],
+                                                      "email" => $login_user['user_data'][0]['email'],
+                                                      // "status" => $login_user['user_data'][0]['status'],
+                                                      // "inquery_menu" => $inquery_menu,
+                                                      "auth_code" => $auth_code
+                                                ];
+
+                                                $login['status'] = true;
+                                                if($inquery_menu){
+                                                            $login['message'] = "Welcome back";
+                                                }else{
+                                                            $login['message'] = "Please complete the company data and product category";
+                                                }
+
+                                          }else if($login_user && $cek_active == 2){
+                                                $login['data'] = null;
+                                                $login['status'] = false;
+                                                $login['message'] = "Please activate your account first";
+                                          }else{
+                                                $login['data'] = null;
+                                                $login['status'] = false;
+                                                $login['message'] = "failed to register user data, please contact the admin";
+                                          }
+
+                              }else{
+                                    $login['data'] = null;
+                                    $login['status'] = false;
+                                    $login['message'] = "Passwords do not match";
+
+                              }
+
+                  }else{
+                        $login['data'] = null;
+                        $login['status'] = false;
+                        $login['message'] = "Email is not registered";
+                  }
+
+      }else{
+            $login['data'] = null;
+            $login['status'] = false;
+            $login['message'] = validation_errors();
+      }
+
+      
+      $this->session->set_flashdata('flsh_msg',$register['message']);
+      if($login['status'] == 1){
+            $this->session->set_userdata(['user_logged' =>  $login['data']]);
+            redirect('en/exporter_account');
+      }else{
+            redirect('en/login');
+      }
   }
   public function register($lang = '')
   {
-        $News = $this->Home_data_query->get_news();
-       // pr($News);exit;
-        $this->master["content"] = $this->load->view("web/login/register.php",[], TRUE);
+        session_start();
+        $_SESSION['token'] = bin2hex(random_bytes(32));
+        $data['token'] = $_SESSION['token'];
+        $this->master["content"] = $this->load->view("web/login/register.php",$data, TRUE);
         $this->render();
   }
 
   public function store_register(){
+
+            if($this->input->post('csrf_token_reg') !== $_SESSION['token']) {
+                  $this->session->set_flashdata('flsh_msg','failed to register user data, please contact the admin');
+                  redirect('en/register');
+            } 
 
 		$this->load->model('API/User/User_query','User_query', true);
 		$this->load->model('API/Exporter/Exporter_company_query','Exporter_company_query', true);
@@ -222,7 +340,7 @@ class WEB extends CI_Controller {
 
   public function exporter_account($lang = '')
   {
-        $News = $this->Home_data_query->get_news();
+       // pr($_SESSION);exit;
         $this->master["content"] = $this->load->view("web/dashboard/exporter_account.php",[], TRUE);
         $this->render();
   }

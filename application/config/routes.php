@@ -54,6 +54,10 @@ $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 $route['assets'] = '';
 $route['store_register'] = 'web/store_register';
+$route['store_login'] = 'web/store_login';
+
+
+//Handling Language
 $route[':any'] = 'web/index';
 $route[':any/exporter'] = 'web/exporter';
 $route[':any/news'] = 'web/news';

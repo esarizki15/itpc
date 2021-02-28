@@ -39,6 +39,7 @@
 
 
               <div class="form_group button_row">
+                <input type="hidden" name="csrf_token_reg" value="<?=$token;?>" />
                 <button type="submit" class="bt_block_blue register"><i style="display:none" class="fa fa-spinner fa-spin"></i> Register</button>
               </div>
               </form>

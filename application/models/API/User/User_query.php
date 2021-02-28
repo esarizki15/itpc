@@ -36,11 +36,13 @@ class User_query extends CI_Model{
 
 
     public function cek_email($email){
+     
       $this->db->select([
         'password as password'
       ]);
       $this->db->where('email', $email);
       $query = $this->db->get('itpc_user');
+     // pr($email;exit;
       if($query){
         foreach($query->result() as $row){
          return $row->password;
