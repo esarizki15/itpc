@@ -17,7 +17,9 @@
 						<li><a href="#"><?php echo $language['news']; ?></a></li>
 						<li><a href="#"><?php echo $language['contactus']; ?></a></li>
 						<?php  if(!$this->session->user_logged) { ?><li><a href="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en'."/login" : $this->uri->segment(1)."/login") ?>"><?php echo $language['login']; ?></a></li><?php } else { ?>
-						<li><a href="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en'."/exporter_account" : $this->uri->segment(1)."/exporter_account") ?>"><?php echo $language['exporter_dashboard']; ?></a></li> <?php } ?>
+						<li><a href="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en'."/exporter_account" : $this->uri->segment(1)."/exporter_account") ?>"><?php echo $language['exporter_dashboard']; ?></a></li> 
+						<li><a href="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en'."/logout" : $this->uri->segment(1)."/logout") ?>"><?php echo $language['logout']; ?></a></li>
+						<?php } ?>
 					</ul>
 				</div>
 			</div>

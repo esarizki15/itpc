@@ -67,6 +67,12 @@ class WEB extends CI_Controller {
         $this->master["content"] = $this->load->view("web/login/login.php",$data, TRUE);
         $this->render();
       }
+      public function Logout()
+	{
+		$this->session->sess_destroy();
+		redirect("en/login");
+
+	}
 
       public function store_login(){
 
@@ -74,6 +80,7 @@ class WEB extends CI_Controller {
             $this->session->set_flashdata('flsh_msg','failed to register user data, please contact the admin');
             redirect('en/login');
       } 
+     
     
 
       $this->load->model('API/User/User_query','User_query', true);
