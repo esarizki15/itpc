@@ -14,8 +14,8 @@
   				<div class="box_login">
   					<div class="login_title">
   						<h3>Login</h3>
-              <?php echo '<b><i>'.$this->session->flashdata('flsh_msg').'</i></b>'; ?>
-  						<p>Sign in to your account<br />Didn’t have an account? <a href="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en' : $this->uri->segment(1)."/register") ?>" class="blue_teks">Register here</a></p>
+              
+  						<p>Sign in to your account<br /><?php echo '<b><i>'.$this->session->flashdata('flsh_msg').'</i></b>'; ?>Didn’t have an account? <a href="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en' : $this->uri->segment(1)."/register") ?>" class="blue_teks">Register here</a></p>
   					</div>
   					<div class="form_inner">
             <form action="<?php echo base_url(). 'store_login'; ?>" method="post">

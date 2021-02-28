@@ -23,11 +23,20 @@
 	    	<div class="wrapper">
 		    	<div class="left">
 		    		<div class="menu_footer">
-		    			<a href="#">Home</a>
+					
+						<a href="<?php echo base_url();?>" class="active"><?php echo $language['home']; ?></a>
+						<a href="#"><?php echo $language['aboutus']; ?></a>
+						<a href="#"><?php echo $language['trade']; ?></a>
+						<a href="#"><?php echo $language['news']; ?></a>
+						<a href="#"><?php echo $language['contactus']; ?></a>
+						<?php  if(!$this->session->user_logged) { ?><a href="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en'."/login" : $this->uri->segment(1)."/login") ?>"><?php echo $language['login']; ?></a><?php } else { ?>
+						<a href="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en'."/exporter_account" : $this->uri->segment(1)."/exporter_account") ?>"><?php echo $language['exporter_dashboard']; ?></a> <?php } ?>
+					
+		    			<!-- <a href="#">Home</a>
 		    			<a href="#">ABOUT US</a>
 		    			<a href="#">trade with indonesia</a>
 		    			<a href="#">NEWS</a>
-		    			<a href="#">CONTACT US</a>
+		    			<a href="#">CONTACT US</a> -->
 		    		</div>
 		    	</div>
 
