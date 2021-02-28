@@ -299,6 +299,48 @@ section {
 	cursor: pointer;
 	margin-left: 15px;
 }
+.float_mobile_menu.expand {
+    left: 0;
+}
+.float_mobile_menu {
+    position: fixed;
+    top: 0;
+    left: -100%;
+    width: 300px;
+    height: 100%;
+    background: #0A84FF;
+    text-align: right;
+    padding: 10px 20px;
+    transition: all 0.3s ease-in-out 0s;
+    z-index: 999;
+}
+.close_menu {
+    display: inline-block;
+    padding-top: 10px;
+}
+.main_mobile_menu {
+    display: block;
+    margin-top: 15px;
+}
+.main_mobile_menu ul {
+    padding: 0;
+    margin: 0;
+}
+.main_mobile_menu ul li {
+    padding: 10px;
+}
+.main_mobile_menu ul li {
+    display: block;
+    text-align: left;
+    padding: 10px 10px;
+}
+.main_mobile_menu ul li a {
+    display: block;
+    font-size: 16px;
+    font-weight: bold;
+    color: #ffffff;
+    text-transform: uppercase;
+}
 /* style kontent
 ----------------------------------------------------------------------------------------------*/
 #middle-content{
@@ -356,7 +398,7 @@ section {
 .caption_banner h3{
 	font-size: 60px;
 	margin: 0 0 5px 0;
-	font-family: 'Roboto', sans-serif;
+	font-family: 'Fredoka One', cursive;
 }
 .caption_banner p{
 	font-size: 18px;
@@ -450,7 +492,7 @@ section {
 	margin: 0 0 45px 0;
 	text-transform: capitalize;
 	color: #FFFFFF;
-	font-family: 'Roboto', sans-serif;
+	font-family: 'Fredoka One', cursive;
 }
 .title_section_left h3{
 	color: #0A84FF;
@@ -594,6 +636,10 @@ section {
 	font-size: 16px;
 	line-height: 21px;
 	color: #48484A;
+}
+.isi_news h1{
+	font-size: 24px;
+	margin: 0 0 10px 0;
 }
 .share_row{
 	width: 100%;

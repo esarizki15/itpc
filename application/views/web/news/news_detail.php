@@ -11,7 +11,7 @@
           <div class="images_banner">
             <img src="<?php echo $this->config->item('frontend'); ?>images/news_detail.png">
           </div>
-          <div class="caption_banner">
+          <div class="caption_banner news_detail">
           	<span class="category">News</span>
             <h3><?php echo $item['title'];?></h3>
           </div>

@@ -162,9 +162,9 @@ $(document).ready(function() {
             margin:5
           },
           600:{
-              items:1,
-              stagePadding: 10,
-              margin:5
+              items:3,
+              margin:25,
+              stagePadding:60,
           },
           1000:{
               items:3,
@@ -185,13 +185,13 @@ $(document).ready(function() {
     responsive:{
         0:{
             items:1,
-          stagePadding: 50,
+            stagePadding: 50,
             margin:5
           },
           600:{
-              items:1,
+              items:5,
               stagePadding: 10,
-              margin:5
+              margin:60
           },
           1000:{
               items:5,
