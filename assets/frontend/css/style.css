@@ -341,6 +341,9 @@ section {
     color: #ffffff;
     text-transform: uppercase;
 }
+.mobile_nav{
+	display: none;
+}
 /* style kontent
 ----------------------------------------------------------------------------------------------*/
 #middle-content{
