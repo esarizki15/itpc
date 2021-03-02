@@ -69,7 +69,7 @@
                       <input type="email" name="email" class="input_form" placeholder="Email" required />
                     </div>
                     <div class="form_group">
-                      <input type="tel" name="phone" class="input_form" placeholder="Email Phone/ Mobile Phone" required />
+                      <input type="tel" name="phone" class="input_form" placeholder="Email  Phone/ Mobile Phone" required />
                     </div>
                     <div class="form_group">
                       <button type="submit" class="bt_block_blue ">
