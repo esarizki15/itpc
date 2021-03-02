@@ -59,7 +59,7 @@ class WEB extends CI_Controller {
         $this->master["content"] = $this->load->view("web/login/welcome_login.php",[], TRUE);
         $this->render();
       }
-      public function login($lang = '')
+      public function itpc_login($lang = '')
       {
         session_start();
         $_SESSION['token'] = bin2hex(random_bytes(32));
@@ -70,7 +70,7 @@ class WEB extends CI_Controller {
       public function Logout()
 	{
 		$this->session->sess_destroy();
-		redirect("en/login");
+		redirect("en/itpc_login");
 
 	}
 
@@ -78,7 +78,7 @@ class WEB extends CI_Controller {
 
       if($this->input->post('csrf_token_reg') !== $_SESSION['token']) {
             $this->session->set_flashdata('flsh_msg','failed to register user data, please contact the admin');
-            redirect('en/login');
+            redirect('en/itpc_login');
       } 
      
     
@@ -183,7 +183,7 @@ class WEB extends CI_Controller {
             $this->session->set_userdata(['user_logged' =>  $login['data']]);
             redirect('en/exporter_account');
       }else{
-            redirect('en/login');
+            redirect('en/itpc_login');
       }
   }
   public function register($lang = '')

@@ -56,15 +56,16 @@ $route['assets'] = '';
 $route['store_register'] = 'web/store_register';
 $route['store_login'] = 'web/store_login';
 
-
 //Handling Language
-$route[':any'] = 'web/index';
+$route['id'] = 'web/index';
+$route['en'] = 'web/index';
+$route['sp'] = 'web/index';
 $route[':any/exporter'] = 'web/exporter';
 $route[':any/news'] = 'web/news';
 $route[':any/news_detail/(:any)'] = 'web/news_detail/$1';
 $route[':any/welcome_login'] = 'web/welcome_login';
-$route[':any/login'] = 'web/login';
-$route[':any/logout'] = 'web/Logout';
+$route[':any/itpc_login'] = 'web/itpc_login';
+$route[':any/itpc_logout'] = 'web/itpc_logout';
 $route[':any/register'] = 'web/register';
 $route[':any/exporter_account'] = 'web/exporter_account';
 $route[':any/add_account'] = 'web/add_account';
