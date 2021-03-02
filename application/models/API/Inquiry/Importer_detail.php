@@ -1,22 +1,25 @@
 <?php
-class Inquiry_detail {
-	public $inquiry_id;
-	public $inquiry_title;
-	public $exporter_name;
-	public $exporter_address;
-	public $progress;
-	public $category_title;
-	public $subcategory_title;
-	public $product_detail;
-	public $product_capacity;
-	public $have_export;
+class Importer_detail{
+	public $importer_id;
+	public $importer_name;
+	public $importer_detail;
+	public $importer_address;
+	public $importer_city;
+	public $importer_provience;
+	public $importer_postal;
+	public $country_name;
 	public $contact_name;
+	public $contact_office_phone;
+ 	public $contact_phone;
+	public $contact_fax;
 	public $contact_email;
-	public $contact_phone;
-	public $created_by;
+	public $contact_website;
+	public $social_twitter;
+	public $social_facebook;
+	public $social_google;
 	public $post_date;
 	public $update_date;
-	public $status;
+	public $created_by;
 	public function __construct($arr){
 		foreach(get_object_vars($this) as $key => $val) {
 			switch($key) {
@@ -41,17 +44,6 @@ class Inquiry_detail {
 									$date = "no update yet";
 									$this->$key = $date;
 								}
-							}
-							break;
-						case 'status':
-							if(array_key_exists($key, $arr)) {
-								if($arr[$key] == 1){
-									$status = "Actived";
-								}else if($arr[$key] == 3){
-									$status = "Closed";
-								}
-
-								$this->$key = $status ;
 							}
 							break;
 				default:

@@ -61,10 +61,26 @@ class Exporter_company_query extends CI_Model{
         $query->free_result();
         $this->db->reset_query();
 
+        $this->db->select([
+          'COUNT(a.subcategory_id) AS total_data'
+        ]);
+        $this->db->where('a.subcategory_id', $id);
+        $query = $this->db->get('itpc_exporter_category a');
+        if($query){
+          foreach($query->result() as $row){
+            $total_data = $row->total_data;
+          }
+        }else{
+          return false;
+        }
+
+        $last_page = intval($total_data / 10);
 
 
         return [
-          'data' => $exporter_list
+          'data' => $exporter_list,
+          'total_data' => intval($total_data),
+          'last_page' => $last_page
         ];
       }else{
         return false;

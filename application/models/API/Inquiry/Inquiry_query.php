@@ -56,9 +56,7 @@ class Inquiry_query extends CI_Model{
         }, $query->result_array());
         $query->free_result();
         $this->db->reset_query();
-        return [
-          'data' => $inquiry_list
-        ];
+        return $inquiry_list;
       }else{
         return false;
       }
@@ -81,6 +79,7 @@ class Inquiry_query extends CI_Model{
         'a.contact_name as contact_name',
         'a.contact_email as contact_email',
         'a.contact_phone as contact_phone',
+        'd.username as created_by',
         'a.post_date as post_date',
         'a.update_date as update_date',
         'a.status as status'
@@ -89,6 +88,7 @@ class Inquiry_query extends CI_Model{
       $this->db->where('a.inquiry_id', $inquiry_id);
       $this->db->join('itpc_category b','a.category_id = b.category_id');
       $this->db->join('itpc_subcategory c','a.subcategory_id = c.subcategory_id');
+      $this->db->join('itpc_user d','a.exporter_id = d.user_id');
       $this->db->order_by('a.post_date','ASC');
       $query = $this->db->get('itpc_inquiry a');
 
@@ -152,8 +152,30 @@ class Inquiry_query extends CI_Model{
         array_map(function($item) use(&$itpc_inbox){
           $itpc_inbox[] = (new Inquiry_list_inbox($item))->to_array();
         },$query->result_array());
+
+        $query->free_result();
+        $this->db->reset_query();
+
+        $this->db->select([
+          'COUNT(a.inquiry_id) AS total_data'
+        ]);
+        $this->db->where('a.inquiry_id', $inquiry_id);
+        $this->db->where('a.status', 1);
+        $query = $this->db->get('itpc_inbox a');
+        if($query){
+          foreach($query->result() as $row){
+            $total_data = $row->total_data;
+          }
+        }else{
+          return false;
+        }
+
+        $last_page = intval($total_data / 10);
+
         return[
           'inbox' => $itpc_inbox,
+          'total_data' => $total_data,
+          'last_page' => $last_page
         ];
       }else{
         return false;
@@ -215,6 +237,109 @@ class Inquiry_query extends CI_Model{
       foreach($query->result() as $row){
        return $row->exporter_id;
       }
+    }else{
+      return false;
+    }
+  }
+
+
+  public function importer_inquiry($limit,$start,$inquiry_id){
+    require_once('Importer_inquiry.php');
+    $this->db->select([
+      'a.importer_id as importer_id',
+      'b.importer_name as importer_name',
+      'a.importer_id as link'
+    ]);
+    $this->db->where('a.inquiry_id', $inquiry_id);
+    $this->db->where('a.delete_date', null);
+    $this->db->where('a.status', 1);
+    $this->db->where('b.delete_date', null);
+    $this->db->where('b.status', 1);
+    $this->db->join('itpc_importer b','a.importer_id = b.importer_id');
+    $this->db->order_by('b.importer_name','ASC');
+    $this->db->limit($limit, $start);
+    $query = $this->db->get('itpc_importer_inquiry a');
+
+    if($query->num_rows() > 0){
+      $importer_inquiry = [];
+      array_map(function($item) use(&$importer_inquiry){
+        $importer_inquiry[] = (new Importer_inquiry($item))->to_array();
+      },$query->result_array());
+
+      $query->free_result();
+      $this->db->reset_query();
+
+      $this->db->select([
+        'COUNT(a.inquiry_id) AS total_data'
+      ]);
+      $this->db->where('a.inquiry_id', $inquiry_id);
+      $this->db->where('a.delete_date', null);
+      $this->db->where('a.status', 1);
+      $query = $this->db->get('itpc_importer_inquiry a');
+      if($query){
+        foreach($query->result() as $row){
+          $total_data = $row->total_data;
+        }
+      }else{
+        return false;
+      }
+
+      $last_page = intval($total_data / 10);
+      return [
+        'importer_list' => $importer_inquiry,
+        'total_data' => $total_data,
+        'last_page' => $last_page
+        ];
+    }else{
+      return false;
+    }
+  }
+
+
+  public function importer_detail($importer_id){
+    require_once('Importer_detail.php');
+    $this->db->select([
+      'a.importer_id as importer_id',
+      'b.importer_name as importer_name',
+      'b.importer_detail as importer_detail',
+      'b.importer_address as importer_address',
+      'b.importer_city as importer_city',
+      'b.importer_provience	 as importer_provience',
+      'b.importer_postal as importer_postal',
+      'c.name as country_name',
+      'b.contact_name as contact_name',
+      'b.contact_office_phone as contact_office_phone',
+      'b.contact_phone as contact_phone',
+      'b.contact_fax as contact_fax',
+      'b.contact_email as contact_email',
+      'b.contact_website as contact_website',
+      'b.social_twitter as social_twitter',
+      'b.social_facebook as social_facebook',
+      'b.social_google as social_google',
+      'b.post_date as post_date',
+      'b.update_date as update_date',
+      'd.admin_name as created_by'
+    ]);
+    $this->db->where('a.importer_id', $importer_id);
+    $this->db->where('a.delete_date', null);
+    $this->db->where('a.status', 1);
+    $this->db->where('b.delete_date', null);
+    $this->db->where('b.status', 1);
+    $this->db->join('itpc_importer b','a.importer_id = b.importer_id');
+    $this->db->join('itpc_country c','b.country_id = c.id');
+    $this->db->join('itpc_admin d','b.post_by = d.admin_id');
+    $this->db->order_by('b.importer_name','ASC');
+    $this->db->limit($limit, $start);
+    $query = $this->db->get('itpc_importer_inquiry a');
+
+    if($query->num_rows() > 0){
+      $importer_detail = [];
+      array_map(function($item) use(&$importer_detail){
+        $importer_detail[] = (new Importer_detail($item))->to_array();
+      },$query->result_array());
+      return [
+        "importer_detail" => $importer_detail
+      ];
     }else{
       return false;
     }

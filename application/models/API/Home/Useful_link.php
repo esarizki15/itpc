@@ -12,7 +12,7 @@ class Useful_link {
 				case 'logo':
 					if(array_key_exists('logo', $arr) AND $arr['logo'] !== NULL) {
 						$CI =& get_instance();
-						$this->$key = $CI->config->item('website_assets').'exporter/'.$arr['logo'];
+						$this->$key = $CI->config->item('website_assets').'useful_link/'.$arr['logo'];
 					}
 					break;
 				default:

@@ -11,7 +11,18 @@ class Inquiry_list_inbox {
 	public function __construct($arr) {
 		foreach(get_object_vars($this) as $key => $val) {
 			switch($key) {
-
+				case 'inbox_id':
+					if(array_key_exists($key, $arr)) {
+								$id = intval($arr[$key]);
+								$this->$key = $id;
+						}
+					break;
+					case 'inquiry_id':
+						if(array_key_exists($key, $arr)) {
+									$id = intval($arr[$key]);
+									$this->$key = $id;
+							}
+						break;
 				case 'inbox_read':
 					if(array_key_exists($key, $arr)) {
 							if($arr[$key] == 1){

@@ -19,11 +19,11 @@ class News_data_query extends CI_Model{
 
     		$this->db->where('a.status', 1);
     		$this->db->where('a.delete_date', null);
-        if($tag_id == 1) {
+        if($tag_id != null) {
             $this->db->where('b.tag_id', $tag_id);
-        }else{
+        }/*else{
             $this->db->where('b.tag_id >', 1);
-        }
+        }*/
     		$this->db->join('itpc_tag b', 'a.tag_id = b.tag_id');
     		$this->db->join('itpc_admin c', 'a.post_by = c.admin_id');
         $this->db->limit($limit, $start);

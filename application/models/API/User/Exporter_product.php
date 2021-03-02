@@ -8,6 +8,12 @@ class Exporter_product{
 	public function __construct($arr) {
 		foreach(get_object_vars($this) as $key => $val) {
 			switch($key) {
+				/*case 'id':
+					if(array_key_exists($key, $arr)) {
+								$id = intval($arr[$key]);
+								$this->$key = $id;
+						}
+					break;*/
 				case 'image':
 					if(array_key_exists('image', $arr) AND $arr['image'] !== NULL) {
 						$CI =& get_instance();

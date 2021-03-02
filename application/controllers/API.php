@@ -97,10 +97,12 @@ class API extends CI_Controller {
 			$page = $this->input->post('page',true);
 			$tag_id = $this->input->post('tag_id');
 
-			if($tag_id == 1){
-				 $tag_id = 1;
+
+
+			if($page == 0){
+				$page = 0;
 			}else{
-				$tag_id = null;
+				$page = $page * 10;
 			}
 
 			$per_page = 10;
@@ -156,24 +158,23 @@ class API extends CI_Controller {
 			$this->load->model('API/Exporter/Exporter_category_query','Exporter_category_query', true);
 			$this->load->model('API/Exporter/Exporter_subcategory_query','Exporter_subcategory_query', true);
 			$this->load->model('API/Exporter/Exporter_company_query','Exporter_company_query', true);
-
-			$page = $this->input->post('page',true);
-			$data_type = $this->input->post('data_type');
-			$title = $this->input->post('title');
-			$id = $this->input->post('id');
-
-			if($page == 0){
-				$page = 0;
-			}else{
-				$page = $page * 10;
-			}
-			$per_page = 10;
-			$status = true;
-
-			$this->form_validation->set_rules('page', 'page', 'required|integer');
+			$this->form_validation->set_rules('page', 'page', 'required');
 
 			if($this->form_validation->run() == TRUE)
 			{
+
+				$page = $this->input->post('page',true);
+				$data_type = $this->input->post('data_type');
+				$title = $this->input->post('title');
+				$id = $this->input->post('id');
+
+				if($page == 0){
+					$page = 0;
+				}else{
+					$page = $page * 10;
+				}
+				$per_page = 10;
+				$status = true;
 
 					if(empty($data_type) || $data_type == 'category'){
 						$exporter_data = $this->Exporter_category_query->get($per_page,$page,$title);
@@ -210,6 +211,10 @@ class API extends CI_Controller {
 								$exporter_data['message'] = "";
 							}
 					}
+			}else{
+				$exporter_data['data'] = 	"";
+				$exporter_data['status'] = false;
+				$exporter_data['message'] = "sorry, you must enter parameters";
 			}
 
 			echo json_encode($exporter_data); //send data to script
@@ -265,18 +270,29 @@ class API extends CI_Controller {
 
 							if(password_verify($password, $get_hash)){
 									$login_user = $this->User_query->login($email,$get_hash);
-
 									 $cek_active = $login_user['user_data'][0]['status'];
 									 $user_id = $login_user['user_data'][0]['user_id'];
 
 									$cek_auth = $this->User_query->cek_auth($user_id);
 									if($cek_auth){
+
+										$post_date = date("Y-m-d H:i:s");
+										$code = $this->hash_password($post_date);
+										$auth = [
+													"auth_code" => $code,
+													//"auth_code" => $this->hash_password($password),
+													"user_id" => $user_id,
+													"post_date" => $post_date
+										];
+										$update_auth_code = $this->User_query->update_auth($auth);
 										$auth_code = $this->User_query->get_auth($user_id);
 									}else{
 										$post_date = date("Y-m-d H:i:s");
+										$auth_code = $this->hash_password($post_date);
 										$auth[] = [
 													"auth_id " => null,
-													"auth_code" => $this->hash_password($password),
+													"auth_code" => $auth_code,
+													//"auth_code" => $this->hash_password($password),
 													"user_id" => $user_id,
 													"post_date" => $post_date,
 										];
@@ -298,6 +314,7 @@ class API extends CI_Controller {
 
 
 										$login['data'] = [
+											//"user_id" => intval($login_user['user_data'][0]['user_id']),
 											"user_id" => $login_user['user_data'][0]['user_id'],
 											/*"username" => $login_user['user_data'][0]['username'],
 											"email" => $login_user['user_data'][0]['email'],
@@ -373,19 +390,17 @@ class API extends CI_Controller {
 				 }
 
 				 $account = [
- 					"user_id" => $account_status['user_data'][0]['user_id'],
+ 					//"user_id" => intval($account_status['user_data'][0]['user_id']),
+					"user_id" => $account_status['user_data'][0]['user_id'],
  					"username" => $account_status['user_data'][0]['username'],
  					"email" => $account_status['user_data'][0]['email'],
  					"status" => $account_status['user_data'][0]['status'],
 					"category_menu" => $category_menu,
  					"inquery_menu" => $inquery_menu
  				];
-
 				echo json_encode($account); //send data to script
 				return json_encode($account);
-
 		}
-
 	}
 
 	public function register()
@@ -544,14 +559,14 @@ class API extends CI_Controller {
 	public function detail_company_profile()
 	{
 
-		 $this->form_validation->set_rules('expoter_id', 'expoter_id', 'required|integer');
+		 $this->form_validation->set_rules('exporter_id', 'exporter_id', 'required|integer');
 
 
 		 if($this->form_validation->run() == TRUE)
 		 {
 
 			$auth_code = $this->input->get_request_header('auth_code');
- 			$user_id = $this->input->post('expoter_id', true);
+ 			$user_id = $this->input->post('exporter_id', true);
  			$this->load->model('API/Authentication/Auth','Auth', true);
  			$get_auth_code = $this->Auth->cek_auth($auth_code);
 
@@ -597,8 +612,8 @@ class API extends CI_Controller {
 		if($_FILES['logo']['error'] === 0) {
 		 $upload_config['upload_path'] = 'assets/' . $this->config->item('exporter_logo_path');
 		 $upload_config['allowed_types'] = 'jpg|jpeg|png|svg';
-		 $upload_config['max_height'] = 500;
-		 $upload_config['max_width'] = 500;
+		 //$upload_config['max_height'] = 500;
+		 //$upload_config['max_width'] = 500;
 		 $upload_config['file_name'] = "logo"."-".date_timestamp_get($date);
 		 $this->upload->initialize($upload_config);
 		 if ($this->upload->do_upload('logo')) {
@@ -608,10 +623,11 @@ class API extends CI_Controller {
 		 }else{
 			 $exporter_logo['data'] ="";
 			 $exporter_logo['status'] = false;
-			 $exporter_logo['message'] =  $this->session->set_flashdata('error', 'File thumbnail image: ' . $this->upload->display_errors('', ''));
+			 $exporter_logo['message'] =  $this->session->set_flashdata('error', 'File logo image: ' . $this->upload->display_errors('', ''));
 		 }
 	 }else{
-		 $exporter_logo['data'] = $this->upload->data('file_name');
+		 $error =  $this->session->set_flashdata('error', 'File logo image: ' . $this->upload->display_errors('', ''));
+		 $exporter_logo['data'] = $error;
 		 $exporter_logo['status'] = false;
 		 $exporter_logo['message'] = "Image submit failed";
 	 }
@@ -645,6 +661,8 @@ class API extends CI_Controller {
 				 $exporter_office_phone = $this->input->post('office_phone');
 				 $exporter_phone = $this->input->post('phone');
 				 $exporter_logo = $this->input->post('exporter_logo');
+
+
 				 if($exporter_office_phone == null || $exporter_office_phone == ""){
 					 $exporter_office_phone = null;
 				 }
@@ -935,6 +953,83 @@ class API extends CI_Controller {
 
 	}
 
+	public function submit_image_exporter_product()
+	{
+			$date = date_create();
+			if($_FILES['files']['error'] === 0) {
+			 $upload_config['upload_path'] = 'assets/' . $this->config->item('exporter_product');
+			 $upload_config['allowed_types'] = 'jpg|jpeg|png|svg';
+			 //$upload_config['max_height'] = 500;
+			 //$upload_config['max_width'] = 500;
+			 $upload_config['file_name'] = "product"."-".date_timestamp_get($date);
+			 $this->upload->initialize($upload_config);
+			 if($this->upload->do_upload('files')) {
+				 $product_img['data'] = $this->upload->data('file_name');
+				 $product_img['status'] = true;
+				 $product_img['message'] = "File submit successful";
+			 }else{
+				 $product_img['data'] ="";
+				 $product_img['status'] = false;
+				 $product_img['message'] =  $this->session->set_flashdata('error', 'File thumbnail image: ' . $this->upload->display_errors('', ''));
+			 }
+		 }else{
+			 $product_img['data'] = $this->upload->data('file_name');
+			 $product_img['status'] = false;
+			 $product_img['message'] = "file submit failed";
+		 }
+
+		echo json_encode($product_img); //send data to script
+		return json_encode($product_img);
+	}
+
+
+		public function add_exporter_product()
+		{
+				$this->load->model('API/User/User_query','User_query', true);
+				$this->form_validation->set_rules('exporter_id', 'exporter_id', 'trim|required|numeric');
+				$this->form_validation->set_rules('ex_pro_image', 'ex_pro_image', 'trim|required');
+
+				if($this->form_validation->run() == TRUE)
+				{
+						$images = array();
+						$id = $this->input->post('exporter_id');
+						$ex_pro_image = $this->input->post('ex_pro_image');
+						$date = date_create();
+
+							$post_date = date("Y-m-d H:i:s");
+
+							$product[] = [
+								 'ex_pro_id' => null,
+								 'exporter_id' => $id,
+								 'ex_pro_image' => $ex_pro_image,
+								 'post_date' => $post_date,
+								 'post_by' => $id,
+								 'delete_date' => null,
+								 'delete_by' => null,
+								 'status' => 1,
+							];
+							$add_product = $this->User_query->add_exporter_product($product);
+
+							if($add_product){
+								$product_img_path['data'] = $this->upload->data('file_name');
+								$product_img_path['status'] = true;
+								$product_img_path['message'] = "managed to save the product image";
+							}else{
+								$product_img_path['data'] = null;
+								$product_img_path['status'] = false;
+								$product_img_path['message'] = "failed to save product images";
+							}
+
+				}else{
+						$product_img_path['data'] = null;
+						$product_img_path['status'] = false;
+						$product_img_path['message'] = "an error occurred in uploading the file, make sure the form contains the correct contents";
+				}
+				echo json_encode($product_img_path); //send data to script
+				return json_encode($product_img_path);
+			}
+
+	/*
 	public function add_exporter_product()
 	{
 			$this->load->model('API/User/User_query','User_query', true);
@@ -1017,8 +1112,7 @@ class API extends CI_Controller {
 			}
 			echo json_encode($product_img_path); //send data to script
 			return json_encode($product_img_path);
-
-		}
+		}*/
 
 
 		public function delete_exporter_product(){
@@ -1065,12 +1159,12 @@ class API extends CI_Controller {
 			$this->load->model('API/Exporter/Exporter_subcategory_query','Exporter_subcategory_query', true);
 			$this->load->model('API/Authentication/Auth','Auth', true);
 
-			$this->form_validation->set_rules('expoter_id', 'expoter_id', 'required|integer');
+			$this->form_validation->set_rules('exporter_id', 'exporter_id', 'required|integer');
 
 			if($this->form_validation->run() == TRUE)
 			{
 				$auth_code = $this->input->get_request_header('auth_code');
-				$exporter_id = $this->input->post('expoter_id', true);
+				$exporter_id = $this->input->post('exporter_id', true);
 				$get_auth_code = $this->Auth->cek_auth($auth_code);
 				if($get_auth_code){
 					if($get_auth_code['user_id'] == $exporter_id){
@@ -1147,21 +1241,21 @@ class API extends CI_Controller {
 
 					$inquiry_data[] = [
 						 'inquiry_id' => null,
-						 'exporter_id' => $exporter_id,
+						 'exporter_id' => (int) $exporter_id,
 						 'inquiry_title' => $inquiry_title,
 						 'exporter_name' => $exporter_name,
 						 'exporter_address' => $exporter_address,
 						 'progress' => $progress,
-						 'category_id' => $category_id,
-						 'subcategory_id' => $subcategory_id,
+						 'category_id' => (int) $category_id,
+						 'subcategory_id' => (int) $subcategory_id,
 						 'product_detail' => $product_detail,
-						 'product_capacity' => $product_capacity,
+						 'product_capacity' => (int) $product_capacity,
 						 'have_export' => $have_export,
 						 'contact_name' => $contact_name,
 						 'contact_email' => $contact_email,
 						 'contact_phone' => $contact_phone,
 						 'post_date' => $post_date,
-						 'post_by' => $exporter_id,
+						 'post_by' => (int) $exporter_id,
 						 'update_date' => null,
 						 'update_by' => null,
 						 'delete_date' => null,
@@ -1283,8 +1377,7 @@ class API extends CI_Controller {
 				if($get_auth_code){
 					if($get_auth_code['user_id']){
 
-						$page = $this->input->post('page',true);
-						$limit = 10;
+
 						$detail_inquiry['data'] = $this->Inquiry_query->get_detail_inquiry($inquiry_id);
 
 						if($detail_inquiry['data']){
@@ -1345,7 +1438,13 @@ class API extends CI_Controller {
 					if($get_auth_code['user_id']){
 
 						$page = $this->input->post('page',true);
-						$limit = 10;
+						if($page == 0){
+							$page = 0;
+						}else{
+							$page = $page * 10;
+						}
+						$per_page = 10;
+
 						$inbox['data'] = $this->Inquiry_query->get_inbox_inquiry($limit,$page,$inquiry_id);
 
 						if($inbox['data']){
@@ -1450,9 +1549,9 @@ class API extends CI_Controller {
 						$inquiry_file['message'] = "file not available";
 					}
 				}else{
-					$inbox['data'] = null;
-					$inbox['status'] = false;
-					$inbox['message'] = "Wrong auth code please re-login";
+					$inquiry_file['data'] = "";
+					$inquiry_file['status'] = false;
+					$inquiry_file['message'] = "Wrong auth code please re-login";
 				}
 			}else{
 				$inquiry_file['data'] = "";
@@ -1546,6 +1645,8 @@ class API extends CI_Controller {
 				return json_encode($inquiry_file);
 			}
 
+
+
 			public function delete_inquiry_file(){
 				$this->load->model('API/Inquiry/Inquiry_query','Inquiry_query', true);
 				$this->form_validation->set_rules('file_id', 'file_id', 'trim|required|numeric');
@@ -1555,7 +1656,7 @@ class API extends CI_Controller {
 				{
 					$file_id = $this->input->post('file_id');
 					$file_user_id = $this->Inquiry_query->file_user_id($file_id);
-					
+
 					$delete_date = date("Y-m-d H:i:s");
 					$update = [
 							'file_id' => $file_id,
@@ -1582,6 +1683,145 @@ class API extends CI_Controller {
 				echo json_encode($file_delete); //send data to script
 				return json_encode($file_delete);
 			}
+
+			public function logout()
+			{
+
+				$this->load->model('API/User/User_query','User_query', true);
+				$this->load->model('API/Authentication/Auth','Auth', true);
+
+				$this->form_validation->set_rules('user_id', 'user_id', 'trim|required|numeric');
+
+				if($this->form_validation->run() == TRUE)
+				{
+
+					$user_id = $this->input->post('user_id');
+					$post_date = date("Y-m-d H:i:s");
+					$code = $this->hash_password($post_date);
+					$auth = [
+								"auth_code" => $code,
+								//"auth_code" => $this->hash_password($password),
+								"user_id" => $user_id
+					];
+					$update_auth_code = $this->User_query->update_auth($auth);
+
+					$logout['data'] = "";
+					$logout['status'] = true;
+					$logout['message'] = "successfully exited, thank you for using this application";
+				}else{
+					$logout['data'] = null;
+					$logout['status'] = false;
+					$logout['message'] = "an error occurred in uploading the file, make sure the form contains the correct contents";
+				}
+				echo json_encode($logout); //send data to script
+				return json_encode($logout);
+			}
+
+
+
+			public function importer_inquiry_list(){
+				$this->load->model('API/Inquiry/Inquiry_query','Inquiry_query', true);
+				$this->load->model('API/Authentication/Auth','Auth', true);
+				$this->form_validation->set_rules('inquiry_id', 'inquiry_id', 'trim|required|integer');
+				$this->form_validation->set_rules('page', 'page', 'trim|required|integer');
+
+				if($this->form_validation->run() == TRUE)
+				{
+					$auth_code = $this->input->get_request_header('auth_code');
+					$get_auth_code = $this->Auth->cek_auth($auth_code);
+					$inquiry_id = $this->input->post('inquiry_id', true);
+
+
+					$page = $this->input->post('page',true);
+
+					if($page == 0){
+						$page = 0;
+					}else{
+						$page = $page * 10;
+					}
+					$per_page = 10;
+
+					$importer_inquir['data'] = $this->Inquiry_query->importer_inquiry($per_page,$page,$inquiry_id);
+
+
+					if($get_auth_code){
+						if($importer_inquir['data']){
+							$importer_inquir['status'] = true;
+							$importer_inquir['message'] = "successful file load";
+						}else{
+							$importer_inquir['data'] = "";
+							$importer_inquir['status'] = false;
+							$importer_inquir['message'] = "file not available";
+						}
+					}else{
+						$importer_inquir['data'] = null;
+						$importer_inquir['status'] = false;
+						$importer_inquir['message'] = "Wrong auth code please re-login";
+					}
+				}else{
+					$importer_inquir['data'] = "";
+					$importer_inquir['status'] = false;
+					$importer_inquir['message'] = "Sorry the inbox failed to be load, please contact the administrator";
+				}
+				echo json_encode($importer_inquir); //send data to script
+				return json_encode($importer_inquir);
+			}
+
+
+			public function importer_inquiry_detail($importer_id){
+				$this->load->model('API/Inquiry/Inquiry_query','Inquiry_query', true);
+				if($importer_id){
+
+					$this->data["data"] = $this->Inquiry_query->importer_detail($importer_id);
+					$this->load->view('mobile/importer_detail.php',$this->data);
+				}else{
+					echo "sorry page data is not available";
+				}
+
+			}
+
+			public function importer_inquiry_detail_x(){
+				$this->load->model('API/Inquiry/Inquiry_query','Inquiry_query', true);
+				$this->load->model('API/Authentication/Auth','Auth', true);
+				$this->form_validation->set_rules('importer_id', 'importer_id', 'trim|required|integer');
+
+				if($this->form_validation->run() == TRUE)
+				{
+					$auth_code = $this->input->get_request_header('auth_code');
+					$get_auth_code = $this->Auth->cek_auth($auth_code);
+					$importer_id = $this->input->post('importer_id', true);
+
+					if($get_auth_code){
+
+						$this->data["data"] = $this->Inquiry_query->importer_detail($importer_id);
+						//$this->Inquiry_query->importer_detail($importer_id);
+						if($this->data["data"]){
+							$body_html = $this->load->view('mobile/importer_detail.php',$this->data,TRUE);
+							$importer_detail['data'] = base_url()."API/importer_inquiry_detail";
+							$importer_detail['status'] = false;
+							$importer_detail['message'] = "file not available";
+						}else{
+							$importer_detail['data'] = "";
+							$importer_detail['status'] = false;
+							$importer_detail['message'] = "file not available";
+						}
+					}else{
+						$importer_detail['data'] = null;
+						$importer_detail['status'] = false;
+						$importer_detail['message'] = "Wrong auth code please re-login";
+					}
+
+
+				}else{
+					$importer_detail['data'] = "";
+					$importer_detail['status'] = false;
+					$importer_detail['message'] = "Sorry the inbox failed to be load, please contact the administrator";
+				}
+				echo json_encode($importer_detail); //send data to script
+				return json_encode($importer_detail);
+
+			}
+			//$message = $this->load->view('email/actived_account.php',$this->data,TRUE);
 
 		/*public function submit_data_inquiry_file()
 		{
