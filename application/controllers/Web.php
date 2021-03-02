@@ -9,6 +9,7 @@ class WEB extends CI_Controller {
     public $password_text;
     public $email;
 
+
       function __construct(){
            parent::__construct();
            $this->load->helper(array('url','html','form','slug'));
