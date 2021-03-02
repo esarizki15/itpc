@@ -1,0 +1,90 @@
+ @charset "utf-8";
+
+/*===============================================================================================================   
+
+Author      : Muhammad Febriansyah
+
+Built       : Desember 2016
+
+=============================================================================================================== */
+
+
+
+@media all and (max-width:1023px){
+
+  
+
+    
+
+    /* header
+
+    ================================================================================================================= */
+    .mobile_nav{
+        display: inline-block;
+        float: left;
+    }
+    .inner_header{
+        text-align: center;
+    }
+    #menu-trigger {
+        margin-top: -1px;
+        width: 50px;
+        padding: 5px;
+    }
+    .main_menu,.select_lang{
+        display: none;
+    }
+    .left_header{
+        display: inline-block;
+        max-width: 100px;
+        float: none;
+    }
+    .icon_search{
+        max-width: 30px;
+    }
+    .select_lang.select_lang_mobile{
+        display: block;
+        padding-top: 30px;
+        text-align: left;
+    }
+    /* middle homepage
+
+    ================================================================================================================= */
+    .caption_banner h3{
+        font-size: 34px;
+    }
+    #product_home{
+        padding-top: 20px;
+    }
+    .title_section h3, .title_section_left h3{
+        font-size: 32px;
+    }
+    .caption_news, .thumb_news{
+        width: 100%;
+    }
+    #bannerPages .caption_banner{
+        top: 25%;
+        height: 212px;
+    }
+    .full_section{
+        min-height: 90vh;
+    }
+
+
+    /* popup
+
+    ================================================================================================================= */
+
+    
+    /* middle contentpage
+
+    ================================================================================================================= */
+
+    /* footer
+
+    ================================================================================================================= */
+    .menu_footer a{
+        font-size: 12px;
+    }
+}
+

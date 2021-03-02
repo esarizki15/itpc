@@ -49,9 +49,33 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | Examples:	my-controller/index	-> my_controller/index
 |		my-controller/my-method	-> my_controller/my_method
 */
-$route['default_controller'] = 'WEB';
+$route['default_controller'] = 'web';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 $route['assets'] = '';
+$route['store_register'] = 'web/store_register';
+$route['store_login'] = 'web/store_login';
+
+
+//Handling Language
 $route[':any'] = 'web/index';
 $route[':any/exporter'] = 'web/exporter';
+$route[':any/news'] = 'web/news';
+$route[':any/news_detail/(:any)'] = 'web/news_detail/$1';
+$route[':any/welcome_login'] = 'web/welcome_login';
+$route[':any/login'] = 'web/login';
+$route[':any/logout'] = 'web/Logout';
+$route[':any/register'] = 'web/register';
+$route[':any/exporter_account'] = 'web/exporter_account';
+$route[':any/add_account'] = 'web/add_account';
+$route[':any/add_category'] = 'web/add_category';
+$route[':any/add_product'] = 'web/add_product';
+$route[':any/add_inquiry'] = 'web/add_inquiry';
+$route[':any/inquiry_list'] = 'web/inquiry_list';
+
+
+
+
+
+
+

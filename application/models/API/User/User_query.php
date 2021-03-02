@@ -296,7 +296,7 @@ class User_query extends CI_Model{
     array_map(function($item) use(&$exporter_detail){
       $exporter_detail[] = (new Exporter_detail($item))->to_array();
     }, $query->result_array());
-
+    
     $query->free_result();
     $this->db->reset_query();
 
@@ -317,7 +317,7 @@ class User_query extends CI_Model{
     array_map(function($item) use(&$category_data){
       $category_data[] = (new Category_exporter_data($item))->to_array();
     }, $query->result_array());
-
+   
     return [
       'exporter_detail' => $exporter_detail,
       'category_data' => $category_data
