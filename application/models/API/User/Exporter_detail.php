@@ -14,6 +14,12 @@ class Exporter_detail {
 	public function __construct($arr) {
 		foreach(get_object_vars($this) as $key => $val) {
 			switch($key) {
+				/*case 'id':
+					if(array_key_exists($key, $arr)) {
+								$id = intval($arr[$key]);
+								$this->$key = $id;
+						}
+					break;*/
 				case 'logo':
 					if(array_key_exists('logo', $arr) AND $arr['logo'] !== NULL) {
 						$CI =& get_instance();

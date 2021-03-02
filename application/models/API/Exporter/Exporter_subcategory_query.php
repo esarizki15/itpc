@@ -14,7 +14,7 @@ class Exporter_subcategory_query extends CI_Model{
         if(isset($title)) {
           $this->db->like('a.subcategory_title',$title);
         }
-        $this->db->where('a.status', 1);
+        $this->db->where('a.status',1);
         //$this->db->where('a.delete_date', null);
         $this->db->where('a.category_id', $id);
         $this->db->limit($limit, $start);
@@ -40,10 +40,26 @@ class Exporter_subcategory_query extends CI_Model{
       		$query->free_result();
       		$this->db->reset_query();
 
+          $this->db->select([
+            'COUNT(a.subcategory_id) AS total_data'
+      		]);
+          $this->db->where('a.category_id', $id);
+          $query = $this->db->get('itpc_subcategory a');
+          if($query){
+            foreach($query->result() as $row){
+              $total_data = $row->total_data;
+            }
+          }else{
+            return false;
+          }
 
+
+          $last_page = intval($total_data / 10);
 
           return [
-      			'data' => $category_list
+      			'data' => $category_list,
+            'total_data' => intval($total_data),
+            'last_page' => $last_page
       		];
 
         }else{
@@ -54,6 +70,7 @@ class Exporter_subcategory_query extends CI_Model{
     }
 
     public function subcategory_list() {
+      require_once('Subcategory_list.php');
       $this->db->select([
         'a.subcategory_id as id',
         'a.category_id as category_id',
@@ -65,7 +82,19 @@ class Exporter_subcategory_query extends CI_Model{
       $query = $this->db->get('itpc_subcategory a');
       if($query)
   	 	{
-        return $query->result_array();
+
+        $subcategory_list = [];
+        array_map(function($item) use(&$subcategory_list){
+          $subcategory_list[] = (new Subcategory_list($item))->to_array();
+        }, $query->result_array());
+
+        $query->free_result();
+        $this->db->reset_query();
+
+        //return $query->result_array();
+
+        return $subcategory_list;
+
   	 	}else{
         return false;
       }
@@ -75,6 +104,7 @@ class Exporter_subcategory_query extends CI_Model{
 
 
     public function subcategory_inquiry_list($exporter_id) {
+      require_once('Subcategory_inquiry.php');
       $this->db->select([
         'a.subcategory_id as id',
         'a.category_id as category_id',
@@ -89,7 +119,19 @@ class Exporter_subcategory_query extends CI_Model{
       $query = $this->db->get('itpc_subcategory a');
       if($query)
   	 	{
-        return $query->result_array();
+
+        $subcategory_list = [];
+        array_map(function($item) use(&$subcategory_list){
+          $subcategory_list[] = (new Subcategory_inquiry($item))->to_array();
+        }, $query->result_array());
+
+        $query->free_result();
+        $this->db->reset_query();
+
+        //return $query->result_array();
+
+        return $subcategory_list;
+
   	 	}else{
         return false;
       }

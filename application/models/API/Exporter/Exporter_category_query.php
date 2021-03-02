@@ -28,10 +28,16 @@ class Exporter_category_query extends CI_Model{
       		$query->free_result();
       		$this->db->reset_query();
 
+          $query->free_result();
+          $this->db->reset_query();
 
+          $total_data = $query->num_rows();
+          $last_page = intval($total_data / 10);
 
           return [
-      			'data' => $category_list
+      			'data' => $category_list,
+            'total_data' => intval($total_data),
+            'last_page' => $last_page
       		];
         }else{
           return false;
@@ -41,6 +47,7 @@ class Exporter_category_query extends CI_Model{
     }
 
     public function category_list() {
+      require_once('Category_list.php');
       $this->db->select([
         'a.category_id as id',
         'a.category_title as title'
@@ -49,15 +56,27 @@ class Exporter_category_query extends CI_Model{
       $this->db->where('a.delete_date', null);
       $this->db->order_by('a.category_title','ASC');
       $query = $this->db->get('itpc_category a');
+
       if($query)
-  	 	{
-        return $query->result_array();
-  	 	}else{
+      {
+
+        $category_list = [];
+        array_map(function($item) use(&$category_list){
+          $category_list[] = (new Category_list($item))->to_array();
+        }, $query->result_array());
+
+        $query->free_result();
+        $this->db->reset_query();
+
+        //return $query->result_array();
+        return $category_list;
+      }else{
         return false;
       }
     }
 
     public function category_curr_list($exporter_id){
+      require_once('Category_curr.php');
       $this->db->select([
         'a.ex_cat_id as ex_cat_id',
         'b.category_title as title',
@@ -70,9 +89,20 @@ class Exporter_category_query extends CI_Model{
       $this->db->join('itpc_subcategory c','a.subcategory_id = c.subcategory_id','Right');
       $this->db->order_by('a.ex_cat_id','ASC');
       $query = $this->db->get('itpc_exporter_category a');
+
       if($query)
       {
-        return $query->result_array();
+
+        $category_curr = [];
+        array_map(function($item) use(&$category_curr){
+          $category_curr[] = (new Category_curr($item))->to_array();
+        }, $query->result_array());
+
+        $query->free_result();
+        $this->db->reset_query();
+
+        //return $query->result_array();
+        return $category_curr;
       }else{
         return false;
       }
@@ -81,6 +111,7 @@ class Exporter_category_query extends CI_Model{
 
 
     public function category_inquiry_list($expoter_id){
+      require_once('Category_inquiry.php');
       $this->db->select([
         'a.category_id as id',
         'a.category_title as title'
@@ -94,7 +125,17 @@ class Exporter_category_query extends CI_Model{
       $query = $this->db->get('itpc_category a');
       if($query)
   	 	{
-        return $query->result_array();
+
+        $category_list = [];
+        array_map(function($item) use(&$category_list){
+          $category_list[] = (new Category_inquiry($item))->to_array();
+        }, $query->result_array());
+
+        $query->free_result();
+        $this->db->reset_query();
+
+        //return $query->result_array();
+        return $category_list;
   	 	}else{
         return false;
       }

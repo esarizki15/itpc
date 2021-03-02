@@ -109,6 +109,13 @@ class User_query extends CI_Model{
 		return $result;
 		}
 
+    public function update_auth($auth){
+		//$result = $this->db->insert('zambert_user',$user);
+     $this->db->where('user_id',$auth['user_id']);
+     $result = $this->db->update('itpc_authentication', $auth);
+     return true;
+		}
+
     public function login($cek_email,$cek_password){
 
       require_once('User_data.php');
