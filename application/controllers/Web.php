@@ -50,7 +50,6 @@ class WEB extends CI_Controller {
       public function news_detail($slug)
       {         
         $NewsDetail = $this->Home_data_query->get_news_detail($slug);
-        //pr($NewsDetail );exit;
         $this->master["content"] = $this->load->view("web/news/news_detail.php", $NewsDetail , TRUE);
         $this->render();
       }
@@ -355,7 +354,21 @@ class WEB extends CI_Controller {
 
   public function add_account($lang = '')
   {
-        $News = $this->Home_data_query->get_news();
+     
+      if($this->session->user_logged)
+      {
+         
+            $auth_code = $this->input->get_request_header('auth_code');
+            $user_id = $this->session->user_logged['user_id'];
+            //pr($user_id);exit;
+            $this->load->model('API/User/User_query','User_query', true);
+            $detail_user = $this->User_query->detail_exporter($user_id);
+            //pr($detail_user);exit;
+
+      }else{
+            redirect('en/login');
+      }
+
         $this->master["content"] = $this->load->view("web/dashboard/add_account.php",[], TRUE);
         $this->render();
   }

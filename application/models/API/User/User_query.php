@@ -36,13 +36,11 @@ class User_query extends CI_Model{
 
 
     public function cek_email($email){
-     
       $this->db->select([
         'password as password'
       ]);
       $this->db->where('email', $email);
       $query = $this->db->get('itpc_user');
-     // pr($email;exit;
       if($query){
         foreach($query->result() as $row){
          return $row->password;
@@ -298,7 +296,7 @@ class User_query extends CI_Model{
     array_map(function($item) use(&$exporter_detail){
       $exporter_detail[] = (new Exporter_detail($item))->to_array();
     }, $query->result_array());
-
+    
     $query->free_result();
     $this->db->reset_query();
 
@@ -319,7 +317,7 @@ class User_query extends CI_Model{
     array_map(function($item) use(&$category_data){
       $category_data[] = (new Category_exporter_data($item))->to_array();
     }, $query->result_array());
-
+   
     return [
       'exporter_detail' => $exporter_detail,
       'category_data' => $category_data
