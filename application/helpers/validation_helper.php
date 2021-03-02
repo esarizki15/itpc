@@ -19,3 +19,4 @@ function valid_comma_separated_emails(&$val) {
 	$val = implode(',',$emails);
 	return true;
 }
+
