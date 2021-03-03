@@ -377,25 +377,29 @@ class WEB extends CI_Controller {
   
       public function store_detail_exporter()
 	{           $date = date_create();
-                  $upload_config['upload_path'] = './assets/website/exporter/';
-                  //pr($upload_config['upload_path'] );exit;
-                  $upload_config['allowed_types'] = 'jpg|jpeg|png|svg';
-                  $upload_config['max_width']            = 1024;
-                  $upload_config['max_height']           = 768;
-                  $upload_config['file_name'] = "exporter_logo"."-".date_timestamp_get($date);
-                  $upload_config['max_size'] = 2000;
-      
-                  $this->load->library('upload', $upload_config);
-                  $this->upload->initialize($upload_config);
-      
-                  $data=array();
-                  if (!$this->upload->do_upload('exporter_logo')) 
-                  {
-                        $data = array('error' => $this->upload->display_errors());
-                  } 
-                  else 
-                  {
-                        $data = array('image_metadata' => $this->upload->data());
+
+                  if (!empty($_FILES['exporter_logo']['name'])) {
+
+                        $upload_config['upload_path'] = './assets/website/exporter/';
+                        //pr($upload_config['upload_path'] );exit;
+                        $upload_config['allowed_types'] = 'jpg|jpeg|png|svg';
+                        $upload_config['max_width']            = 1024;
+                        $upload_config['max_height']           = 768;
+                        $upload_config['file_name'] = "exporter_logo"."-".date_timestamp_get($date);
+                        $upload_config['max_size'] = 2000;
+            
+                        $this->load->library('upload', $upload_config);
+                        $this->upload->initialize($upload_config);
+            
+                        $data=array();
+                        if (!$this->upload->do_upload('exporter_logo')) 
+                        {
+                              $data = array('error' => $this->upload->display_errors());
+                        } 
+                        else 
+                        {
+                              $data = array('image_metadata' => $this->upload->data());
+                        }
                   }
             
 			$this->load->model('API/User/User_query','User_query', true);
@@ -446,7 +450,7 @@ class WEB extends CI_Controller {
 				}
 
 				if($save_status == true){
-
+                                    if (!empty($_FILES['exporter_logo']['name'])) {
 						$update = [
 								'exporter_id' => $exporter_id,
 								'exporter_name' => $exporter_name,
@@ -459,6 +463,19 @@ class WEB extends CI_Controller {
 								'exporter_link' => $exporter_link,
 								'exporter_logo' => $exporter_logo
 						];
+                              }else{
+                                    $update = [
+                                          'exporter_id' => $exporter_id,
+                                          'exporter_name' => $exporter_name,
+                                          'exporter_slug' => $exporter_slug,
+                                          'exporter_address' => $exporter_address,
+                                          'exporter_phone' => $exporter_phone,
+                                          'exporter_office_phone' => $exporter_office_phone,
+                                          'exporter_fax' => $exporter_fax,
+                                          'exporter_email' => $exporter_email,
+                                          'exporter_link' => $exporter_link
+                              ];
+                              }
 
 						$update_exporter['data'] = $this->User_query->Exporter_data_update($update);
 						$update_exporter['status'] = true;
