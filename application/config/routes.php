@@ -55,7 +55,7 @@ $route['translate_uri_dashes'] = FALSE;
 $route['assets'] = '';
 $route['store_register'] = 'web/store_register';
 $route['store_login'] = 'web/store_login';
-
+$route['store_detail_exporter'] = 'web/store_detail_exporter';
 //Handling Language
 $route['id'] = 'web/index';
 $route['en'] = 'web/index';
@@ -68,7 +68,7 @@ $route[':any/itpc_login'] = 'web/itpc_login';
 $route[':any/itpc_logout'] = 'web/itpc_logout';
 $route[':any/register'] = 'web/register';
 $route[':any/exporter_account'] = 'web/exporter_account';
-$route[':any/add_account'] = 'web/add_account';
+$route[':any/update_account'] = 'web/add_account';
 $route[':any/add_category'] = 'web/add_category';
 $route[':any/add_product'] = 'web/add_product';
 $route[':any/add_inquiry'] = 'web/add_inquiry';

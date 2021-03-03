@@ -15,22 +15,24 @@
   						<h3>Profile</h3>
   						<p>Create profile of your company</p>
   					</div>
-  					
+            <form action="<?php echo base_url(). 'store_detail_exporter'; ?>" method="post" enctype="multipart/form-data" >
+  					<?php foreach($exporter_detail as $item){ ?>
+           
             <div class="action_exporter_account">
               <div class="row-list">
                 <div class="cols2">
                   <div class="form_inner">
                     <div class="form_group">
-                      <input type="text" name="companyname" class="input_form" placeholder="Company Name" required />
+                      <input type="text" name="name" class="input_form" placeholder="Company Name" value="<?php echo $item['name']; ?>" required />
                     </div>
                     <div class="form_group">
-                      <input type="text" name="address" class="input_form" placeholder="Address" required />
+                      <input type="text" name="address" class="input_form" placeholder="Address" value="<?php echo $item['address']; ?>"  required />
                     </div>
                     <div class="form_group">
-                      <input type="email" name="email" class="input_form" placeholder="Email" required />
+                      <input type="email" name="email" class="input_form" placeholder="Email" value="<?php echo $item['email']?>" required />
                     </div>
                     <div class="form_group">
-                      <input type="tel" name="mobilephone" class="input_form" placeholder="Mobile Phone" required />
+                      <input type="tel" name="phone" class="input_form" placeholder="Mobile Phone" value="<?php echo $item['phone']; ?>"  required />
                     </div>
                   </div>
                 </div><!--end.cols2-->
@@ -38,13 +40,13 @@
                 <div class="cols2">
                   <div class="form_inner">
                     <div class="form_group">
-                      <input type="tel" name="officephone" class="input_form" placeholder="Office Phone" required />
+                      <input type="tel" name="office_phone" class="input_form" placeholder="Office Phone" value="<?php echo $item['office_phone']; ?>"  required />
                     </div>
                     <div class="form_group">
-                      <input type="tel" name="fax" class="input_form" placeholder="Fax" required />
+                      <input type="tel" name="fax" class="input_form" placeholder="Fax" value="<?php echo $item['fax']; ?>"  required />
                     </div>
                     <div class="form_group">
-                      <input type="text" name="websitelink" class="input_form" placeholder="Website link" required />
+                      <input type="text" name="link" class="input_form" placeholder="Website link"  value="<?php echo $item['link']; ?>"  required />
                     </div>
                   </div>
                 </div><!--end.cols2-->
@@ -55,21 +57,25 @@
                   <span>Company Logo (500x500px)</span>
                 </div>
                 <div class="preview_img">
-                  <img id="logo_preview" src="<?php echo $this->config->item('frontend'); ?>images/logo_preview.png">
-                  <input type='file' id="imgInp" style="opacity: 0;position: absolute;" />
+                  <img id="logo_preview" src="<?php if($item['logo']){echo $item['logo'].'.png';}else{echo $this->config->item('frontend').'images/logo_preview.png'; } ?> ">
+                  <input type='file' name='exporter_logo' id="imgInp" style="opacity: 0;position: absolute;" />
                 </div><!--end.preview_img-->
                 <div class="row-block-button">
                   <button type="button" id="trigger_upload" class="bt_block_white bt_with_icon">
                     <img src="<?php echo $this->config->item('frontend'); ?>images/icon_upload.png">
                     <span>Choose File</span>
                   </button>
-
+                  <input type="hidden" name="id" class="input_form" placeholder="Mobile Phone" value="<?php echo $item['id']; ?>" />
                   <button type="submit" class="bt_block_blue ">
                     Submit
                   </button>
                 </div>
               </div>
             </div><!--end.action_exporter_account-->
+          <?php  } ?>
+          </form>
+
+
   				</div><!--end.box_login-->
   			</div>
   		</div><!--end.inner_flex_middle-->

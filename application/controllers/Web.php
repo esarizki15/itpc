@@ -67,7 +67,7 @@ class WEB extends CI_Controller {
         $this->master["content"] = $this->load->view("web/login/login.php",$data, TRUE);
         $this->render();
       }
-      public function Logout()
+      public function itpc_Logout()
 	{
 		$this->session->sess_destroy();
 		redirect("en/itpc_login");
@@ -347,8 +347,11 @@ class WEB extends CI_Controller {
 
   public function exporter_account($lang = '')
   {
-       // pr($_SESSION);exit;
-        $this->master["content"] = $this->load->view("web/dashboard/exporter_account.php",[], TRUE);
+       
+        $this->load->model('API/User/User_query','User_query', true);
+        $user_id = $this->session->user_logged['user_id'];
+        $detail_user = $this->User_query->detail_exporter($user_id);
+        $this->master["content"] = $this->load->view("web/dashboard/exporter_account.php",$detail_user, TRUE);
         $this->render();
   }
 
@@ -357,11 +360,9 @@ class WEB extends CI_Controller {
      
       if($this->session->user_logged)
       {
-         
+            $this->load->model('API/User/User_query','User_query', true);
             $auth_code = $this->input->get_request_header('auth_code');
             $user_id = $this->session->user_logged['user_id'];
-            //pr($user_id);exit;
-            $this->load->model('API/User/User_query','User_query', true);
             $detail_user = $this->User_query->detail_exporter($user_id);
             //pr($detail_user);exit;
 
@@ -369,9 +370,118 @@ class WEB extends CI_Controller {
             redirect('en/login');
       }
 
-        $this->master["content"] = $this->load->view("web/dashboard/add_account.php",[], TRUE);
+        $this->master["content"] = $this->load->view("web/dashboard/add_account.php",$detail_user, TRUE);
         $this->render();
   }
+
+  
+      public function store_detail_exporter()
+	{           $date = date_create();
+                  $upload_config['upload_path'] = './assets/website/exporter/';
+                  //pr($upload_config['upload_path'] );exit;
+                  $upload_config['allowed_types'] = 'jpg|jpeg|png|svg';
+                  $upload_config['max_width']            = 1024;
+                  $upload_config['max_height']           = 768;
+                  $upload_config['file_name'] = "exporter_logo"."-".date_timestamp_get($date);
+                  $upload_config['max_size'] = 2000;
+      
+                  $this->load->library('upload', $upload_config);
+                  $this->upload->initialize($upload_config);
+      
+                  $data=array();
+                  if (!$this->upload->do_upload('exporter_logo')) 
+                  {
+                        $data = array('error' => $this->upload->display_errors());
+                  } 
+                  else 
+                  {
+                        $data = array('image_metadata' => $this->upload->data());
+                  }
+            
+			$this->load->model('API/User/User_query','User_query', true);
+			$this->form_validation->set_rules('id', 'id', 'trim|required|numeric');
+			$this->form_validation->set_rules('name', 'name', 'trim|required|min_length[3]');
+			$this->form_validation->set_rules('address', 'address', 'trim|required|min_length[3]');
+			$this->form_validation->set_rules('phone', 'phone', 'trim|required|min_length[3]');
+			$this->form_validation->set_rules('office_phone', 'office_phone', 'trim');
+			$this->form_validation->set_rules('fax', 'fax', 'trim');
+			$this->form_validation->set_rules('email', 'email', 'trim|required|valid_email');
+			$this->form_validation->set_rules('link', 'link', 'trim');
+              
+			if($this->form_validation->run() == TRUE)
+			{
+				 $save_status = true;
+
+				 $exporter_id = $this->input->post('id');
+				 $exporter_name = $this->input->post('name');
+				 $exporter_address = $this->input->post('address');
+				 $exporter_phone = $this->input->post('phone');
+				 $exporter_office_phone = $this->input->post('office_phone');
+				 $exporter_phone = $this->input->post('phone');
+				 $exporter_logo = $upload_config['file_name'];
+                        
+
+				 if($exporter_office_phone == null || $exporter_office_phone == ""){
+					 $exporter_office_phone = null;
+				 }
+				 $exporter_fax = $this->input->post('fax');
+				 if($exporter_fax == null || $exporter_fax == ""){
+					 $exporter_fax = null;
+				 }
+				 $exporter_email = $this->input->post('email');
+				 $exporter_link = $this->input->post('link');
+				 if($exporter_link == null || $exporter_link == ""){
+					 $exporter_link = null;
+				 }
+
+				 $lower_name = strtolower($exporter_name);
+				 $exporter_slug = str_replace(" ","_",$lower_name);
+
+				 $date = date_create();
+
+			
+				if(empty($exporter_logo)){
+					$image_defalut = rand(1,3);
+					$exporter_logo = "dummy-".$image_defalut.".png";
+				}
+
+				if($save_status == true){
+
+						$update = [
+								'exporter_id' => $exporter_id,
+								'exporter_name' => $exporter_name,
+								'exporter_slug' => $exporter_slug,
+								'exporter_address' => $exporter_address,
+								'exporter_phone' => $exporter_phone,
+								'exporter_office_phone' => $exporter_office_phone,
+								'exporter_fax' => $exporter_fax,
+								'exporter_email' => $exporter_email,
+								'exporter_link' => $exporter_link,
+								'exporter_logo' => $exporter_logo
+						];
+
+						$update_exporter['data'] = $this->User_query->Exporter_data_update($update);
+						$update_exporter['status'] = true;
+						$update_exporter['message'] = "Data update is successful";
+				}else{
+					$update_exporter['data'] = null;
+					$update_exporter['status'] = false;
+					$update_exporter['message'] = "Data update is failed";
+				}
+
+
+			}else{
+				$update_exporter['data'] = null;
+				$update_exporter['status'] = false;
+				$update_exporter['message'] = validation_errors();
+			}
+                  
+                        redirect('en/exporter_account');
+              
+
+	}
+
+
 
   public function add_category($lang = '')
   {
@@ -379,6 +489,7 @@ class WEB extends CI_Controller {
         $this->master["content"] = $this->load->view("web/dashboard/add_category.php",[], TRUE);
         $this->render();
   }
+
 
   public function add_product($lang = '')
   {
