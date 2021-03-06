@@ -18,7 +18,7 @@
               <?php echo '<b><i>'.$this->session->flashdata('flsh_msg').'</i></b>'; ?>
   					</div>
   					<div class="form_inner">
-             <form action="<?php echo base_url(). 'store_register'; ?>" method="post">
+             <form id="registerForm" action="<?php echo base_url(). 'store_register'; ?>" method="post">
               <div class="form_group icon_group">
                 <input type="email" name="email" class="input_form email_icon email" placeholder="Email" required />
               </div>
@@ -53,17 +53,27 @@
 </div>
 
 <script>
-  
-  $( ".register" ).click(function() {
-    
-    var email=$('.email').val();
-    var pass=$('.pass').val();
-    var repass=$('.repass').val();
-    if(email == '' || pass == '' || repass == ''){
-      return false;
-    }else{
-      $(this).prop( "disabled" );
-      $(this).html('<i class="fa fa-spinner fa-spin"></i> Loading');
-    }
+  $(document).ready(function() {
+
+    $("#registerForm").validate({
+      submitHandler: function() {
+          $(".register").prop( "disabled" );
+          $(".register").html('<i class="fa fa-spinner fa-spin"></i> Loading');
+      }
+    });
+    /*
+    $( ".register" ).click(function() {
+      
+      var email=$('.email').val();
+      var pass=$('.pass').val();
+      var repass=$('.repass').val();
+      if(email == '' || pass == '' || repass == ''){
+        return false;
+      }else{
+        $(this).prop( "disabled" );
+        $(this).html('<i class="fa fa-spinner fa-spin"></i> Loading');
+      }
+    });*/
   });
+  
   </script>

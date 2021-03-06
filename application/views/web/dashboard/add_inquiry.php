@@ -14,71 +14,84 @@
   					
             <div class="action_exporter_account">
               <div class="row-list">
-                <div class="cols2">
 
-                  <span class="infoSmall"><strong>Add Inquiry</strong></span>
-                  <span class="infoSmall">Input detailed information about your inquiry</span>
-                  <div class="form_inner">
-                    <div class="form_group">
-                      <input type="text" name="inquirytitle" class="input_form" placeholder="Inquiry Title" required />
+                <form id="addInquiry">
+                  <div class="cols2">
+
+                    <span class="infoSmall"><strong>Add Inquiry</strong></span>
+                    <span class="infoSmall">Input detailed information about your inquiry</span>
+                    <div class="form_inner">
+                      <div class="form_group">
+                        <div class="field">
+                          <input type="text" name="inquirytitle" class="input_form" placeholder="Inquiry Title" required />
+                        </div>
+                      </div>
+                      <div class="form_group">
+                        <div class="field">
+                          <input type="text" name="companyname" class="input_form field" placeholder="Company Name" required />
+                        </div>
+                      </div>
+                      <div class="form_group">
+                        <div class="field">
+                          <input type="text" name="companyaddress" class="input_form field" placeholder="Company Address" required />
+                        </div>
+                      </div>
+                      <div class="form_group">
+                        <div class="custom_select field">
+                          <select name="category" id="category" required>
+                            <option selected disabled value="0">Category</option>
+                            <option value="category1">Category 01</option>
+                            <option value="category2">Category 02</option>
+                            <option value="category3">category 03</option>
+                          </select>
+                        </div>
+                      </div>
+
+                      <div class="form_group">
+
+                        <div class="field">
+                          <textarea class="input_form field" name="productdetails" rows="4" cols="50" placeholder="Product Details" required></textarea>
+                        </div>
+                      </div>
+                      <div class="form_group">
+                        <div class="field">
+                          <input type="text" name="productcapacity" class="input_form field" placeholder="Product Capacity" required />
+                        </div>
+                      </div>
+                      <div class="form_group">
+                        <div class="custom_select field">
+                          <select name="haveAnswer" id="haveAnswer" required>
+                            <option selected disabled value="0">Have Export? Choose Answer</option>
+                            <option value="yes">Yes</option>
+                            <option value="no">No</option>
+                          </select>
+                        </div>
+                      </div>
+
                     </div>
-                    <div class="form_group">
-                      <input type="text" name="companyname" class="input_form" placeholder="Company Name" required />
-                    </div>
-                    <div class="form_group">
-                      <input type="text" name="companyaddress" class="input_form" placeholder="Company Address" required />
-                    </div>
-                    <div class="form_group">
-                      <div class="custom_select">
-                        <select name="category" id="category">
-                          <option selected disabled value="0">Category</option>
-                          <option value="category1">Category 01</option>
-                          <option value="category2">Category 02</option>
-                          <option value="category3">category 03</option>
-                        </select>
+                  </div><!--end.cols2-->
+
+                  <div class="cols2">
+                    <span class="infoSmall"><strong>Contact Person</strong></span>
+                    <span class="infoSmall">Input contact of Person in charge</span>
+                    <div class="form_inner">
+                      <div class="form_group">
+                        <input type="text" name="fullName" class="input_form" placeholder="Full Name"  />
+                      </div>
+                      <div class="form_group">
+                        <input type="email" name="email" class="input_form" placeholder="Email"  />
+                      </div>
+                      <div class="form_group">
+                        <input type="tel" name="phone" class="input_form" placeholder="Email  Phone/ Mobile Phone"  />
+                      </div>
+                      <div class="form_group">
+                        <button type="submit" class="bt_block_blue buttonAddInquiry">
+                          Submit
+                        </button>
                       </div>
                     </div>
-
-                    <div class="form_group">
-                      <textarea class="input_form" name="productdetails" rows="4" cols="50" placeholder="Product Details"></textarea>
-                    </div>
-                    <div class="form_group">
-                      <input type="text" name="productcapacity" class="input_form" placeholder="Product Capacity" required />
-                    </div>
-                    <div class="form_group">
-                      <div class="custom_select">
-                        <select name="haveAnswer" id="haveAnswer">
-                          <option selected disabled value="0">Have Export? Choose Answer</option>
-                          <option value="yes">Yes</option>
-                          <option value="no">No</option>
-                        </select>
-                      </div>
-                    </div>
-
-                  </div>
-                </div><!--end.cols2-->
-
-                <div class="cols2">
-                  <span class="infoSmall"><strong>Contact Person</strong></span>
-                  <span class="infoSmall">Input contact of Person in charge</span>
-                  <div class="form_inner">
-                    <div class="form_group">
-                      <input type="text" name="fullName" class="input_form" placeholder="Full Name" required />
-                    </div>
-                    <div class="form_group">
-                      <input type="email" name="email" class="input_form" placeholder="Email" required />
-                    </div>
-                    <div class="form_group">
-                      <input type="tel" name="phone" class="input_form" placeholder="Email  Phone/ Mobile Phone" required />
-                    </div>
-                    <div class="form_group">
-                      <button type="submit" class="bt_block_blue ">
-                        Submit
-                      </button>
-                    </div>
-                  </div>
-                </div><!--end.cols2-->
-
+                  </div><!--end.cols2-->
+                </form>
               </div><!--end.row-list-->
             </div><!--end.action_exporter_account-->
   				</div><!--end.box_login-->
@@ -90,7 +103,15 @@
 
 <script type="text/javascript">
 $(document).ready(function() {
- 
+  $("#addInquiry").validate({
+    submitHandler: function() {
+        $(".buttonAddInquiry").prop( "disabled" );
+        $(".buttonAddInquiry").html('<i class="fa fa-spinner fa-spin"></i> Loading');
+    },
 
+    errorPlacement: function(error, element) {
+        error.insertAfter(element.parent('.field'));
+    } 
+  });
 });
 </script>

@@ -52,7 +52,7 @@
 					   </li>
 					 </ul>
 				</div>
-				<div class="icon_search">
+				<div class="icon_search" id="trigger_fullSearch">
 					<img src="<?php echo $this->config->item('frontend'); ?>images/icon-search.png">
 				</div>
 			</div><!--end.right_header-->
@@ -101,6 +101,14 @@
 	</div>
 	</div>
 </header>
+
+<div class="search_fullpage">
+
+	<div class="close_search"><img src="<?php echo $this->config->item('frontend'); ?>images/close.png"></div>
+	<div class="form_search">
+		<input type="text" class="search_input" placeholder="type to search...">
+	</div>
+</div>
 <!-- end of header -->
 <script type="text/javascript">
 	$(".btn_lang").click(function(){

@@ -73,6 +73,9 @@ $route[':any/add_category'] = 'web/add_category';
 $route[':any/add_product'] = 'web/add_product';
 $route[':any/add_inquiry'] = 'web/add_inquiry';
 $route[':any/inquiry_list'] = 'web/inquiry_list';
+$route[':any/inquiry_progress'] = 'web/inquiry_progress';
+$route[':any/inquiry_inbox'] = 'web/inquiry_inbox';
+$route[':any/thank_you'] = 'web/thank_you';
 
 
 

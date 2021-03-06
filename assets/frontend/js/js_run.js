@@ -16,5 +16,15 @@ Date       : November 2016
   		$(".float_mobile_menu").removeClass("expand");
   		$("body").removeClass("overflowHidden");
 	});
+
+	$("#trigger_fullSearch").click(function(){
+		$(".search_fullpage").addClass("active");
+  		$("body").addClass("overflowHidden");
+	});
+	$(".close_search").on('click', function(e){
+		e.stopPropagation();
+  		$(".search_fullpage").removeClass("active");
+  		$("body").removeClass("overflowHidden");
+	});
 });
 
