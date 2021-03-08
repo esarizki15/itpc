@@ -29,6 +29,8 @@ class Exporter_company_query extends CI_Model{
 
   public function get($limit,$start,$title,$id){
       require_once('Exporter_company.php');
+      //$dalete_date = "b.delete_date is NULL OR a.delete_date is NULL";
+      $dalete_date = array('b.delete_date' => NULL , 'a.delete_date' => NULL);
       $this->db->select([
         'b.exporter_id as id',
         'b.exporter_name as title',
@@ -45,12 +47,15 @@ class Exporter_company_query extends CI_Model{
         $this->db->like('b.exporter_name',$title);
       }
       $this->db->where('a.status', 1);
-      $this->db->where('a.delete_date', null);
+      //$this->db->where('b.delete_date', null);
+      $this->db->where($dalete_date);
+
       $this->db->where('a.subcategory_id', $id);
       $this->db->join('itpc_exporter b','a.exporter_id = b.exporter_id');
       $this->db->join('itpc_subcategory c','a.subcategory_id = c.subcategory_id');
-      $this->db->limit($limit, $start);
+      $this->db->group_by('a.exporter_id');
       $this->db->order_by('b.exporter_name','ASC');
+      $this->db->limit($limit, $start);
       $query = $this->db->get('itpc_exporter_category a');
 
       if($query->num_rows() > 0){
