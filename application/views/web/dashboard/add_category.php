@@ -54,6 +54,7 @@
                                 <span class="teks_cat"><?=$itemcurcat['title']?></span>
                                 <div class="trigger_remove">
                                   <img src="<?php echo $this->config->item('frontend'); ?>images/icon_remove.png">
+                                  <input type="hidden" name='idsubcat' value="<?=$itemcurcat['ex_cat_id']?>">
                                 </div>
                               </div>
                    <?php } ?> 
@@ -78,6 +79,16 @@ function clickRemove(){
 
   $(".trigger_remove").click(function () {
     var parentDiv = $(this).closest(".row_added_cat")
+    var idnya=$(this).children().next().val();
+    var basedomain= '<?=base_url()?>';
+      $.ajax({
+            url: basedomain+"API/delete_category_exporter",
+            type: "POST",
+            data: 'ex_cat_id=' + idnya ,
+            success: function (response) {
+                console.log(response)
+            },
+        });
     $(parentDiv).remove();
   });
 }
@@ -137,6 +148,7 @@ $(document).ready(function() {
                       <span class="teks_cat">`+katasub+`</span>
                       <div class="trigger_remove">
                         <img src="<?php echo $this->config->item('frontend'); ?>images/icon_remove.png">
+                        <input type="hidden" name='idsubcat' value="`+id+`">
                       </div>
                     </div>`
       toDoLists.insertAdjacentHTML('beforeend', elements);
