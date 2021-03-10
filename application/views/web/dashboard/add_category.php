@@ -22,9 +22,9 @@
                       <div class="custom_select">
                         <select name="category" id="category">
                           <option selected disabled value="0">Category</option>
-                          <option value="category1">Category 01</option>
-                          <option value="category2">Category 02</option>
-                          <option value="category3">category 03</option>
+                          <?php foreach($data['category'] as $itemcat){ ?> 
+                            <option value="<?=$itemcat['id']?>" catTitle="<?=$itemcat['title']?>"><?=$itemcat['title']?></option>
+                          <?php } ?> 
                         </select>
                       </div>
                     </div>
@@ -32,9 +32,7 @@
                       <div class="custom_select">
                         <select name="subcategory" id="subcategory">
                           <option selected disabled value="0">Sub Category</option>
-                          <option value="subcategory1">Sub Category 01</option>
-                          <option value="subcategory2">Sub Category 02</option>
-                          <option value="subcategory3">Sub Category 03</option>
+                         
                         </select>
                       </div>
                     </div>
@@ -50,24 +48,17 @@
                   <span class="infoSmall"><strong>Added Category</strong></span>
                   <div class="list_added_category" id="listCategory">
                     
-                    <div class="row_added_cat">
-                      <span class="teks_cat">Animal or Vegetable Fats, Oils, Waxes</span>
-                      <div class="trigger_remove">
-                        <img src="<?php echo $this->config->item('frontend'); ?>images/icon_remove.png">
-                      </div>
-                    </div><!--end.row_added_cat-->
-                    <div class="row_added_cat">
-                      <span class="teks_cat">Creative & Social Media</span>
-                      <div class="trigger_remove">
-                        <img src="<?php echo $this->config->item('frontend'); ?>images/icon_remove.png">
-                      </div>
-                    </div><!--end.row_added_cat-->
-                    <div class="row_added_cat">
-                      <span class="teks_cat">Sports Athlete Agency Management</span>
-                      <div class="trigger_remove">
-                        <img src="<?php echo $this->config->item('frontend'); ?>images/icon_remove.png">
-                      </div>
-                    </div><!--end.row_added_cat-->
+
+                  <?php foreach($data['curr_category'] as $itemcurcat){ ?> 
+                              <div class="row_added_cat">
+                                <span class="teks_cat"><?=$itemcurcat['title']?></span>
+                                <div class="trigger_remove">
+                                  <img src="<?php echo $this->config->item('frontend'); ?>images/icon_remove.png">
+                                </div>
+                              </div>
+                   <?php } ?> 
+                   <!--end.row_added_cat-->
+                
                     
                   </div>
                 </div><!--end.cols2-->
@@ -91,10 +82,36 @@ function clickRemove(){
   });
 }
 
+
+function TreeCat(){
+    $('#category').on("change",function () {
+        var categoryId = $(this).find('option:selected').val();
+        var basedomain= '<?=base_url()?>';
+        //console.log(basedomain);
+        $.ajax({
+            url: basedomain+"en/add_category",
+            type: "POST",
+            data: "categoryId="+categoryId,
+            success: function (response) {
+              var myArr = JSON.parse(response);
+              var Str = "";
+              Str=Str+ "<option selected disabled value='0'>Sub Category</option>";
+              $(myArr).each(function( index ) {
+                Str=Str+ "  <option value='"+myArr[index]['id']+"' title='"+myArr[index]['title'] +"'>"+myArr[index]['title'] + "</option>";
+              });
+              $('#subcategory').html(Str);
+            },
+        });
+    }); 
+}
+
 $(document).ready(function() {
   clickRemove();
+  TreeCat();
   $("#addCategory").click(function () {
-    var subCat = $('#subcategory :selected').val();
+    var Cat = $('#category :selected').attr('value');
+    var subCat = $('#subcategory :selected').attr('value');
+    var katasub= $('#subcategory').find("option:selected").attr("title");
     var toDoLists = document.getElementById('listCategory');
 
     if(subCat == 0){
@@ -102,8 +119,22 @@ $(document).ready(function() {
         text: 'Please choose cagetory'
       });
     }else{
+      var id = '<?=$data['id_ex']?>';
+			var category_id = Cat;
+			var subcategory_id = subCat;
+      var basedomain= '<?=base_url()?>';
+      $.ajax({
+            url: basedomain+"API/add_category_exporter",
+            type: "POST",
+            data: 'expoter_id=' + id + '&category_id=' + category_id + '&subcategory_id=' + subcategory_id,
+            success: function (response) {
+                console.log(response)
+            },
+        });
+
+
       const elements = `<div class="row_added_cat">
-                      <span class="teks_cat">${subCat}</span>
+                      <span class="teks_cat">`+katasub+`</span>
                       <div class="trigger_remove">
                         <img src="<?php echo $this->config->item('frontend'); ?>images/icon_remove.png">
                       </div>

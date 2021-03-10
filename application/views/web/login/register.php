@@ -59,6 +59,7 @@
       submitHandler: function() {
           $(".register").prop( "disabled" );
           $(".register").html('<i class="fa fa-spinner fa-spin"></i> Loading');
+          form.submit();
       }
     });
     /*

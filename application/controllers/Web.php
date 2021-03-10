@@ -178,11 +178,13 @@ class WEB extends CI_Controller {
       }
 
       
-      $this->session->set_flashdata('flsh_msg',$register['message']);
+      
       if($login['status'] == 1){
             $this->session->set_userdata(['user_logged' =>  $login['data']]);
             redirect('en/exporter_account');
       }else{
+            $this->session->set_flashdata('flsh_msg_login','Please Check Your Email And Password !');
+          
             redirect('en/itpc_login');
       }
   }
@@ -317,6 +319,7 @@ class WEB extends CI_Controller {
 			$register['message'] = validation_errors();
 		}
 		//echo json_encode($register); 
+            if($register['status']==true) redirect('en/thank_you');
             $this->session->set_flashdata('flsh_msg',$register['message']);
 		redirect('en/register');
   }
@@ -502,9 +505,42 @@ class WEB extends CI_Controller {
 
   public function add_category($lang = '')
   {
-        $News = $this->Home_data_query->get_news();
-        $this->master["content"] = $this->load->view("web/dashboard/add_category.php",[], TRUE);
-        $this->render();
+      $this->load->model('API/Exporter/Exporter_category_query','Exporter_category_query', true);
+      $this->load->model('API/Exporter/Exporter_subcategory_query','Exporter_subcategory_query', true);
+      $this->load->model('API/Authentication/Auth','Auth', true);
+      $this->load->model('API/User/User_query','User_query', true);
+
+      //GET SUBCATEGORY
+      if(@$this->input->post('categoryId')){
+            $subcategory = $this->Exporter_subcategory_query->subcategory_list();
+            $tempcat=array();
+            $i=0;
+            foreach($subcategory as $itemsub){
+                  if($itemsub['category_id']==$this->input->post('categoryId') )
+                  {
+                        $tempcat[$i]['id']=$itemsub['id'];
+                        $tempcat[$i]['title']=$itemsub['title'];
+                        $i++;
+                  }
+            }
+            echo json_encode($tempcat);
+            return json_encode($tempcat);
+      }
+
+      $auth_code = $this->session->user_logged['auth_code'];
+      $get_auth_code = $this->Auth->cek_auth($auth_code);
+    
+      $category_exporter=array();
+      if($get_auth_code){
+                  $category_exporter['data']['id_ex']  = $this->User_query->detail_exporter($this->session->user_logged['user_id'])['exporter_detail'][0]['id'];
+                  $category_exporter['data']['category'] = $this->Exporter_category_query->category_list();
+                  $category_exporter['data']['subcategory'] = $this->Exporter_subcategory_query->subcategory_list();
+                  $category_exporter['data']['curr_category'] = $this->Exporter_category_query->category_curr_list($this->session->user_logged['user_id']);
+      }
+      
+      //pr($category_exporter);exit;
+      $this->master["content"] = $this->load->view("web/dashboard/add_category.php",$category_exporter, TRUE);
+      $this->render();
   }
 
   public function thank_you($lang = '')
