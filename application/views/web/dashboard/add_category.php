@@ -49,9 +49,9 @@
                   <div class="list_added_category" id="listCategory">
                     
 
-                  <?php foreach($data['curr_category'] as $itemcurcat){ ?> 
+                  <?php foreach($data['curr_category'] as $itemcurcat){  ?> 
                               <div class="row_added_cat">
-                                <span class="teks_cat"><?=$itemcurcat['title']?></span>
+                                <span class="teks_cat"><?=$itemcurcat['sub_title']?></span>
                                 <div class="trigger_remove">
                                   <img src="<?php echo $this->config->item('frontend'); ?>images/icon_remove.png">
                                   <input type="hidden" name='idsubcat' value="<?=$itemcurcat['ex_cat_id']?>">
@@ -78,6 +78,7 @@
 function clickRemove(){
 
   $(".trigger_remove").click(function () {
+    console.log('ss')
     var parentDiv = $(this).closest(".row_added_cat")
     var idnya=$(this).children().next().val();
     var basedomain= '<?=base_url()?>';
@@ -134,24 +135,28 @@ $(document).ready(function() {
 			var category_id = Cat;
 			var subcategory_id = subCat;
       var basedomain= '<?=base_url()?>';
+      console.log('expoter_id=' + id + '&category_id=' + category_id + '&subcategory_id=' + subcategory_id)
       $.ajax({
             url: basedomain+"API/add_category_exporter",
             type: "POST",
-            data: 'expoter_id=' + id + '&category_id=' + category_id + '&subcategory_id=' + subcategory_id,
+            data: 'expoter_id=' + id + '&category_id[]=' + category_id + '&subcategory_id[]=' + subcategory_id,
             success: function (response) {
-                console.log(response)
-            },
-        });
 
-
-      const elements = `<div class="row_added_cat">
+              
+              // console.log(response)
+              const elements = `<div class="row_added_cat">
                       <span class="teks_cat">`+katasub+`</span>
                       <div class="trigger_remove">
                         <img src="<?php echo $this->config->item('frontend'); ?>images/icon_remove.png">
                         <input type="hidden" name='idsubcat' value="`+id+`">
                       </div>
                     </div>`
-      toDoLists.insertAdjacentHTML('beforeend', elements);
+                toDoLists.insertAdjacentHTML('beforeend', elements);
+            },
+        });
+
+
+     
       clickRemove();
     }
 

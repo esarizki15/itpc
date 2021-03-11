@@ -545,7 +545,6 @@ class WEB extends CI_Controller {
 
   public function thank_you($lang = '')
   {
-        $News = $this->Home_data_query->get_news();
         $this->master["content"] = $this->load->view("web/login/thankyou.php",[], TRUE);
         $this->render();
   }
@@ -553,9 +552,50 @@ class WEB extends CI_Controller {
 
   public function add_product($lang = '')
   {
-        $News = $this->Home_data_query->get_news();
-        $this->master["content"] = $this->load->view("web/dashboard/add_product.php",[], TRUE);
-        $this->render();
+      $this->load->model('API/User/User_query','User_query', true);
+      $this->load->model('API/Authentication/Auth','Auth', true);
+
+      $this->form_validation->set_rules('exporter_id', 'exporter_id', 'trim|required|numeric');
+
+      if($this->session->user_logged)
+      {
+
+            $exporter_id =  $this->User_query->detail_exporter($this->session->user_logged['user_id'])['exporter_detail'][0]['id'];
+            $auth_code = $this->session->user_logged['auth_code'];
+            $get_auth_code = $this->Auth->cek_auth($auth_code);
+            if($get_auth_code){
+                if($get_auth_code['user_id'] == $exporter_id){
+                        $update_product['data'] = $this->User_query->get_exporter_product($exporter_id);
+                            if($update_product['data']){
+                                    $update_product['status'] = true;
+                                    $update_product['message'] = "Data displayed successfully";
+                              }else{
+                                    $update_product['data'] = null;
+                                    $update_product['status'] = false;
+                                    $update_product['message'] = "Data is not displayed";
+
+                              }
+
+                        }else{
+                              $update_product['data'] = null;
+                              $update_product['status'] = false;
+                              $update_product['message'] = "Your exporter ID cannot be found, please contact the admin";
+                        }
+
+            }else{
+                  $update_product['data'] = null;
+                  $update_product['status'] = false;
+                  $update_product['message'] = "Wrong auth code please re-login";
+            }
+
+      }else{
+            $update_product['data'] = null;
+            $update_product['status'] = false;
+            $update_product['message'] = validation_errors();
+      }
+      $update_product['totaldataproduk']=count($update_product['data']);
+      $this->master["content"] = $this->load->view("web/dashboard/add_product.php",$update_product, TRUE);  
+      $this->render();
   }
 
   public function add_inquiry($lang = '')
