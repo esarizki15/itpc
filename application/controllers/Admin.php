@@ -970,6 +970,103 @@ class Admin extends CI_Controller {
 	}
 
 
+	public function Inquiry_management(){
+		if($_SESSION['admin_id'] == null || $_SESSION['admin_id'] == ""){
+			redirect("Admin/Logout");
+			}else{
+			$this->master["custume_css"] = $this->load->view('admin/inquery_managment/custume_css.php', [], TRUE);
+			$this->master["custume_js"] = $this->load->view('admin/inquery_managment/custume_js.php', [], TRUE);
+			$this->master["content"] = $this->load->view("admin/inquery_managment/content.php",$this->data, TRUE);
+			$this->render();
+			}
+	}
+
+	public function Inquiry_list_data()
+	{
+
+			$this->load->model('Admin/Inquery/Inquery_query','Inquery_query', true);
+
+			$postData = $this->input->get();
+			//$exporter_list = $this->Exporter_query->get_list();
+
+			$Inquery_list = $this->Inquery_query->Inquery_list($postData);
+
+			echo json_encode($Inquery_list);
+
+	}
+
+	public function Inquiry_detail($inquiry_id){
+		if($_SESSION['admin_id'] == null || $_SESSION['admin_id'] == ""){
+			redirect("Admin/Logout");
+			}else{
+
+			$this->load->model('Admin/Inquery/Inquery_query','Inquery_query', true);
+			$this->load->model('Admin/Importer/Importer_query','Importer_query', true);
+
+
+			$this->data['data'] = $this->Inquery_query->Inquery_detail($inquiry_id);
+			$this->data['data']['importer'] = $this->Importer_query->importer_category_list();
+			//var_dump($this->data['data']['detail_news']);
+
+
+			$this->master["custume_css"] = $this->load->view('admin/inquiry_detail/custume_css.php', [], TRUE);
+			$this->master["custume_js"] = $this->load->view('admin/inquiry_detail/custume_js.php',$this->data, TRUE);
+			$this->master["content"] = $this->load->view("admin/inquiry_detail/content.php",$this->data, TRUE);
+			$this->render();
+			}
+	}
+
+	public function get_importer_list(){
+			$this->load->model('Admin/Importer/Importer_query','Importer_query', true);
+
+			//$category_id = $this->input->get('category_id');
+			$category_id = $this->input->get();
+			$subcategory_list = $this->Importer_query->get_importer_inquery_list($category_id);
+
+			echo json_encode($subcategory_list);
+
+	}
+
+	public function get_list_importer_inquiry(){
+			$this->load->model('Admin/Importer/Importer_query','Importer_query', true);
+			$inquiry_id = $this->input->get();
+			$impoter_list = $this->Importer_query->list_importer_inquiry_list($inquiry_id);
+
+			echo json_encode($impoter_list);
+	}
+
+	public function update_approved_inquiry($approved,$inquiry_id){
+			$this->load->model('Admin/Inquery/Inquery_query','Inquery_query', true);
+
+
+			$update_date = date("Y-m-d H:i:s");
+			$update_by = $_SESSION['admin_id'];
+			if($approved == "approved"){
+					$progress = 50;
+			}else{
+					$progress = 0;
+			}
+
+
+			$update = [
+						"inquiry_id" => $inquiry_id,
+						"progress" => $progress,
+						"approved" => $approved,
+						"update_date" => $update_date,
+						"update_by" => $update_by
+			];
+
+			$update_inquiry = $this->Inquery_query->update_approved($update);
+			if($update_inquiry){
+				$this->session->set_flashdata('success', "inquiry has been update");
+				redirect("Admin/Inquiry_detail/".$inquiry_id);
+			}else{
+				$this->session->set_flashdata('error', "inquiry failed to update");
+				redirect("Admin/Inquiry_detail/".$inquiry_id);
+			}
+
+	}
+
 
 
 

@@ -533,6 +533,7 @@ class API extends CI_Controller {
 		];
 
 		$update_user = $this->User_query->User_activved($oder_actived,$update);
+		$update_exporter = $this->User_query->Exporter_activved($oder_actived,$update);
 
 		if($update_user){
 			redirect("API/confirm_success");

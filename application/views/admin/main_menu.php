@@ -16,7 +16,10 @@
           </ul>
       </li>
       <li class="has-submenu">
-          <a href="<?php echo base_url();?>Admin"><i class="dripicons-home"></i> Importer</a>
+          <a href="<?php echo base_url();?>Admin/Inquiry_management"><i class="dripicons-document"></i>Inquiry</a>
+      </li>
+      <li class="has-submenu">
+          <a href="<?php echo base_url();?>Admin"><i class="dripicons-user"></i> Importer</a>
       </li>
       <li class="has-submenu">
           <a href="#"><i class="dripicons-suitcase"></i> News & Exhibitions<i class="mdi mdi-chevron-down mdi-drop"></i></a>
