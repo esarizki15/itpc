@@ -57,6 +57,7 @@ $route['assets'] = '';
 $route['store_register'] = 'web/store_register';
 $route['store_login'] = 'web/store_login';
 $route['store_detail_exporter'] = 'web/store_detail_exporter';
+$route['store_product'] = 'web/store_product';
 
 
 //Handling Language

@@ -566,6 +566,8 @@ class WEB extends CI_Controller {
             if($get_auth_code){
                 if($get_auth_code['user_id'] == $exporter_id){
                         $update_product['data'] = $this->User_query->get_exporter_product($exporter_id);
+
+                        $update_product['ex_id']=$exporter_id;
                             if($update_product['data']){
                                     $update_product['status'] = true;
                                     $update_product['message'] = "Data displayed successfully";
@@ -594,8 +596,83 @@ class WEB extends CI_Controller {
             $update_product['message'] = validation_errors();
       }
       $update_product['totaldataproduk']=count($update_product['data']);
+
+      //pr($update_product);exit;
       $this->master["content"] = $this->load->view("web/dashboard/add_product.php",$update_product, TRUE);  
       $this->render();
+  }
+
+  public function store_product(){
+      $date = date_create();
+     // pr(str_replace('image/','',$_FILES['ex_pro_image']['type']));exit;
+      if (!empty($_FILES['ex_pro_image']['name'])) {
+
+            $upload_config['upload_path'] = './assets/website/exporter_product/';
+            //pr($upload_config['upload_path'] );exit;
+            $upload_config['allowed_types'] = 'jpg|jpeg|png|svg';
+            $upload_config['max_width']            = 1024;
+            $upload_config['max_height']           = 768;
+            $upload_config['file_name'] = "ex_pro_image"."-".date_timestamp_get($date).'-'.md5($_FILES['ex_pro_image']['name']).'.'.str_replace('image/','',$_FILES['ex_pro_image']['type']);
+            $upload_config['max_size'] = 2000;
+
+            $this->load->library('upload', $upload_config);
+            $this->upload->initialize($upload_config);
+
+            $data=array();
+            if (!$this->upload->do_upload('ex_pro_image')) 
+            {
+                  $data = array('error' => $this->upload->display_errors());
+            } 
+            else 
+            {
+                  $data = array('image_metadata' => $this->upload->data());
+            }
+      }
+      $this->load->model('API/User/User_query','User_query', true);
+      $this->form_validation->set_rules('exporter_id', 'exporter_id', 'trim|required|numeric');
+     
+      if($this->form_validation->run() == TRUE)
+            {
+                  // pr('ss');exit;
+                        $images = array();
+                        $id = $this->input->post('exporter_id');
+                        $ex_pro_image = $upload_config['file_name'];
+                        $date = date_create();
+
+                              $post_date = date("Y-m-d H:i:s");
+
+                              $product[] = [
+                                          'ex_pro_id' => null,
+                                          'exporter_id' => $id,
+                                          'ex_pro_image' => $ex_pro_image,
+                                          'post_date' => $post_date,
+                                          'post_by' => $id,
+                                          'delete_date' => null,
+                                          'delete_by' => null,
+                                          'status' => 1,
+                              ];
+                              $add_product = $this->User_query->add_exporter_product($product);
+
+                              if($add_product){
+                                    $product_img_path['data'] = 'success';
+                                    $product_img_path['status'] = true;
+                                    $product_img_path['message'] = "managed to save the product image";
+                              }else{
+                                    $product_img_path['data'] = null;
+                                    $product_img_path['status'] = false;
+                                    $product_img_path['message'] = "failed to save product images";
+                              }
+
+            }else{
+                        $product_img_path['data'] = null;
+                        $product_img_path['status'] = false;
+                        $product_img_path['message'] = "an error occurred in uploading the file, make sure the form contains the correct contents";
+            }
+            redirect('en/add_product');
+
+
+
+
   }
 
   public function add_inquiry($lang = '')
