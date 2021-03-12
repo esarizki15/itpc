@@ -23,9 +23,8 @@
           <ul class="submenu megamenu">
               <li>
                   <ul>
-                      <li><a href="<?php echo base_url()?>Admin">News Managamnet</a></li>
-                      <li><a href="<?php echo base_url()?>Admin">Exhibitions Managamnet</a></li>
-
+                      <li><a href="<?php echo base_url()?>Admin/News_management">Managamnet</a></li>
+                      <li><a href="<?php echo base_url()?>Admin/News_categories">Categories</a></li>
                   </ul>
               </li>
           </ul>

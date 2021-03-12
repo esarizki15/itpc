@@ -49,6 +49,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | Examples:	my-controller/index	-> my_controller/index
 |		my-controller/my-method	-> my_controller/my_method
 */
+
 $route['default_controller'] = 'web';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
@@ -56,6 +57,8 @@ $route['assets'] = '';
 $route['store_register'] = 'web/store_register';
 $route['store_login'] = 'web/store_login';
 $route['store_detail_exporter'] = 'web/store_detail_exporter';
+
+
 //Handling Language
 $route['id'] = 'web/index';
 $route['en'] = 'web/index';
@@ -76,10 +79,3 @@ $route[':any/inquiry_list'] = 'web/inquiry_list';
 $route[':any/inquiry_progress'] = 'web/inquiry_progress';
 $route[':any/inquiry_inbox'] = 'web/inquiry_inbox';
 $route[':any/thank_you'] = 'web/thank_you';
-
-
-
-
-
-
-

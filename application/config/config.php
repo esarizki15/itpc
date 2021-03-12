@@ -33,6 +33,7 @@ $config['exporter_product'] = 'website/exporter_product';
 $config['admin_source'] = $root.'assets/admin/';
 $config['frontend'] = $root.'assets/frontend/';
 $config['inquiry_file'] = 'website/inquiry';
+$config['news'] = 'website/news';
 
 
 
@@ -534,5 +535,3 @@ $config['rewrite_short_tags'] = FALSE;
 | Array:		array('10.0.1.200', '192.168.5.0/24')
 */
 $config['proxy_ips'] = '';
-
-

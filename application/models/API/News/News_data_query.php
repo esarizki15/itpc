@@ -69,6 +69,8 @@ class News_data_query extends CI_Model{
     		];
     }
 
+    
+
     /*
     $this->db->limit($limit, $start);
   $query = $this->db->get('form');

@@ -669,7 +669,7 @@ class Admin extends CI_Controller {
 					$this->session->set_flashdata('success', "subcategory data has been saved");
 				}else{
 					$is_save = false;
-					$this->session->set_flashdata('exporter', "subcategory data failed to save");
+					$this->session->set_flashdata('error', "subcategory data failed to save");
 				}
 
 			}else{
@@ -692,6 +692,285 @@ class Admin extends CI_Controller {
 			echo json_encode($subcategory_list);
 
 	}
+
+	public function News_management(){
+		if($_SESSION['admin_id'] == null || $_SESSION['admin_id'] == ""){
+			redirect("Admin/Logout");
+			}else{
+			$this->master["custume_css"] = $this->load->view('admin/news_managment/custume_css.php', [], TRUE);
+			$this->master["custume_js"] = $this->load->view('admin/news_managment/custume_js.php', [], TRUE);
+			$this->master["content"] = $this->load->view("admin/news_managment/content.php",$this->data, TRUE);
+			$this->render();
+			}
+	}
+
+	public function News_list_data()
+	{
+
+			$this->load->model('Admin/News/News_query','News_query', true);
+
+			$postData = $this->input->get();
+			//$exporter_list = $this->Exporter_query->get_list();
+
+			$news_list = $this->News_query->news_list($postData);
+
+			echo json_encode($news_list);
+
+	}
+
+	public function News_add(){
+		if($_SESSION['admin_id'] == null || $_SESSION['admin_id'] == ""){
+			redirect("Admin/Logout");
+			}else{
+
+			$this->load->model('Admin/Langguage/langguage_query','langguage_query', true);
+			$this->load->model('Admin/News/News_query','News_query', true);
+
+			$this->data['data']['language_list'] = $this->langguage_query->language_list();
+			$this->data['data']['tag_list'] = $this->News_query->tag_list();
+
+
+
+			$this->master["custume_css"] = $this->load->view('admin/news_add/custume_css.php', [], TRUE);
+			$this->master["custume_js"] = $this->load->view('admin/news_add/custume_js.php',$this->data, TRUE);
+			$this->master["content"] = $this->load->view("admin/news_add/content.php",$this->data, TRUE);
+			$this->render();
+			}
+	}
+
+
+	public function Submit_news(){
+		if($_SESSION['admin_id'] == null || $_SESSION['admin_id'] == ""){
+			redirect("Admin/Logout");
+		}else{
+				$this->load->model('Admin/Langguage/langguage_query','langguage_query', true);
+				$this->load->model('Admin/News/News_query','News_query', true);
+
+				$this->form_validation->set_rules('published_at', 'published_at', 'trim|required');
+				$this->form_validation->set_rules('tag_id', 'tag_id', 'trim|required');
+				$this->form_validation->set_rules('title[bahasa]', 'title', 'trim|required|min_length[3]');
+				$this->form_validation->set_rules('content[bahasa]', 'content', 'trim|required|min_length[3]');
+				$this->form_validation->set_rules('is_draft', 'is_draft', 'trim');
+
+				if($this->form_validation->run() == TRUE)
+				{
+
+					$is_save = true;
+					$last_order = $this->News_query->get_last_order();
+
+					if($last_order == 0){
+						$news_order = 1;
+					}else{
+						$news_order = $last_order + 1;
+					}
+
+
+					$date = date_create();
+					$update_date = date("Y-m-d H:i:s");
+					$created_date = date("Y-m-d H:i:s");
+
+
+					if($is_save == true){
+
+						if($_FILES['thumbnail']['error'] === 0) {
+							$upload_config['upload_path'] = 'assets/' . $this->config->item('news');
+							$upload_config['allowed_types'] = 'jpg|jpeg|png|svg';
+							$upload_config['max_height'] = 500;
+							$upload_config['max_width'] = 500;
+							$upload_config['file_name'] = "news-thumbnail"."-".date_timestamp_get($date);
+							$this->upload->initialize($upload_config);
+							if($this->upload->do_upload('thumbnail')) {
+								$news_thumbnail = $this->upload->data('file_name');
+								$save_status = true;
+							} else {
+								$this->session->set_flashdata('error', 'File thumbnail: ' . $this->upload->display_errors('', ''));
+								$save_status = false;
+								echo $upload_config;
+								die();
+							}
+						}else{
+							$thumbnail_defalut = rand(1,3);
+							$news_thumbnail = "thumbnail_news-".$thumbnail_defalut.".png";
+							$save_status = true;
+						}
+
+					}else{
+						$is_save = false;
+					}
+
+
+					if($is_save == true){
+						if($_FILES['header']['error'] === 0) {
+							$upload_config['upload_path'] = 'assets/' . $this->config->item('news');
+							$upload_config['allowed_types'] = 'jpg|jpeg|png|svg';
+							$upload_config['max_height'] = 768;
+							$upload_config['max_width'] = 1360;
+							$upload_config['file_name'] = "news-header"."-".date_timestamp_get($date);
+							$this->upload->initialize($upload_config);
+							if($this->upload->do_upload('header')) {
+								$news_header = $this->upload->data('file_name');
+								$is_save = true;
+							} else {
+								$this->session->set_flashdata('error', 'File header: ' . $this->upload->display_errors('', ''));
+								$is_save = false;
+							}
+						}else{
+							$header_defalut = rand(1,3);
+							$news_header = "header_news-".$header_defalut.".png";
+							$is_save = true;
+						}
+
+					}else{
+						$is_save = false;
+					}
+
+					if($is_save){
+						$data['title'] = $this->input->post('title');
+
+						$data['content'] = $this->input->post('content');
+						$data['tag_id'] = $this->input->post('tag_id');
+						$data['news_thumbnail_type'] = $this->input->post('news_thumbnail_type');
+
+						$lower_name = strtolower($data['title']['english']);
+						$lower_name	= preg_replace("/[^a-zA-Z0-9]/", "", $lower_name);
+						$slug = str_replace(" ","_",$lower_name);
+
+						$post_date = $this->input->post('published_at');
+						$post_date = date('Y-m-d H:i:s', strtotime($post_date));
+
+						$trans_key = "news_key"."-".date_timestamp_get($date);
+
+						$data['is_active'] = $this->input->post('is_draft');
+
+						if($data['is_active'] != null || $data['is_active'] != ""){
+							$data['status'] = 2;
+						}else{
+							$data['status'] = 1;
+						}
+
+						$news[] = [
+									"news_id" => null,
+									"news_slug" => $slug,
+									"news_order" => $news_order,
+									"news_title" => $data['title']['english'],
+									"tag_id" => $data['tag_id'],
+									"news_thumbnail_type" => $data['news_thumbnail_type'],
+									"news_thumbnail" => $news_thumbnail,
+									"news_header" => $news_header,
+									"news_youtube" => null,
+									"news_content" => $data['content']['english'],
+									"trans_key" => 	$trans_key,
+									"post_date" => $post_date,
+									"post_by" => $_SESSION['admin_id'],
+									"delete_date" => null,
+									"delete_by" => null,
+									"status" => $data['status']
+						];
+
+						$short_translations[] = [
+							"id" => null,
+							"trans_key" => $trans_key,
+							"english" => $data['title']['english'],
+							"bahasa" => $data['title']['bahasa'],
+							"spanyol" => $data['title']['spanyol'],
+							"deleted_by" => null,
+							"deleted_at" => null,
+							"updated_by" => $_SESSION['admin_id'],
+							"updated_at" => $update_date,
+							"created_by" => $_SESSION['admin_id'],
+							"created_at" => $created_date
+
+						];
+
+						$long_translations[] = [
+							"id" => null,
+							"trans_key" => $trans_key,
+							"english" => $data['content']['english'],
+							"bahasa" => $data['content']['bahasa'],
+							"spanyol" => $data['content']['spanyol'],
+							"deleted_by" => null,
+							"deleted_at" => null,
+							"updated_by" => $_SESSION['admin_id'],
+							"updated_at" => $update_date,
+							"created_by" => $_SESSION['admin_id'],
+							"created_at" => $created_date
+						];
+
+						$submit_news = $this->News_query->add_news($news);
+						$submit_short_translations = $this->langguage_query->add_short_translations($short_translations);
+						$submit_long_translations = $this->langguage_query->add_long_translations($long_translations);
+
+						if($submit_news && $submit_short_translations && $submit_long_translations){
+							$is_save = true;
+							$this->session->set_flashdata('success', "news data has been saved");
+						}else{
+							$is_save = false;
+							$this->session->set_flashdata('success', "news data has been saved");
+						}
+
+					}else{
+						$this->session->set_flashdata('error', "image news failed to upload");
+					}
+
+				}else{
+					$is_save = false;
+					$this->session->set_flashdata('error', "make sure the form is filled in correctly");
+				}
+				redirect("Admin/News_management");
+		}
+	}
+
+	public function delete_news($news_id){
+			$this->load->model('Admin/News/News_query','News_query', true);
+
+			$delete_date = date("Y-m-d H:i:s");
+			$delete_by = $_SESSION['admin_id'];
+			$status = 3;
+
+			$news = [
+						"news_id" => $news_id,
+						"delete_date" => $delete_date,
+						"delete_by" => $delete_by,
+						"status" => $status
+			];
+
+			$delete_news = $this->News_query->delete_news($news);
+
+			if($delete_news){
+				$is_save = true;
+				$this->session->set_flashdata('success', "news has been delete");
+			}else{
+				$is_save = false;
+				$this->session->set_flashdata('error', "news failed to delete");
+			}
+
+			redirect("Admin/News_management");
+	}
+
+
+	public function detail_news($news_id){
+		if($_SESSION['admin_id'] == null || $_SESSION['admin_id'] == ""){
+			redirect("Admin/Logout");
+			}else{
+
+			$this->load->model('Admin/Langguage/langguage_query','langguage_query', true);
+			$this->load->model('Admin/News/News_query','News_query', true);
+
+			$this->data['data']['language_list'] = $this->langguage_query->language_list();
+			$this->data['data']['tag_list'] = $this->News_query->tag_list();
+			$this->data['data']['detail_news'] = $this->News_query->detail_news($news_id);
+			//var_dump($this->data['data']['detail_news']);
+
+
+			$this->master["custume_css"] = $this->load->view('admin/news_detail/custume_css.php', [], TRUE);
+			$this->master["custume_js"] = $this->load->view('admin/news_detail/custume_js.php',$this->data, TRUE);
+			$this->master["content"] = $this->load->view("admin/news_detail/content.php",$this->data, TRUE);
+			$this->render();
+			}
+	}
+
+
+
 
 
 

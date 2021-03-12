@@ -36,106 +36,104 @@ class Exporter_query extends CI_Model {
 	}
 
 
-
 	function getEmployees($postData=null){
-			require_once('list_exporter_key.php');
-      $response = array();
+		require_once('list_exporter_key.php');
+		$response = array();
 
-      ## Read value
-      $draw = $postData['draw'];
-      $start = $postData['start'];
-      $rowperpage = $postData['length']; // Rows display per page
-      $columnIndex = $postData['order'][0]['column']; // Column index
-      $columnName = $postData['columns'][$columnIndex]['data']; // Column name
-      $columnSortOrder = $postData['order'][0]['dir']; // asc or desc
-      $searchValue = $postData['search']['value']; // Search value
+		## Read value
+		$draw = $postData['draw'];
+		$start = $postData['start'];
+		$rowperpage = $postData['length']; // Rows display per page
+		$columnIndex = $postData['order'][0]['column']; // Column index
+		$columnName = $postData['columns'][$columnIndex]['data']; // Column name
+		$columnSortOrder = $postData['order'][0]['dir']; // asc or desc
+		$searchValue = $postData['search']['value']; // Search value
 
-      ## Search
-      $searchQuery = "";
-      if($searchValue != ''){
-          $searchQuery = " (exporter_name like '%".$searchValue."%' or exporter_email like '%".$searchValue."%')";
-      }
+		## Search
+		$searchQuery = "";
+		if($searchValue != ''){
+			$searchQuery = " (exporter_name like '%".$searchValue."%' or exporter_email like '%".$searchValue."%')";
+		}
 
-			/*
-			if($searchValue != ''){
-					$searchQuery = " (exporter_name like '%".$searchValue."%' or
-								exporter_email like '%".$searchValue."%' or
-								post_date like'%".$searchValue."%' or
-								status like'%".$searchValue."%' ) ";
-			}
-			*/
-
-
-      ## Total number of records without filtering
-      $this->db->select('count(*) as allcount');
-      $records = $this->db->get('itpc_exporter')->result();
-      $totalRecords = $records[0]->allcount;
-
-      ## Total number of record with filtering
-      $this->db->select('count(*) as allcount');
-      if($searchQuery != '')
-      $this->db->where($searchQuery);
-      $records = $this->db->get('itpc_exporter')->result();
-      $totalRecordwithFilter = $records[0]->allcount;
+		/*
+		if($searchValue != ''){
+		$searchQuery = " (exporter_name like '%".$searchValue."%' or
+		exporter_email like '%".$searchValue."%' or
+		post_date like'%".$searchValue."%' or
+		status like'%".$searchValue."%' ) ";
+	}
+	*/
 
 
-      ## Fetch records
-      //$this->db->select('*');
-			$this->db->select([
-				'exporter_id as id',
-				'exporter_name as name',
-				'exporter_logo as logo',
-				'exporter_email as email',
-				'post_date as post_date',
-				'status as status'
-			]);
-      if($searchQuery != '')
-      $this->db->where($searchQuery);
-			$this->db->where('delete_date', null);
-      $this->db->order_by($columnName, $columnSortOrder);
-      $this->db->limit($rowperpage, $start);
-      //$records = $this->db->get('itpc_exporter')->result();
-			$records = $this->db->get('itpc_exporter');
+	## Total number of records without filtering
+	$this->db->select('count(*) as allcount');
+	$records = $this->db->get('itpc_exporter')->result();
+	$totalRecords = $records[0]->allcount;
 
-      //$data = array();
-
-      /*foreach($records as $record ){
-
-          $data[] = array(
-              "id"=>$record->exporter_id,
-              "name"=>$record->exporter_name,
-              "email"=>$record->exporter_email,
-              "post_date"=>$record->post_date,
-              "status"=>$record->status
-          );
-      }*/
-
-			if($records->num_rows() > 0){
-			$exporter_list = [];
-
-			array_map(function($item) use(&$exporter_list){
-				$exporter_list[] = (new list_exporter_key($item))->to_array();
-				//$category_list[0]['curr_category'] = "subcategory";
-			}, $records->result_array());
-			}
-
-      ## Response
-
-			if($exporter_list){
-
-	      $response = array(
-	          "draw" => intval($draw),
-	          "iTotalRecords" => $totalRecords,
-	          "iTotalDisplayRecords" => $totalRecordwithFilter,
-	          "aaData" => $exporter_list
-	      );
-				return $response;
-			}else{
-				return FALSE;
-			}
+	## Total number of record with filtering
+	$this->db->select('count(*) as allcount');
+	if($searchQuery != '')
+	$this->db->where($searchQuery);
+	$records = $this->db->get('itpc_exporter')->result();
+	$totalRecordwithFilter = $records[0]->allcount;
 
 
-  }
+	## Fetch records
+	//$this->db->select('*');
+	$this->db->select([
+		'exporter_id as id',
+		'exporter_name as name',
+		'exporter_logo as logo',
+		'exporter_email as email',
+		'post_date as post_date',
+		'status as status'
+		]);
+		if($searchQuery != '')
+		$this->db->where($searchQuery);
+		$this->db->where('delete_date', null);
+		$this->db->order_by($columnName, $columnSortOrder);
+		$this->db->limit($rowperpage, $start);
+		//$records = $this->db->get('itpc_exporter')->result();
+		$records = $this->db->get('itpc_exporter');
+
+		//$data = array();
+
+		/*foreach($records as $record ){
+
+		$data[] = array(
+		"id"=>$record->exporter_id,
+		"name"=>$record->exporter_name,
+		"email"=>$record->exporter_email,
+		"post_date"=>$record->post_date,
+		"status"=>$record->status
+		);
+	}*/
+
+	if($records->num_rows() > 0){
+		$exporter_list = [];
+
+		array_map(function($item) use(&$exporter_list){
+			$exporter_list[] = (new list_exporter_key($item))->to_array();
+			//$category_list[0]['curr_category'] = "subcategory";
+		}, $records->result_array());
+	}
+
+	## Response
+
+	if($exporter_list){
+
+		$response = array(
+		"draw" => intval($draw),
+		"iTotalRecords" => $totalRecords,
+		"iTotalDisplayRecords" => $totalRecordwithFilter,
+		"aaData" => $exporter_list
+		);
+		return $response;
+	}else{
+		return FALSE;
+	}
+}
+
 
 
 	function cek_expoter_name($exporter_name){
