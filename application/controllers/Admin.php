@@ -1066,7 +1066,7 @@ class Admin extends CI_Controller {
 
 	}
 
-	public function News_add(){
+	/*public function News_add(){
 		if($_SESSION['admin_id'] == null || $_SESSION['admin_id'] == ""){
 			redirect("Admin/Logout");
 			}else{
@@ -1084,7 +1084,7 @@ class Admin extends CI_Controller {
 			$this->master["content"] = $this->load->view("admin/news_add/content.php",$this->data, TRUE);
 			$this->render();
 			}
-	}
+	}*/
 
 	public function About_managment(){
 		if($_SESSION['admin_id'] == null || $_SESSION['admin_id'] == ""){
@@ -1099,9 +1099,9 @@ class Admin extends CI_Controller {
 
 
 
-			$this->master["custume_css"] = $this->load->view('admin/news_add/custume_css.php', [], TRUE);
-			$this->master["custume_js"] = $this->load->view('admin/news_add/custume_js.php',$this->data, TRUE);
-			$this->master["content"] = $this->load->view("admin/news_add/content.php",$this->data, TRUE);
+			$this->master["custume_css"] = $this->load->view('admin/about/custume_css.php', [], TRUE);
+			$this->master["custume_js"] = $this->load->view('admin/about/custume_js.php',$this->data, TRUE);
+			$this->master["content"] = $this->load->view("admin/about/content.php",$this->data, TRUE);
 			$this->render();
 			}
 	}
