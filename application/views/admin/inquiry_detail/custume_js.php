@@ -34,44 +34,6 @@
  </script>
 
 
-<script type='text/javascript'>
-$(document).ready(function(){
-	var counter = 2;
-	$('#del_file').hide();
-	$('img#add_file').click(function(){
-		$('#file_tools').before('<div class="file_upload" id="f'+counter+'"><input name="files[]" type="file">'+counter+'</div>');
-		$('#del_file').fadeIn(0);
-	counter++;
-	});
-	$('img#del_file').click(function(){
-		if(counter==3){
-			$('#del_file').hide();
-		}
-		counter--;
-		$('#f'+counter).remove();
-	});
-});
-</script>
-
-
-<script>
-function readURL(input) {
-  if (input.files && input.files[0]) {
-    var reader = new FileReader();
-
-    reader.onload = function(e) {
-      $('#blah').attr('src', e.target.result);
-    }
-
-    reader.readAsDataURL(input.files[0]); // convert to base64 string
-  }
-}
-
-$("#imgInp").change(function() {
-  readURL(this);
-});
-</script>
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
  <script>
    $("#category_id").select2({
@@ -146,9 +108,9 @@ $('form#category_form').submit(function(e) {
  });
 </script>
 
+
 <script>
 $('document').ready(function () {
-  alert("test");
 setInterval(function () {getRealData()}, 1000);//request every x seconds
 
 function getRealData() {
@@ -165,7 +127,7 @@ function getRealData() {
            var html = '';
            var i;
            for(i=0,no=1; i<data.length; i++,no++){
-               html += '<tr><td>'+no+'</td><td>'+data[i].importer_name+'</td><td>'+data[i].category_title+'</td><td><a class="btn btn-danger waves-effect waves-light" href="<?php echo base_url();?>Admin/delete_expoter_categories/'+data[i].importer_inquiry_id' " ><i class="fas fa-trash-alt"></i></td></tr>';
+               html += '<tr><td>'+no+'</td><td>'+data[i].importer_name+'</td><td>'+data[i].category_title+'</td><td><a class="btn btn-danger waves-effect waves-light" href="<?php echo base_url();?>Admin/delete_expoter_categories/'+data[i].importer_inquiry_id+'" ><i class="fas fa-trash-alt"></i></td></tr>';
            }
            $('#list_importer_categories').html(html);
         },

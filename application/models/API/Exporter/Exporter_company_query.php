@@ -154,6 +154,8 @@ class Exporter_company_query extends CI_Model{
         $query->free_result();
         $this->db->reset_query();
 
+        $id = $exporter_detail[0]['id'];
+
         $this->db->select([
           'a.ex_pro_id as image_id',
           'a.ex_pro_image as image_product'
@@ -164,7 +166,7 @@ class Exporter_company_query extends CI_Model{
         $query = $this->db->get('itpc_exporter_product a');
         $exporter_product = [];
 
-        if(isset($query)){
+        if(!isset($query)){
             $exporter_product[0]['image_id'] = 0;
             $exporter_product[0]['image_product'] = base_url()."assets/website/exporter_product/"."dummy.jpg";
         }

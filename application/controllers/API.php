@@ -71,7 +71,7 @@ class API extends CI_Controller {
 		return json_encode($news);
 	}
 
-	public function about(){
+	/*public function about(){
 		$this->load->model('API/About/About_query','About_query', true);
 
 			$about = $this->About_query->get();
@@ -85,7 +85,28 @@ class API extends CI_Controller {
  		 	}
 		echo json_encode($about); //send data to script
 		return json_encode($about);
+	}*/
+
+	public function about(){
+		$this->load->model('API/About/About_query','About_query', true);
+		$this->data["data"] = $this->About_query->get();
+		if($this->data["data"]){
+			$this->load->view('mobile/About.php',$this->data);
+		}else{
+			echo "sorry page data is not available";
+		}
 	}
+
+	public function contact(){
+		$this->load->model('API/Contact/Contact_query','Contact_query', true);
+		$this->data["data"] = $this->Contact_query->get();
+		if($this->data["data"]){
+			$this->load->view('mobile/Contact.php',$this->data);
+		}else{
+			echo "sorry page data is not available";
+		}
+	}
+
 
 	public function news(){
 		$this->load->model('API/News/News_data_query','News_data_query', true);
@@ -792,9 +813,6 @@ class API extends CI_Controller {
 		}
 		echo json_encode($category_exporter); //send data to script
 		return json_encode($category_exporter);
-
-
-
 	}
 
 	public function add_category_exporter()
@@ -1772,7 +1790,6 @@ class API extends CI_Controller {
 			public function importer_inquiry_detail($importer_id){
 				$this->load->model('API/Inquiry/Inquiry_query','Inquiry_query', true);
 				if($importer_id){
-
 					$this->data["data"] = $this->Inquiry_query->importer_detail($importer_id);
 					$this->load->view('mobile/importer_detail.php',$this->data);
 				}else{

@@ -1031,7 +1031,6 @@ class Admin extends CI_Controller {
 			$this->load->model('Admin/Importer/Importer_query','Importer_query', true);
 			$inquiry_id = $this->input->get();
 			$impoter_list = $this->Importer_query->list_importer_inquiry_list($inquiry_id);
-
 			echo json_encode($impoter_list);
 	}
 
@@ -1065,6 +1064,46 @@ class Admin extends CI_Controller {
 				redirect("Admin/Inquiry_detail/".$inquiry_id);
 			}
 
+	}
+
+	public function News_add(){
+		if($_SESSION['admin_id'] == null || $_SESSION['admin_id'] == ""){
+			redirect("Admin/Logout");
+			}else{
+
+			$this->load->model('Admin/Langguage/langguage_query','langguage_query', true);
+			$this->load->model('Admin/News/News_query','News_query', true);
+
+			$this->data['data']['language_list'] = $this->langguage_query->language_list();
+			$this->data['data']['tag_list'] = $this->News_query->tag_list();
+
+
+
+			$this->master["custume_css"] = $this->load->view('admin/news_add/custume_css.php', [], TRUE);
+			$this->master["custume_js"] = $this->load->view('admin/news_add/custume_js.php',$this->data, TRUE);
+			$this->master["content"] = $this->load->view("admin/news_add/content.php",$this->data, TRUE);
+			$this->render();
+			}
+	}
+
+	public function About_managment(){
+		if($_SESSION['admin_id'] == null || $_SESSION['admin_id'] == ""){
+			redirect("Admin/Logout");
+			}else{
+
+			$this->load->model('Admin/Langguage/langguage_query','langguage_query', true);
+			$this->load->model('Admin/News/News_query','News_query', true);
+
+			$this->data['data']['language_list'] = $this->langguage_query->language_list();
+			$this->data['data']['tag_list'] = $this->News_query->tag_list();
+
+
+
+			$this->master["custume_css"] = $this->load->view('admin/news_add/custume_css.php', [], TRUE);
+			$this->master["custume_js"] = $this->load->view('admin/news_add/custume_js.php',$this->data, TRUE);
+			$this->master["content"] = $this->load->view("admin/news_add/content.php",$this->data, TRUE);
+			$this->render();
+			}
 	}
 
 

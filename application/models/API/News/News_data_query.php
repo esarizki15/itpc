@@ -19,7 +19,7 @@ class News_data_query extends CI_Model{
 
     		$this->db->where('a.status', 1);
     		$this->db->where('a.delete_date', null);
-        if($tag_id != null) {
+        if($tag_id != 0) {
             $this->db->where('b.tag_id', $tag_id);
         }/*else{
             $this->db->where('b.tag_id >', 1);
@@ -69,7 +69,7 @@ class News_data_query extends CI_Model{
     		];
     }
 
-    
+
 
     /*
     $this->db->limit($limit, $start);

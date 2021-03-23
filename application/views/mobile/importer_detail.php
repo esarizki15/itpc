@@ -2,8 +2,8 @@
 <html dir="ltr" lang="en-US">
 <body>
 <?php foreach ($data['importer_detail'] as $key => $item){ ?>
-	<h2>Name</h2>
-	<p><?php echo $item['importer_name']; ?>
+	<h2 style="font-size:90px;">Name</h2>
+	<p style="font-size:40px;"><?php echo $item['importer_name']; ?>
 		
 	<br/>
 	<h2>Detai</h2>
