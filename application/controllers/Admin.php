@@ -1063,7 +1063,6 @@ class Admin extends CI_Controller {
 				$this->session->set_flashdata('error', "inquiry failed to update");
 				redirect("Admin/Inquiry_detail/".$inquiry_id);
 			}
-
 	}
 
 	/*public function News_add(){
@@ -1092,10 +1091,10 @@ class Admin extends CI_Controller {
 			}else{
 
 			$this->load->model('Admin/Langguage/langguage_query','langguage_query', true);
-			$this->load->model('Admin/News/News_query','News_query', true);
+			$this->load->model('Admin/About/About_query','About_query', true);
 
 			$this->data['data']['language_list'] = $this->langguage_query->language_list();
-			$this->data['data']['tag_list'] = $this->News_query->tag_list();
+			$this->data['data']['about'] = $this->About_query->about();
 
 
 
@@ -1105,6 +1104,8 @@ class Admin extends CI_Controller {
 			$this->render();
 			}
 	}
+
+
 
 
 

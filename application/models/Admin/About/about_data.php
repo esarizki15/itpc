@@ -1,7 +1,9 @@
 <?php
 class about_data {
 
-	public $about_content;
+	public $content_english;
+	public $content_bahasa;
+	public $content_spanyol;
 	public $about_header;
 
 	public function __construct($arr) {
@@ -12,7 +14,7 @@ class about_data {
 						$CI =& get_instance();
 						$this->$key = $CI->config->item('website_assets').'about/'.$arr['about_header'];
 					}
-					break;					
+					break;
 				default:
 					if(array_key_exists($key, $arr))
 						$this->$key = $arr[$key];
