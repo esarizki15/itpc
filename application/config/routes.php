@@ -54,16 +54,18 @@ $route['default_controller'] = 'web';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 $route['assets'] = '';
+
+//action
 $route['store_register'] = 'web/store_register';
 $route['store_login'] = 'web/web_store_login';
 $route['store_detail_exporter'] = 'web/store_detail_exporter';
 $route['store_product'] = 'web/store_product';
-
+$route['store_inquiry'] = 'web/store_inquiry';
 
 //Handling Language
 $route['id'] = 'web/index';
 $route['en'] = 'web/index';
-$route['sp'] = 'web/index';
+$route['es'] = 'web/index';
 $route[':any/web_exporter'] = 'web/web_exporter';
 $route[':any/web_news'] = 'web/web_news';
 $route[':any/web_news_detail/(:any)'] = 'web/web_news_detail/$1';

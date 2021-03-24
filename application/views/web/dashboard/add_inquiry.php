@@ -14,11 +14,9 @@
   					
             <div class="action_exporter_account">
               <div class="row-list">
-
-                <form id="addInquiry">
+              <form id="addInquiry" action="<?php echo base_url(). 'store_inquiry'; ?>" method="post" enctype="multipart/form-data" >
                   <div class="cols2">
-
-                    <span class="infoSmall"><strong>Add Inquiry</strong></span>
+                  <span class="infoSmall"><strong>Add Inquiry</strong></span>
                     <span class="infoSmall">Input detailed information about your inquiry</span>
                     <div class="form_inner">
                       <div class="form_group">
@@ -82,7 +80,7 @@
                         <input type="email" name="email" class="input_form" placeholder="Email"  />
                       </div>
                       <div class="form_group">
-                        <input type="tel" name="phone" class="input_form" placeholder="Email  Phone/ Mobile Phone"  />
+                        <input type="tel" name="phone" class="input_form" placeholder="Email Phone/ Mobile Phone"  />
                       </div>
                       <div class="form_group">
                         <button type="submit" class="bt_block_blue buttonAddInquiry">

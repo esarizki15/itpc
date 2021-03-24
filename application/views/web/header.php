@@ -26,7 +26,7 @@
 			<div class="right_header">
 				<div class="select_lang">
 					<div class="btn_lang">
-						<img class="lang_img" src="<?php echo $this->config->item('frontend'); ?>images/lang_<?php  if($lang == 'en' || $lang == '') { echo 'en'; }elseif( $lang == 'id') { echo 'ina'; }else{ echo 'sp';} ?>.png">
+						<img class="lang_img" src="<?php echo $this->config->item('frontend'); ?>images/lang_<?php  if($lang == 'en' || $lang == '') { echo 'en'; }elseif( $lang == 'id') { echo 'ina'; }else{ echo 'es';} ?>.png">
 						<span class="lang_caption"><?php  if($lang == 'en' || $lang == '') { echo "English"; }elseif( $lang == 'id') { echo "Bahasa"; }else{ echo "Spanish";}  ?></span>
 
 						
@@ -39,7 +39,7 @@
 					   		</a>
 					   </li>
 					   <li>
-					   		<a href="<?php echo getLang('sp');?>" class="trigger_lang active" data-img="<?php echo $this->config->item('frontend'); ?>images/lang_sp.png" data-lang="Spanish">
+					   		<a href="<?php echo getLang('es');?>" class="trigger_lang active" data-img="<?php echo $this->config->item('frontend'); ?>images/lang_sp.png" data-lang="Spanish">
 								<img class="lang_img_menu" src="<?php echo $this->config->item('frontend'); ?>images/lang_sp.png">
 								<span class="lang_caption_menu">Spanish</span>
 					   		</a>
@@ -73,7 +73,7 @@
 	  </div>
 	  <div class="select_lang select_lang_mobile">
 		<div class="btn_lang">
-			<img class="lang_img" src="<?php echo $this->config->item('frontend'); ?>images/lang_<?php  if($lang == 'en' || $lang == '') { echo 'en'; }elseif( $lang == 'id') { echo 'ina'; }else{ echo 'sp';} ?>.png">
+			<img class="lang_img" src="<?php echo $this->config->item('frontend'); ?>images/lang_<?php  if($lang == 'en' || $lang == '') { echo 'en'; }elseif( $lang == 'id') { echo 'ina'; }else{ echo 'es';} ?>.png">
 			<span class="lang_caption"><?php  if($lang == 'en' || $lang == '') { echo "English"; }elseif( $lang == 'id') { echo "Bahasa"; }else{ echo "Spanish";}  ?></span>
 
 			
@@ -86,7 +86,7 @@
 		   		</a>
 		   </li>
 		   <li>
-		   		<a href="sp" class="trigger_lang active" data-img="<?php echo $this->config->item('frontend'); ?>images/lang_sp.png" data-lang="Spanish">
+		   		<a href="es" class="trigger_lang active" data-img="<?php echo $this->config->item('frontend'); ?>images/lang_sp.png" data-lang="Spanish">
 					<img class="lang_img_menu" src="<?php echo $this->config->item('frontend'); ?>images/lang_sp.png">
 					<span class="lang_caption_menu">Spanish</span>
 		   		</a>
