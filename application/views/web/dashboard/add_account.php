@@ -16,7 +16,9 @@
   						<p>Create profile of your company</p>
   					</div>
             <form action="<?php echo base_url(). 'store_detail_exporter'; ?>" method="post" enctype="multipart/form-data" >
-  					<?php foreach($exporter_detail as $item){ ?>
+  					<?php 
+            if ($detail_user['exporter_detail']){
+            foreach($detail_user['exporter_detail'] as $item){ ?>
            
             <div class="action_exporter_account">
               <div class="row-list">
@@ -65,14 +67,69 @@
                     <img src="<?php echo $this->config->item('frontend'); ?>images/icon_upload.png">
                     <span>Choose File</span>
                   </button>
-                  <input type="hidden" name="id" class="input_form" placeholder="Mobile Phone" value="<?php echo $item['id']; ?>" />
+                  <input type="hidden" name="id" class="input_form" placeholder="Mobile Phone" value="<?php echo $user_id; ?>" />
                   <button type="submit" class="bt_block_blue ">
                     Submit
                   </button>
                 </div>
               </div>
             </div><!--end.action_exporter_account-->
-          <?php  } ?>
+          <?php  }}else{ ?>
+            <div class="action_exporter_account">
+              <div class="row-list">
+                <div class="cols2">
+                  <div class="form_inner">
+                    <div class="form_group">
+                      <input type="text" name="name" class="input_form" placeholder="Company Name"  required />
+                    </div>
+                    <div class="form_group">
+                      <input type="text" name="address" class="input_form" placeholder="Address"  required />
+                    </div>
+                    <div class="form_group">
+                      <input type="email" name="email" class="input_form" placeholder="Email"  required />
+                    </div>
+                    <div class="form_group">
+                      <input type="tel" name="phone" class="input_form" placeholder="Mobile Phone"  required />
+                    </div>
+                  </div>
+                </div><!--end.cols2-->
+
+                <div class="cols2">
+                  <div class="form_inner">
+                    <div class="form_group">
+                      <input type="tel" name="office_phone" class="input_form" placeholder="Office Phone"  required />
+                    </div>
+                    <div class="form_group">
+                      <input type="tel" name="fax" class="input_form" placeholder="Fax"  required />
+                    </div>
+                    <div class="form_group">
+                      <input type="text" name="link" class="input_form" placeholder="Website link"  required />
+                    </div>
+                  </div>
+                </div><!--end.cols2-->
+
+              </div><!--end.row-list-->
+              <div class="rows relative">
+                <div class="title_upload">
+                  <span>Company Logo (500x500px)</span>
+                </div>
+                <div class="preview_img">
+                  <img id="logo_preview" src="<?php echo $this->config->item('frontend').'images/logo_preview.png';  ?> ">
+                  <input type='file' name='exporter_logo' id="imgInp" style="opacity: 0;position: absolute;" />
+                </div><!--end.preview_img-->
+                <div class="row-block-button">
+                  <button type="button" id="trigger_upload" class="bt_block_white bt_with_icon">
+                    <img src="<?php echo $this->config->item('frontend'); ?>images/icon_upload.png">
+                    <span>Choose File</span>
+                  </button>
+                  <input type="hidden" name="id" class="input_form" placeholder="Mobile Phone" value="<?php echo $user_id; ?>" />
+                  <button type="submit" class="bt_block_blue ">
+                    Submit
+                  </button>
+                </div>
+              </div>
+            </div><!--end.action_exporter_account-->
+          <?php } ?>
           </form>
 
 

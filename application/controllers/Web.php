@@ -379,7 +379,8 @@ class WEB extends CI_Controller {
             $this->load->model('API/User/User_query','User_query', true);
             $auth_code = $this->input->get_request_header('auth_code');
             $user_id = $this->session->user_logged['user_id'];
-            $detail_user = $this->User_query->detail_exporter($user_id);
+            $detail_user['user_id'] = $user_id;
+            $detail_user['detail_user'] = $this->User_query->detail_exporter($user_id);
             //pr($detail_user);exit;
 
       }else{
@@ -508,6 +509,7 @@ class WEB extends CI_Controller {
 				$update_exporter['status'] = false;
 				$update_exporter['message'] = validation_errors();
 			}
+                  
                   
                         redirect($this->redirection('web_exporter_account'));
               

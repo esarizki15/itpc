@@ -49,6 +49,7 @@
                   </div><!--end.action_item-->
                 </div><!--end.cols2-->
 
+                <?php if($exporter_detail[0]['name']) {?>
                 <div class="cols2">
                   <div class="action_item">
                     <span class="infoSmall"><strong>Create Inquiry</strong></span>
@@ -66,6 +67,7 @@
                       </div><!--end.row_action_button-->
                   </div><!--end.action_item-->
                 </div><!--end.cols2-->
+                <?php } ?>
 
               </div><!--end.row-list-->
             </div><!--end.action_exporter_account-->
