@@ -6,6 +6,6 @@
     $lang['language']['contactus']='CONTACT US';
     $lang['language']['login']='LOGIN';
     $lang['language']['logout']='LOGOUT';
-    $lang['language']['exporter_dashboard']='DASHBOARD';
+    $lang['language']['exporter_dashboard']='ACCOUNT';
     
 ?>

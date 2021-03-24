@@ -127,7 +127,7 @@
                 </div>
                 <div class="caption_news">
                   <span class="category">NEWS</span>
-                  <h3><?php echo $item['title'];?></h3>
+                  <h3 class="line-clamp"><?php echo $item['title'];?></h3>
                   <a href="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en'."/web_news_detail/".$item['slug'] : $this->uri->segment(1)."/news_detail/".$item['slug']) ?>" class="readMore">Read more ></a>
                 </div>
               </div>

@@ -6,5 +6,5 @@
     $lang['language']['contactus']='HUBUNGI KAMI';
     $lang['language']['login']='MASUK';
     $lang['language']['logout']='LOGOUT';
-    $lang['language']['exporter_dashboard']='DASHBOARD';
+    $lang['language']['exporter_dashboard']='AKUN';
 ?>

@@ -6,5 +6,5 @@
     $lang['language']['contactus']='CONTÁCTENOS';
     $lang['language']['login']='ACCESO';
     $lang['language']['logout']='LOGOUT';
-    $lang['language']['exporter_dashboard']='TOBLERO';
+    $lang['language']['exporter_dashboard']='CUENTA';
 ?>

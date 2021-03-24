@@ -632,12 +632,17 @@ section {
 	margin-bottom: 10px;
 }
 .caption_news h3{
-	font-size: 22px;
-	line-height: 30px;
+	font-size: 18px;
+	line-height: 25px;
 	color: #0F1419;
 	margin: 0 0 10px 0;
-
 	font-family: 'Roboto', sans-serif;
+	overflow: hidden;
+}
+.line-clamp{
+	display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;  
 }
 .caption_news .readMore{
 	font-size: 15px;
