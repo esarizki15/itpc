@@ -24,23 +24,23 @@
                       <div class="row_action_button">
 
                         <?php if($exporter_detail[0]['name'] == "" ) {?>
-                        <a href="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en' : $this->uri->segment(1)."/update_account") ?>" class="button_with_icon">
+                        <a href="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en' : $this->uri->segment(1)."/web_update_account") ?>" class="button_with_icon">
                           <img src="<?php echo $this->config->item('frontend'); ?>images/icon_add_profile.png" />
                           <span>Add Exporter Profile</span>
                         </a>
                         <?php } ?>
 
                         <?php if($exporter_detail[0]['name']) {?>
-                        <a href="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en' : $this->uri->segment(1)."/update_account") ?>" class="button_with_icon">
+                        <a href="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en' : $this->uri->segment(1)."/web_update_account") ?>" class="button_with_icon">
                           <img src="<?php echo $this->config->item('frontend'); ?>images/icon_add_edit.png" />
                           <span>Edit Exporter Profile</span>
                         </a>
-                        <a href="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en' : $this->uri->segment(1)."/add_category") ?>" class="button_with_icon">
+                        <a href="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en' : $this->uri->segment(1)."/web_add_category") ?>" class="button_with_icon">
                           <img src="<?php echo $this->config->item('frontend'); ?>images/icon_add_plus.png" />
                           <span>Update Category</span>
                         </a>
 
-                        <a href="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en' : $this->uri->segment(1)."/add_product") ?>" class="button_with_icon">
+                        <a href="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en' : $this->uri->segment(1)."/web_add_product") ?>" class="button_with_icon">
                           <img src="<?php echo $this->config->item('frontend'); ?>images/icon_add_plus.png" />
                           <span>Update Product</span>
                         </a>
@@ -53,12 +53,12 @@
                   <div class="action_item">
                     <span class="infoSmall"><strong>Create Inquiry</strong></span>
                       <div class="row_action_button">
-                        <a href="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en' : $this->uri->segment(1)."/add_inquiry") ?>" class="button_with_icon">
+                        <a href="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en' : $this->uri->segment(1)."/web_add_inquiry") ?>" class="button_with_icon">
                           <img src="<?php echo $this->config->item('frontend'); ?>images/icon_add_plus.png" />
                           <span>Create Inquiry</span>
                         </a>
 
-                        <a href="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en' : $this->uri->segment(1)."/inquiry_list") ?>" class="button_with_icon">
+                        <a href="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en' : $this->uri->segment(1)."/web_inquiry_list") ?>" class="button_with_icon">
                           <img src="<?php echo $this->config->item('frontend'); ?>images/icon_add_list.png" />
                           <span>Inquiry List</span>
                         </a>

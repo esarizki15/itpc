@@ -101,7 +101,7 @@ function TreeCat(){
         var basedomain= '<?=base_url()?>';
         //console.log(basedomain);
         $.ajax({
-            url: basedomain+"en/add_category",
+            url: basedomain+"en/web_add_category",
             type: "POST",
             data: "categoryId="+categoryId,
             success: function (response) {

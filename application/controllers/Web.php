@@ -40,26 +40,26 @@ class WEB extends CI_Controller {
       $this->master["content"] = $this->load->view("web/home/home.php",$data, TRUE);
       $this->render();
       }
-      public function news($lang = '')
+      public function web_news($lang = '')
       {    
       $News = $this->Home_data_query->get_news();
       $this->master["content"] = $this->load->view("web/news/news.php",[], TRUE);
       $this->render();
       }
 
-      public function news_detail($slug)
+      public function web_news_detail($slug)
       {         
         $NewsDetail = $this->Home_data_query->get_news_detail($slug);
         $this->master["content"] = $this->load->view("web/news/news_detail.php", $NewsDetail , TRUE);
         $this->render();
       }
-      public function welcome_login($lang = '')
+      public function web_welcome_login($lang = '')
       {
      
         $this->master["content"] = $this->load->view("web/login/welcome_login.php",[], TRUE);
         $this->render();
       }
-      public function itpc_login($lang = '')
+      public function web_itpc_login($lang = '')
       {
         session_start();
         $_SESSION['token'] = bin2hex(random_bytes(32));
@@ -67,22 +67,34 @@ class WEB extends CI_Controller {
         $this->master["content"] = $this->load->view("web/login/login.php",$data, TRUE);
         $this->render();
       }
-      public function itpc_Logout()
+      public function web_itpc_Logout()
 	{
 		$this->session->sess_destroy();
-		redirect("en/itpc_login");
+		redirect($this->redirection("web_itpc_login"));
 
 	}
+      function redirection($string){
 
-      public function store_login(){
+            $redirect ="";
+            if($this->uri->segment(1)==''){
+                  $redirect='en/'+$string;
+            }elseif($this->uri->segment(1) == 'en'){
+                  $redirect=$this->uri->segment(1).'/'.$string;
+            }elseif($this->uri->segment(1) == 'id'){
+                  $redirect=$this->uri->segment(1).'/'.$string;
+            }elseif($this->uri->segment(1) == 'sp'){
+                  $redirect=$this->uri->segment(1).'/'.$string;
+            }
+           
+            //$redirect=@$this->config->base_url(@$this->uri->segment(1) == '' ? $this->uri->segment(1) == 'en' ? 'en/'.$string : $this->uri->segment(1) == 'id' ? 'id/'.$string : 'en/'.$string :'en/'.$string) ;
+            return $redirect;
+      }
+      public function web_store_login(){
 
       if($this->input->post('csrf_token_reg') !== $_SESSION['token']) {
             $this->session->set_flashdata('flsh_msg','failed to register user data, please contact the admin');
-            redirect('en/itpc_login');
+            redirect($this->redirection("web_itpc_login"));
       } 
-     
-    
-
       $this->load->model('API/User/User_query','User_query', true);
       $this->form_validation->set_rules('email', 'email', 'trim|required|valid_email');
       $this->form_validation->set_rules('password', 'password', 'trim|required|min_length[6]');
@@ -181,14 +193,14 @@ class WEB extends CI_Controller {
       
       if($login['status'] == 1){
             $this->session->set_userdata(['user_logged' =>  $login['data']]);
-            redirect('en/exporter_account');
+            redirect($this->redirection("web_exporter_account"));
       }else{
             $this->session->set_flashdata('flsh_msg_login','Please Check Your Email And Password !');
-          
-            redirect('en/itpc_login');
+            
+            redirect($this->redirection('web_itpc_login'));
       }
   }
-  public function register($lang = '')
+  public function web_register($lang = '')
   {
         session_start();
         $_SESSION['token'] = bin2hex(random_bytes(32));
@@ -201,7 +213,7 @@ class WEB extends CI_Controller {
 
             if($this->input->post('csrf_token_reg') !== $_SESSION['token']) {
                   $this->session->set_flashdata('flsh_msg','failed to register user data, please contact the admin');
-                  redirect('en/register');
+                  redirect($this->redirection('web_register'));
             } 
 
 		$this->load->model('API/User/User_query','User_query', true);
@@ -319,17 +331,17 @@ class WEB extends CI_Controller {
 			$register['message'] = validation_errors();
 		}
 		//echo json_encode($register); 
-            if($register['status']==true) redirect('en/thank_you');
+            if($register['status']==true) redirect($this->redirection('web_thank_you'));
             $this->session->set_flashdata('flsh_msg',$register['message']);
-		redirect('en/register');
+		redirect($this->redirection('web_register'));
   }
 
-      public function confirm_success(){
+      public function web_confirm_success(){
       
       echo "Congratulations, your account activation is successful";
       }
 
-      public function confirm_failed(){
+      public function web_confirm_failed(){
             //$this->load->view('email/confirm_failed.php',[],TRUE);
             echo "Sorry your account activation failed";
       }
@@ -338,7 +350,7 @@ class WEB extends CI_Controller {
       return password_hash($password, PASSWORD_DEFAULT);
       }
 
-    public function exporter()
+    public function web_exporter()
 	{
         //pr('masuk');exit;
         $this->master["custume_css"] = NULL;
@@ -348,7 +360,7 @@ class WEB extends CI_Controller {
         $this->render();
 	}
 
-  public function exporter_account($lang = '')
+  public function web_exporter_account($lang = '')
   {
        
         $this->load->model('API/User/User_query','User_query', true);
@@ -358,7 +370,7 @@ class WEB extends CI_Controller {
         $this->render();
   }
 
-  public function add_account($lang = '')
+  public function web_add_account($lang = '')
   {
      
       if($this->session->user_logged)
@@ -370,7 +382,7 @@ class WEB extends CI_Controller {
             //pr($detail_user);exit;
 
       }else{
-            redirect('en/login');
+            redirect($this->redirection('web_login'));
       }
 
         $this->master["content"] = $this->load->view("web/dashboard/add_account.php",$detail_user, TRUE);
@@ -496,14 +508,14 @@ class WEB extends CI_Controller {
 				$update_exporter['message'] = validation_errors();
 			}
                   
-                        redirect('en/exporter_account');
+                        redirect($this->redirection('web_exporter_account'));
               
 
 	}
 
 
 
-  public function add_category($lang = '')
+  public function web_add_category($lang = '')
   {
       $this->load->model('API/Exporter/Exporter_category_query','Exporter_category_query', true);
       $this->load->model('API/Exporter/Exporter_subcategory_query','Exporter_subcategory_query', true);
@@ -543,14 +555,14 @@ class WEB extends CI_Controller {
       $this->render();
   }
 
-  public function thank_you($lang = '')
+  public function web_thank_you($lang = '')
   {
         $this->master["content"] = $this->load->view("web/login/thankyou.php",[], TRUE);
         $this->render();
   }
 
 
-  public function add_product($lang = '')
+  public function web_add_product($lang = '')
   {
       $this->load->model('API/User/User_query','User_query', true);
       $this->load->model('API/Authentication/Auth','Auth', true);
@@ -668,34 +680,50 @@ class WEB extends CI_Controller {
                         $product_img_path['status'] = false;
                         $product_img_path['message'] = "an error occurred in uploading the file, make sure the form contains the correct contents";
             }
-            redirect('en/add_product');
+            redirect($this->redirection('web_add_product'));
 
 
 
 
   }
 
-  public function add_inquiry($lang = '')
+  public function web_add_inquiry($lang = '')
   {
-        $News = $this->Home_data_query->get_news();
-        $this->master["content"] = $this->load->view("web/dashboard/add_inquiry.php",[], TRUE);
+      $this->load->model('API/Exporter/Exporter_category_query','Exporter_category_query', true);
+      $this->load->model('API/Exporter/Exporter_subcategory_query','Exporter_subcategory_query', true);
+      $this->load->model('API/Authentication/Auth','Auth', true);
+      $this->load->model('API/User/User_query','User_query', true);
+      $auth_code = $this->session->user_logged['auth_code'];
+      $get_auth_code = $this->Auth->cek_auth($auth_code);
+    
+      $category_exporter=array();
+      if($get_auth_code){
+                  $category_exporter['data']['id_ex']  = $this->User_query->detail_exporter($this->session->user_logged['user_id'])['exporter_detail'][0]['id'];
+                  $category_exporter['data']['category'] = $this->Exporter_category_query->category_list();
+                  $category_exporter['data']['subcategory'] = $this->Exporter_subcategory_query->subcategory_list();
+                  $category_exporter['data']['curr_category'] = $this->Exporter_category_query->category_curr_list($this->session->user_logged['user_id']);
+      }
+      
+      //pr($category_exporter);exit;
+
+        $this->master["content"] = $this->load->view("web/dashboard/add_inquiry.php",$category_exporter, TRUE);
         $this->render();
   }
 
-  public function inquiry_list($lang = '')
+  public function web_inquiry_list($lang = '')
   {
         $News = $this->Home_data_query->get_news();
         $this->master["content"] = $this->load->view("web/dashboard/inquiry_list.php",[], TRUE);
         $this->render();
   }
 
-  public function inquiry_progress($lang = '')
+  public function web_inquiry_progress($lang = '')
   {
         $News = $this->Home_data_query->get_news();
         $this->master["content"] = $this->load->view("web/dashboard/inquiry_progress.php",[], TRUE);
         $this->render();
   }
-  public function inquiry_inbox($lang = '')
+  public function web_inquiry_inbox($lang = '')
   {
         $News = $this->Home_data_query->get_news();
         $this->master["content"] = $this->load->view("web/dashboard/inquiry_inbox.php",[], TRUE);

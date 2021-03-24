@@ -19,7 +19,7 @@
               
               <?php echo '<b><i>'.$this->session->flashdata('flsh_msg_login').'</i></b><br>'; ?>
               
-              Didn’t have an account? <a href="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en' : $this->uri->segment(1)."/register") ?>" class="blue_teks">Register here</a></p>
+              Didn’t have an account? <a href="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en' : $this->uri->segment(1)."/web_register") ?>" class="blue_teks">Register here</a></p>
   					</div>
   					<div class="form_inner">
             <form id="loginPage" action="<?php echo base_url(). 'store_login'; ?>" method="post">

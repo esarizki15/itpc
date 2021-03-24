@@ -40,9 +40,9 @@
                         <div class="custom_select field">
                           <select name="category" id="category" required>
                             <option selected disabled value="0">Category</option>
-                            <option value="category1">Category 01</option>
-                            <option value="category2">Category 02</option>
-                            <option value="category3">category 03</option>
+                            <?php foreach($data['category'] as $itemcat){ ?> 
+                            <option value="<?=$itemcat['id']?>" catTitle="<?=$itemcat['title']?>"><?=$itemcat['title']?></option>
+                          <?php } ?> 
                           </select>
                         </div>
                       </div>
