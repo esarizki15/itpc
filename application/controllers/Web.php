@@ -695,14 +695,18 @@ class WEB extends CI_Controller {
       $this->load->model('API/User/User_query','User_query', true);
       $auth_code = $this->session->user_logged['auth_code'];
       $get_auth_code = $this->Auth->cek_auth($auth_code);
+     
     
       $category_exporter=array();
       if($get_auth_code){
+           
                   $category_exporter['data']['id_ex']  = $this->User_query->detail_exporter($this->session->user_logged['user_id'])['exporter_detail'][0]['id'];
                   $category_exporter['data']['category'] = $this->Exporter_category_query->category_list();
                   $category_exporter['data']['subcategory'] = $this->Exporter_subcategory_query->subcategory_list();
                   $category_exporter['data']['curr_category'] = $this->Exporter_category_query->category_curr_list($this->session->user_logged['user_id']);
       }
+      
+      
       
         $this->master["content"] = $this->load->view("web/dashboard/add_inquiry.php",$category_exporter, TRUE);
         $this->render();

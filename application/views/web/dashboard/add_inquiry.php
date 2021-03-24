@@ -21,22 +21,22 @@
                     <div class="form_inner">
                       <div class="form_group">
                         <div class="field">
-                          <input type="text" name="inquirytitle" class="input_form" placeholder="Inquiry Title" required />
+                          <input type="text" name="inquiry_title" class="input_form" placeholder="Inquiry Title" required />
                         </div>
                       </div>
                       <div class="form_group">
                         <div class="field">
-                          <input type="text" name="companyname" class="input_form field" placeholder="Company Name" required />
+                          <input type="text" name="exporter_name" class="input_form field" placeholder="Company Name" required />
                         </div>
                       </div>
                       <div class="form_group">
                         <div class="field">
-                          <input type="text" name="companyaddress" class="input_form field" placeholder="Company Address" required />
+                          <input type="text" name="exporter_address" class="input_form field" placeholder="Company Address" required />
                         </div>
                       </div>
                       <div class="form_group">
                         <div class="custom_select field">
-                          <select name="category" id="category" required>
+                          <select name="category_id" id="category" required>
                             <option selected disabled value="0">Category</option>
                             <?php foreach($data['category'] as $itemcat){ ?> 
                             <option value="<?=$itemcat['id']?>" catTitle="<?=$itemcat['title']?>"><?=$itemcat['title']?></option>
@@ -44,21 +44,29 @@
                           </select>
                         </div>
                       </div>
+                      <div class="form_group">
+                        <div class="custom_select">
+                          <select name="subcategory_id" id="subcategory">
+                            <option selected disabled value="0">Sub Category</option>
+                          
+                          </select>
+                        </div>
+                      </div>
 
                       <div class="form_group">
 
                         <div class="field">
-                          <textarea class="input_form field" name="productdetails" rows="4" cols="50" placeholder="Product Details" required></textarea>
+                          <textarea class="input_form field" name="product_detail" rows="4" cols="50" placeholder="Product Details" required></textarea>
                         </div>
                       </div>
                       <div class="form_group">
                         <div class="field">
-                          <input type="text" name="productcapacity" class="input_form field" placeholder="Product Capacity" required />
+                          <input type="text" name="product_capacity" class="input_form field" placeholder="Product Capacity" required />
                         </div>
                       </div>
                       <div class="form_group">
                         <div class="custom_select field">
-                          <select name="haveAnswer" id="haveAnswer" required>
+                          <select name="have_export" id="haveAnswer" required>
                             <option selected disabled value="0">Have Export? Choose Answer</option>
                             <option value="yes">Yes</option>
                             <option value="no">No</option>
@@ -74,14 +82,16 @@
                     <span class="infoSmall">Input contact of Person in charge</span>
                     <div class="form_inner">
                       <div class="form_group">
-                        <input type="text" name="fullName" class="input_form" placeholder="Full Name"  />
+                        <input type="text" name="contact_name" class="input_form" placeholder="Full Name"  />
                       </div>
                       <div class="form_group">
-                        <input type="email" name="email" class="input_form" placeholder="Email"  />
+                        <input type="email" name="contact_email" class="input_form" placeholder="Email"  />
                       </div>
                       <div class="form_group">
-                        <input type="tel" name="phone" class="input_form" placeholder="Email Phone/ Mobile Phone"  />
+                        <input type="tel" name="contact_phone" class="input_form" placeholder="Email Phone/ Mobile Phone"  />
                       </div>
+                      <input type="hidden" name='exporter_id' value="<?=$data['id_ex']?>">
+
                       <div class="form_group">
                         <button type="submit" class="bt_block_blue buttonAddInquiry">
                           Submit
@@ -100,13 +110,35 @@
 </div>
 
 <script type="text/javascript">
+function TreeCat(){
+    $('#category').on("change",function () {
+        var categoryId = $(this).find('option:selected').val();
+        var basedomain= '<?=base_url()?>';
+        //console.log(basedomain);
+        $.ajax({
+            url: basedomain+"en/web_add_category",
+            type: "POST",
+            data: "categoryId="+categoryId,
+            success: function (response) {
+              var myArr = JSON.parse(response);
+              var Str = "";
+              Str=Str+ "<option selected disabled value='0'>Sub Category</option>";
+              $(myArr).each(function( index ) {
+                Str=Str+ "  <option value='"+myArr[index]['id']+"' title='"+myArr[index]['title'] +"'>"+myArr[index]['title'] + "</option>";
+              });
+              $('#subcategory').html(Str);
+            },
+        });
+    }); 
+}
 $(document).ready(function() {
+  TreeCat()
   $("#addInquiry").validate({
     submitHandler: function() {
         $(".buttonAddInquiry").prop( "disabled" );
         $(".buttonAddInquiry").html('<i class="fa fa-spinner fa-spin"></i> Loading');
+        form.submit();
     },
-
     errorPlacement: function(error, element) {
         error.insertAfter(element.parent('.field'));
     } 
