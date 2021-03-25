@@ -34,6 +34,7 @@ $config['admin_source'] = $root.'assets/admin/';
 $config['frontend'] = $root.'assets/frontend/';
 $config['inquiry_file'] = 'website/inquiry';
 $config['news'] = 'website/news';
+$config['indonesia_product'] = 'website/indonesia_product';
 
 
 

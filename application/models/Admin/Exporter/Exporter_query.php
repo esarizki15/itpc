@@ -367,7 +367,7 @@ class Exporter_query extends CI_Model {
    $query = $this->db->get('itpc_category a');
    if($query){
      foreach($query->result() as $row){
-       return $row->category_order+1;;
+       return $row->category_order+1;
       }
    }else{
      return false;

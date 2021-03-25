@@ -1105,6 +1105,143 @@ class Admin extends CI_Controller {
 			}
 	}
 
+	public function Contact_managment(){
+		if($_SESSION['admin_id'] == null || $_SESSION['admin_id'] == ""){
+			redirect("Admin/Logout");
+			}else{
+
+			$this->load->model('Admin/Langguage/langguage_query','langguage_query', true);
+			$this->load->model('Admin/Contact/Contact_query','Contact_query', true);
+
+			$this->data['data']['language_list'] = $this->langguage_query->language_list();
+			$this->data['data']['contact'] = $this->Contact_query->contact();
+
+
+
+			$this->master["custume_css"] = $this->load->view('admin/contact/custume_css.php', [], TRUE);
+			$this->master["custume_js"] = $this->load->view('admin/contact/custume_js.php',$this->data, TRUE);
+			$this->master["content"] = $this->load->view("admin/contact/content.php",$this->data, TRUE);
+			$this->render();
+			}
+	}
+
+	public function Indonesia_product_managment(){
+		if($_SESSION['admin_id'] == null || $_SESSION['admin_id'] == ""){
+			redirect("Admin/Logout");
+			}else{
+
+			$this->load->model('Admin/Langguage/langguage_query','langguage_query', true);
+			$this->load->model('Admin/Contact/Contact_query','Contact_query', true);
+			$this->data['data']['language_list'] = $this->langguage_query->language_list();
+			$this->data['data']['contact'] = $this->Contact_query->contact();
+
+			$this->master["custume_css"] = $this->load->view('admin/indonesia_product_management/custume_css.php', [], TRUE);
+			$this->master["custume_js"] = $this->load->view('admin/indonesia_product_management/custume_js.php',$this->data, TRUE);
+			$this->master["content"] = $this->load->view("admin/indonesia_product_management/content.php",$this->data, TRUE);
+			$this->render();
+			}
+	}
+
+	public function Submit_indonesia_product(){
+		if($_SESSION['admin_id'] == null || $_SESSION['admin_id'] == ""){
+			redirect("Admin/Logout");
+			}else{
+				$is_save = true;
+				$this->load->model('Admin/Langguage/langguage_query','langguage_query', true);
+				$this->load->model('Admin/Indonesia_product/Indonesia_product_query','Indonesia_product_query', true);
+
+				$this->form_validation->set_rules('title', 'title', 'trim|required|min_length[3]');
+				$this->form_validation->set_rules('is_draft', 'is_draft', 'trim');
+
+
+				$date = date_create();
+				$update_date = date("Y-m-d H:i:s");
+				$created_date = date("Y-m-d H:i:s");
+
+				if($is_save == true){
+					if($_FILES['thumbnail']['error'] === 0) {
+						$upload_config['upload_path'] = 'assets/' . $this->config->item('indonesia_product');
+						$upload_config['allowed_types'] = 'jpg|jpeg|png|svg';
+						$upload_config['max_height'] = 300;
+						$upload_config['max_width'] = 500;
+						$upload_config['file_name'] = "product-thumbnail"."-".date_timestamp_get($date);
+						$this->upload->initialize($upload_config);
+						if($this->upload->do_upload('thumbnail')) {
+							echo $product_thumbnail = $this->upload->data('file_name');
+							//$is_save = true;
+							//die();
+						} else {
+							$this->session->set_flashdata('error', 'File header: ' . $this->upload->display_errors('', ''));
+							$is_save = false;
+							echo "thumbnail tidak terupload";
+							die();
+						}
+					}else{
+						$thumbnail_defalut = rand(1,3);
+						$product_thumbnail = "product-thumbnail-".$thumbnail_defalut.".png";
+						$is_save = true;
+						echo "thumbnail tidak terupload";
+						die();
+					}
+				}
+
+
+				if($is_save == true){
+					if($_FILES['pdf']['error'] === 0) {
+						$upload_config['upload_path'] = 'assets/' . $this->config->item('indonesia_product');
+						$upload_config['allowed_types'] = 'pdf';
+						$upload_config['file_name'] = "product-doc"."-".date_timestamp_get($date);
+						$this->upload->initialize($upload_config);
+						if($this->upload->do_upload('pdf')) {
+							$product_doc = $this->upload->data('file_name');
+							$is_save = true;
+						} else {
+							$this->session->set_flashdata('error', 'File header: ' . $this->upload->display_errors('', ''));
+							$is_save = false;
+						}
+					}else{
+						$is_save = false;
+					}
+				}
+
+				if($is_save == true){
+					$data['title'] = $this->input->post('title');
+					$data['is_active'] = $this->input->post('is_draft');
+
+					if($data['is_active'] != null || $data['is_active'] != ""){
+						$data['status'] = 2;
+					}else{
+						$data['status'] = 1;
+					}
+
+						$last_id = $this->Indonesia_product_query->get_last_product();
+						$product[] = [
+									"indo_product_id" => null,
+									"indo_product_title" => $data['title'],
+									"indo_product_thumbnail" => $product_thumbnail,
+									"indo_product_file" => $product_doc,
+									"indo_product_order" => $last_id,
+									"post_date" => 	$created_date ,
+									"post_by" => $_SESSION['admin_id'],
+									"delete_date" => null,
+									"delete_by" => null,
+									"status" => $data['status']
+						];
+
+					$submit_product = $this->Indonesia_product_query->add_product($product);
+
+					if($submit_product){
+						$this->session->set_flashdata('success', "Indonesia product submit success");
+					}else{
+						$this->session->set_flashdata('error', "Indonesia product submit failed ");
+					}
+				}else{
+					$this->session->set_flashdata('error', "an error occurred in the system");
+				}
+		}
+		redirect("Admin/Indonesia_product_managment");
+	}
+
 
 
 
