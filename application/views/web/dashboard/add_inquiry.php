@@ -61,15 +61,15 @@
                       </div>
                       <div class="form_group">
                         <div class="field">
-                          <input type="text" name="product_capacity" class="input_form field" placeholder="Product Capacity" required />
+                          <input type="text" name="product_capacity" class="input_form field number" placeholder="Product Capacity" required />
                         </div>
                       </div>
                       <div class="form_group">
                         <div class="custom_select field">
                           <select name="have_export" id="haveAnswer" required>
                             <option selected disabled value="0">Have Export? Choose Answer</option>
-                            <option value="yes">Yes</option>
-                            <option value="no">No</option>
+                            <option value="1">Yes</option>
+                            <option value="0">No</option>
                           </select>
                         </div>
                       </div>
@@ -77,6 +77,8 @@
                     </div>
                   </div><!--end.cols2-->
 
+
+              
                   <div class="cols2">
                     <span class="infoSmall"><strong>Contact Person</strong></span>
                     <span class="infoSmall">Input contact of Person in charge</span>
@@ -93,6 +95,7 @@
                       <input type="hidden" name='exporter_id' value="<?=$data['id_ex']?>">
 
                       <div class="form_group">
+                      <input type="hidden" name="csrf_token_reg" value="<?=$token;?>" />
                         <button type="submit" class="bt_block_blue buttonAddInquiry">
                           Submit
                         </button>
@@ -103,6 +106,10 @@
               </div><!--end.row-list-->
             </div><!--end.action_exporter_account-->
   				</div><!--end.box_login-->
+
+          <?php echo '<b><i>'.$this->session->flashdata('flsh_msg').'</i></b>'; ?>
+
+
   			</div>
   		</div><!--end.inner_flex_middle-->
   	</div>
@@ -143,5 +150,15 @@ $(document).ready(function() {
         error.insertAfter(element.parent('.field'));
     } 
   });
+
+  $('.number').keypress(function(event){
+  
+
+if(event.which != 8 && isNaN(String.fromCharCode(event.which))){
+    event.preventDefault(); //stop character from entering input
+}
+
+});
+
 });
 </script>

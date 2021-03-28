@@ -394,9 +394,9 @@ class WEB extends CI_Controller {
   
       public function store_detail_exporter()
 	{           $date = date_create();
-
+                
                   if (!empty($_FILES['exporter_logo']['name'])) {
-
+                      
                         $upload_config['upload_path'] = './assets/website/exporter/';
                         //pr($upload_config['upload_path'] );exit;
                         $upload_config['allowed_types'] = 'jpg|jpeg|png|svg';
@@ -418,6 +418,7 @@ class WEB extends CI_Controller {
                               $data = array('image_metadata' => $this->upload->data());
                         }
                   }
+                 // pr('ss');exit;
             
 			$this->load->model('API/User/User_query','User_query', true);
 			$this->form_validation->set_rules('id', 'id', 'trim|required|numeric');
@@ -510,7 +511,7 @@ class WEB extends CI_Controller {
 				$update_exporter['message'] = validation_errors();
 			}
                   
-                  
+                  //pr($update_exporter);exit;
                         redirect($this->redirection('web_exporter_account'));
               
 
@@ -697,6 +698,7 @@ class WEB extends CI_Controller {
       $this->load->model('API/User/User_query','User_query', true);
       $auth_code = $this->session->user_logged['auth_code'];
       $get_auth_code = $this->Auth->cek_auth($auth_code);
+
      
     
       $category_exporter=array();
@@ -707,8 +709,10 @@ class WEB extends CI_Controller {
                   $category_exporter['data']['subcategory'] = $this->Exporter_subcategory_query->subcategory_list();
                   $category_exporter['data']['curr_category'] = $this->Exporter_category_query->category_curr_list($this->session->user_logged['user_id']);
       }
+     // pr($category_exporter);exit;
       
-      
+     $_SESSION['token'] = bin2hex(random_bytes(32));
+     $category_exporter['token'] = $_SESSION['token'];
       
         $this->master["content"] = $this->load->view("web/dashboard/add_inquiry.php",$category_exporter, TRUE);
         $this->render();
@@ -716,6 +720,11 @@ class WEB extends CI_Controller {
 
   public function store_inquiry()
 		{
+                  if($this->input->post('csrf_token_reg') !== $_SESSION['token']) {
+                        $this->session->set_flashdata('flsh_msg','failed to register user data, please contact the admin');
+                        redirect($this->redirection('web_register'));
+                  } 
+      
 				$this->load->model('API/Inquiry/Inquiry_query','Inquiry_query', true);
                         $this->form_validation->set_rules('exporter_id', 'exporter_id', 'trim|required|integer');
 				$this->form_validation->set_rules('inquiry_title', 'inquiry_title', 'trim|required|min_length[3]');
@@ -818,22 +827,71 @@ class WEB extends CI_Controller {
 					$inquiry['status'] = false;
 					$inquiry['message'] = validation_errors();
 				}
+                        //pr($inquiry);exit;
+                        if($inquiry['status']){
+                              redirect($this->redirection('web_exporter_account'));
+                        }else{
+                              $this->session->set_flashdata('flsh_msg',$inquiry['message']);
+                              redirect($this->redirection('web_add_inquiry'));
+                        }
 
-				echo json_encode($inquiry); //send data to script
-                        exit;
+                        //pr($inquiry);exit;
 				//return json_encode($inquiry);
 		}
 
   public function web_inquiry_list($lang = '')
   {
-        $News = $this->Home_data_query->get_news();
-        $this->master["content"] = $this->load->view("web/dashboard/inquiry_list.php",[], TRUE);
-        $this->render();
+      $this->load->model('API/Inquiry/Inquiry_query','Inquiry_query', true);
+      $this->load->model('API/Authentication/Auth','Auth', true);
+      $this->load->model('API/User/User_query','User_query', true);
+      $this->form_validation->set_rules('exporter_id', 'exporter_id', 'trim|required|integer');
+
+      
+            $auth_code = $this->session->user_logged['auth_code'];
+            $exporter_id =  $this->User_query->detail_exporter($this->session->user_logged['user_id'])['exporter_detail'][0]['id'];
+            $get_auth_code = $this->Auth->cek_auth($auth_code);
+
+            if($get_auth_code){
+                  if($get_auth_code['user_id'] == $exporter_id){
+
+                        $page = $this->input->post('page',true);
+                        $limit = 10;
+                        $list_inquiry['data'] = $this->Inquiry_query->get_list_inquiry($limit,$page,$exporter_id);
+
+                        if($list_inquiry['data']){
+                              $list_inquiry['status'] = true;
+                              $list_inquiry['message'] = "Data displayed successfully";
+                        }else{
+                              $list_inquiry['data'] = null;
+                              $list_inquiry['status'] = false;
+                              $list_inquiry['message'] = "Data is not displayed";
+                        }
+
+                  }else{
+                        $list_inquiry['data'] = null;
+                        $list_inquiry['status'] = false;
+                        $list_inquiry['message'] = "Your exporter ID cannot be found, please contact the admin";
+                  }
+            }else{
+                  $list_inquiry['data'] = null;
+                  $list_inquiry['status'] = false;
+                  $list_inquiry['message'] = "Wrong auth code please re-login";
+            }
+      
+          
+      $auth_code = $this->input->get_request_header('auth_code');
+      $user_id = $this->session->user_logged['user_id'];
+      $list_inquiry['user_id'] = $user_id;
+      $list_inquiry['detail_user'] = $this->User_query->detail_exporter($user_id);
+     // pr($list_inquiry);exit;
+      $this->master["content"] = $this->load->view("web/dashboard/inquiry_list.php",$list_inquiry, TRUE);
+      $this->render();
   }
 
   public function web_inquiry_progress($lang = '')
   {
         $News = $this->Home_data_query->get_news();
+
         $this->master["content"] = $this->load->view("web/dashboard/inquiry_progress.php",[], TRUE);
         $this->render();
   }

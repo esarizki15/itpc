@@ -10,12 +10,17 @@
   	<div class="wrapper">
   		<div class="inner_flex_middle">
   			<div class="inner_flex">
+        
+        <?php 
+        if($data){
+        foreach($data as $item) { ?>
   				<div class="box_exporter">
   					<div class="progres_row rows">
-              <span class="titleProgress">Progress (25%)</span>
-              <span class="titleProgress">Status (On Progress)</span>
+              <span class="titleProgress">Progress (<?=$item['progress']?>%)</span>
+              <span class="titleProgress"><?php if($item['progress'] < 100){?> Status (On Progress)<?php } else{echo "finish";} ?></span>
               <div class="progress-bar">
                 <div id="progressbar"></div>
+                <input type="hidden" class="persentasenya" value="<?=$item['progress']?>" >
               </div>
             </div>
             <div class="list_inquiry rows">
@@ -24,20 +29,18 @@
                   <div class="item_inquiry">
                     <div class="group_inquiry">
                       <label>Inquiry Title</label>
-                      <p>Test Tedihouse</p>
+                      <p><?=$item['inquiry_title']?></p>
                     </div><!--end.group_inquiry-->
 
                     <div class="group_inquiry">
                       <label>Company Name</label>
-                      <p>Dharma Saputra</p>
+                      <p><?=$item['contact_name']?></p>
                     </div><!--end.group_inquiry-->
 
 
                     <div class="group_inquiry">
                       <label>Company Address</label>
-                      <p>Jl. Salam Raya No.19 A, Sukabumi Utara,<br/>
-Kec. Kb. Jeruk, Kota Jakarta Barat, <br/>
-Daerah Khusus Ibukota Jakarta 11540</p>
+                      <p><?php echo $detail_user['exporter_detail'][0]['address']?></p>
                     </div><!--end.group_inquiry-->
                     <br/>
                     <br/>
@@ -45,19 +48,19 @@ Daerah Khusus Ibukota Jakarta 11540</p>
 
                     <div class="group_inquiry">
                       <label>Product Category</label>
-                      <p>Electronics, Electrical Machinery</p>
+                      <p><?=$item['category_title']?></p>
                     </div><!--end.group_inquiry-->
 
 
                     <div class="group_inquiry">
                       <label>Product Detail </label>
-                      <p>IT Developer</p>
+                      <p><?=$item['subcategory_title']?></p>
                     </div><!--end.group_inquiry-->
 
 
                     <div class="group_inquiry">
                       <label>Product Capacity</label>
-                      <p>100</p>
+                      <p></p>
                     </div><!--end.group_inquiry-->
 
                   </div>
@@ -67,39 +70,43 @@ Daerah Khusus Ibukota Jakarta 11540</p>
                   <div class="item_inquiry">
                     <div class="group_inquiry">
                       <label>Name</label>
-                      <p>dharma saputra</p>
+                      <p><?php echo $detail_user['exporter_detail'][0]['name']?></p>
                     </div><!--end.group_inquiry-->
 
                     <div class="group_inquiry">
                       <label>Email</label>
-                      <p>dharma@tedihouse.com</p>
+                      <p><?php echo $detail_user['exporter_detail'][0]['email']?></p>
                     </div><!--end.group_inquiry-->
 
                     <div class="group_inquiry">
                       <label>Phone</label>
-                      <p>081316947758</p>
+                      <p><?php echo $detail_user['exporter_detail'][0]['phone']?></p>
                     </div><!--end.group_inquiry-->
 
                     <div class="group_inquiry">
                       <label>Created By</label>
-                      <p>Dharmasaputra (Dharmasaputra)</p>
+                      <p><?php echo $detail_user['exporter_detail'][0]['name']?></p>
                     </div><!--end.group_inquiry-->
                     <br/><br/>
 
                     <div class="group_inquiry">
                       <label>Date Created </label>
-                      <p>2020-06-15 20:01:49</p>
+                      <p><?=$item['post_date'];?></p>
                     </div><!--end.group_inquiry-->
                     <div class="group_inquiry">
                       <label>Last Update </label>
-                      <p>2020-06-15 20:01:49</p>
+                      <p><?=$item['post_date'];?></p>
                     </div><!--end.group_inquiry-->
                   </div>
                 </div>
               </div><!--end.row-list-->
             </div><!--end.list_inquiry-->
-            
+           
   				</div><!--end.box_exporter-->
+
+          <?php } ?>
+          <?php } ?>
+
   			</div>
   		</div><!--end.inner_flex_middle-->
   	</div>
@@ -109,7 +116,7 @@ Daerah Khusus Ibukota Jakarta 11540</p>
 <script type="text/javascript">
 $(document).ready(function() {
  $( "#progressbar" ).progressbar({
-    value: 37
+    value: $(this).next().val()
   });
 
 });
