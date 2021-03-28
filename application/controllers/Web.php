@@ -37,6 +37,7 @@ class WEB extends CI_Controller {
       public function index($lang = '')
       {
       $data = $this->Home_data_query->get_news();
+      //pr($data);exit;
       $this->master["content"] = $this->load->view("web/home/home.php",$data, TRUE);
       $this->render();
       }
@@ -50,6 +51,7 @@ class WEB extends CI_Controller {
       public function web_news_detail($slug)
       {         
         $NewsDetail = $this->Home_data_query->get_news_detail($slug);
+      
         $this->master["content"] = $this->load->view("web/news/news_detail.php", $NewsDetail , TRUE);
         $this->render();
       }
@@ -636,7 +638,10 @@ class WEB extends CI_Controller {
             $data=array();
             if (!$this->upload->do_upload('ex_pro_image')) 
             {
+                  
                   $data = array('error' => $this->upload->display_errors());
+                  $this->session->set_flashdata('flsh_msg',$data['error']);
+                  redirect($this->redirection('web_add_product'));
             } 
             else 
             {
