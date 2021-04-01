@@ -137,17 +137,31 @@ document.getElementById('file').onchange = function(event) {
                         "order": [], //Line ini sudah tidak diperlukan
 			// Load data dari ajax
 			"ajax": {
-				"url": "<?php echo base_url()?>index.php/Admin/Subcategory_list_data",
+				"url": "<?php echo base_url()?>index.php/Admin/get_indonesia_product",
 				"type": "GET" //(untuk mendapatkan data)
 			},
 			// Tambahkan bagian ini:
 			"columns": [                              // Membuat nomor pada datatable (bukan ID user)
-				{
-					data: 'id',
-					name:'id'
+        {
+					data: null,
+					"sortable": false,
+       		render: function (data, type, row, meta) {
+           return meta.row + meta.settings._iDisplayStart + 1;
+          }
 				},
-				{data: 'subcategory_title', name: 'subcategory_title' },
-				{data: 'category_title', name: 'category_title' },
+				{data: 'title', name: 'title' },
+        {
+					data:'thumbnail',
+					mRender: function (data) {
+						 return '<img src="'+data+'" style="width:50px;"/>';
+				 }
+			 },
+       {
+        data:'file',
+        mRender: function (data) {
+           return '<a href="'+data+'"/>'+data+'</a>';
+           }
+        },
 				{data: 'post_date', name: 'post_date'},
 				{data: 'status', name: 'status'},
 				{

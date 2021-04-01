@@ -1024,7 +1024,6 @@ class Admin extends CI_Controller {
 			$subcategory_list = $this->Importer_query->get_importer_inquery_list($category_id);
 
 			echo json_encode($subcategory_list);
-
 	}
 
 	public function get_list_importer_inquiry(){
@@ -1240,6 +1239,29 @@ class Admin extends CI_Controller {
 				}
 		}
 		redirect("Admin/Indonesia_product_managment");
+	}
+
+	public function get_indonesia_product(){
+			$this->load->model('Admin/Indonesia_product/Indonesia_product_query','Indonesia_product_query', true);
+			$postData = $this->input->get();
+
+			$product_list = $this->Indonesia_product_query->getProduct($postData);
+
+			echo json_encode($product_list);
+	}
+
+	public function Useful_link_managment(){
+		if($_SESSION['admin_id'] == null || $_SESSION['admin_id'] == ""){
+			redirect("Admin/Logout");
+			}else{
+			$this->load->model('Admin/Useful/Useful_query','Useful_query', true);
+			$this->data['data'] = $this->Useful_query->useful_list();
+
+			$this->master["custume_css"] = $this->load->view('admin/useful_link_management/custume_css.php', [], TRUE);
+			$this->master["custume_js"] = $this->load->view('admin/useful_link_management/custume_js.php',$this->data, TRUE);
+			$this->master["content"] = $this->load->view("admin/useful_link_management/content.php",$this->data, TRUE);
+			$this->render();
+			}
 	}
 
 

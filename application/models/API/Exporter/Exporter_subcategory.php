@@ -7,6 +7,7 @@ class Exporter_subcategory {
 	public $category;
 	//public $category_title;
 	public $curr_category = "subcategory";
+	public $prev_category = "category";
 
 
 	public function __construct($arr) {

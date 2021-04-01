@@ -35,9 +35,9 @@ class Exporter_category_query extends CI_Model{
           $last_page = intval($total_data / 10);
 
           return [
-      			'data' => $category_list
-            /*'total_data' => intval($total_data),
-            'last_page' => $last_page*/
+      			'data' => $category_list,
+            'total_data' => intval($total_data),
+            'last_page' => $last_page
       		];
         }else{
           return false;

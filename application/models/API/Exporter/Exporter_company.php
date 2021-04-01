@@ -11,6 +11,7 @@ class Exporter_company{
 	public $email;
 	public $link;
 	public $curr_category = "exporter";
+	public $prev_category = "subcategory";
 
 
 	public function __construct($arr) {

@@ -946,7 +946,6 @@ class API extends CI_Controller {
 							$update_product['data'] = null;
 							$update_product['status'] = false;
 							$update_product['message'] = "Data is not displayed";
-
 						}
 
 					}else{
