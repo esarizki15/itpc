@@ -1,6 +1,6 @@
 <?php
 class Home_data_query extends CI_Model{
-    public function get_news() {
+    public function get_news($lang) {
         require_once('News_latest.php');
         require_once('Exporter_home.php');
         require_once('Indonesia_product.php');
@@ -8,25 +8,46 @@ class Home_data_query extends CI_Model{
 
         $where_exporter_logo = "exporter_logo is  NOT NULL";
 
+        $short='st.english AS short';
+        $long='lt.english AS long';
+        if($lang=='id') { 
+          $short="st.bahasa AS short";
+          $long='lt.bahasa AS long';
+        }else if($lang=='es'){
+          $short='st.spanyol AS short';
+          $long='lt.spanyol AS long';
+        }else if($lang=='en'){
+          $short='st.english AS short';
+          $long='lt.english AS long';
+        }
+        
         $this->db->select([
-    			'news_id as id',
-    			'news_title as title',
-    			'news_slug as slug',
-          'news_order as order',
-    			'news_thumbnail as thumbnail',
-    			'post_date as date'
+    			'inews.news_id as id',
+    			'inews.news_title as title',
+    			'inews.news_slug as slug',
+          'inews.news_order as order',
+    			'inews.news_thumbnail as thumbnail',
+          $short,$long,
+          'inews.post_date as date'
     		]);
+
+      
 
     		$this->db->where('status', 1);
     		$this->db->where('delete_date', null);
-        $this->db->limit(5);
+        $this->db->join('long_translations lt','inews.trans_key = lt.trans_key', 'left');
+        $this->db->join('short_translations st','inews.trans_key = st.trans_key', 'left');
+        $this->db->limit(4);
         $this->db->order_by('news_order','DESC');
-    		$query = $this->db->get('itpc_news');
+    		$query = $this->db->get('itpc_news inews');
     		$news_latest = [];
     		array_map(function($item) use(&$news_latest){
     			$news_latest[] = (new News_latest($item))->to_array();
     		}, $query->result_array());
 
+        //pr($news_latest);exit;
+
+      
     		$query->free_result();
     		$this->db->reset_query();
 
@@ -116,7 +137,7 @@ class Home_data_query extends CI_Model{
     		];
     }
 
-    public function get_news_detail($slug) {
+    public function get_news_detail($slug,$lang) {
       require_once('News_detail.php');
       require_once('Exporter_home.php');
       require_once('Indonesia_product.php');
@@ -124,28 +145,45 @@ class Home_data_query extends CI_Model{
 
       $where_exporter_logo = "exporter_logo is  NOT NULL";
 
+      $short='st.english AS short';
+      $long='lt.english AS long';
+      if($lang=='id') { 
+        $short="st.bahasa AS short";
+        $long='lt.bahasa AS long';
+      }else if($lang=='es'){
+        $short='st.spanyol AS short';
+        $long='lt.spanyol AS long';
+      }else if($lang=='en'){
+        $short='st.english AS short';
+        $long='lt.english AS long';
+      }
+
+
       $this->db->select([
-        'news_id as id',
-        'news_title as title',
-        'news_slug as slug',
-        'news_content as content',
-        'news_order as order',
-        'news_thumbnail as thumbnail',
-        'post_date as date'
+        'inews.news_id as id',
+        'inews.news_title as title',
+        'inews.news_slug as slug',
+        'inews.news_content as content',
+        $short,$long,
+        'inews.news_order as order',
+        'inews.news_thumbnail as thumbnail',
+        'inews.post_date as date'
       ]);
 
       $this->db->where('status', 1);
       $this->db->where('delete_date', null);
-      $this->db->where('news_slug', $slug);
+      $this->db->join('long_translations lt','inews.trans_key = lt.trans_key', 'left');
+      $this->db->join('short_translations st','inews.trans_key = st.trans_key', 'left');
+      $this->db->where('inews.news_slug', $slug);
       $this->db->order_by('news_order','DESC');
-      $query = $this->db->get('itpc_news');
+      $query = $this->db->get('itpc_news inews');
       //pr($query->result_array());exit;
       $news_latest = [];
       array_map(function($item) use(&$news_latest){
         $news_latest[] = (new News_latest($item))->to_array();
       }, $query->result_array());
 
-     
+     //pr($news_latest);exit;
       return [
         'news_detail' => $news_latest
       ];

@@ -3,6 +3,8 @@ class News_latest {
 	public $id;
 	public $title;
 	public $slug;
+	public $short;
+	public $long;
 	public $content;
 	public $order;
 	public $thumbnail;

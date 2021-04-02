@@ -25,35 +25,35 @@ class WEB extends CI_Controller {
 
       private function render()
       {
-        $lang = $this->uri->segment(1);
-        $this->lang->load('content',$lang=='' ? 'en' : $lang);
-        $this->master["language"] = $this->lang->line('language');
-        $this->master["lang"] = $lang;
-        $this->master["main_css"] = $this->load->view('web/main_css.php', [], TRUE);
-        $this->master["main_js"] = $this->load->view("web/main_js.php", [], TRUE);
-        $this->master["header"] = $this->load->view("web/header.php",$this->master, TRUE);
-        $this->load->view("web/master", $this->master);
+            $lang = $this->uri->segment(1);
+            $this->lang->load('content',$lang=='' ? 'en' : $lang);
+            $this->master["language"] = $this->lang->line('language');
+            $this->master["lang"] = $lang;
+            $this->master["main_css"] = $this->load->view('web/main_css.php', [], TRUE);
+            $this->master["main_js"] = $this->load->view("web/main_js.php", [], TRUE);
+            $this->master["header"] = $this->load->view("web/header.php",$this->master, TRUE);
+            $this->load->view("web/master", $this->master);
       }
       public function index($lang = '')
       {
-      $data = $this->Home_data_query->get_news();
-      //pr($data);exit;
-      $this->master["content"] = $this->load->view("web/home/home.php",$data, TRUE);
-      $this->render();
+           
+            $data = $this->Home_data_query->get_news($this->isLang());
+            //pr($data);exit;
+            $this->master["content"] = $this->load->view("web/home/home.php",$data, TRUE);
+            $this->render();
       }
       public function web_news($lang = '')
       {    
-      $News = $this->Home_data_query->get_news();
-      $this->master["content"] = $this->load->view("web/news/news.php",[], TRUE);
-      $this->render();
+            $News = $this->Home_data_query->get_news();
+            $this->master["content"] = $this->load->view("web/news/news.php",[], TRUE);
+            $this->render();
       }
 
       public function web_news_detail($slug)
       {         
-        $NewsDetail = $this->Home_data_query->get_news_detail($slug);
-      
-        $this->master["content"] = $this->load->view("web/news/news_detail.php", $NewsDetail , TRUE);
-        $this->render();
+            $NewsDetail = $this->Home_data_query->get_news_detail($slug,$this->isLang());
+            $this->master["content"] = $this->load->view("web/news/news_detail.php", $NewsDetail , TRUE);
+            $this->render();
       }
       public function web_welcome_login($lang = '')
       {
@@ -78,7 +78,6 @@ class WEB extends CI_Controller {
       function redirection($string){
 
             $redirect ="";
-            //pr('ss'.$this->uri->segment(1));exit;
             if($this->uri->segment(1)==''){
                   $redirect='en/'+$string;
             }elseif($this->uri->segment(1) == 'en'){
@@ -90,10 +89,23 @@ class WEB extends CI_Controller {
             }else{
                   $redirect = $this->config->base_url('en/'.$string);
             }
-        
-            //$redirect=@$this->config->base_url(@$this->uri->segment(1) == '' ? $this->uri->segment(1) == 'en' ? 'en/'.$string : $this->uri->segment(1) == 'id' ? 'id/'.$string : 'en/'.$string :'en/'.$string) ;
             return $redirect;
       }
+
+      function isLang(){
+
+            $lang ="";
+
+            if($this->uri->segment(1)==''){   $lang='en';  }
+            elseif($this->uri->segment(1) == 'en'){ $lang='en'; }
+            elseif($this->uri->segment(1) == 'id'){ $lang='id'; }
+            elseif($this->uri->segment(1) == 'es'){ $lang='es'; }
+            else{ $lang='en'; }
+        
+            return $lang;
+      }
+
+
       public function web_store_login(){
 
       if($this->input->post('csrf_token_reg') !== $_SESSION['token']) {
