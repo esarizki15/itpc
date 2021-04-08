@@ -61,6 +61,22 @@ class WEB extends CI_Controller {
         $this->master["content"] = $this->load->view("web/login/welcome_login.php",[], TRUE);
         $this->render();
       }
+      public function web_search_result($lang = '')
+      {
+        $this->master["content"] = $this->load->view("web/search/search_result.php",[], TRUE);
+        $this->render();
+      }
+      public function web_about_us($lang = '')
+      {
+        $this->master["content"] = $this->load->view("web/about/about_us.php",[], TRUE);
+        $this->render();
+      }
+      public function web_contact_us($lang = '')
+      {
+        $this->master["content"] = $this->load->view("web/contact/contact_us.php",[], TRUE);
+        $this->render();
+      }
+
       public function web_itpc_login($lang = '')
       {
         session_start();

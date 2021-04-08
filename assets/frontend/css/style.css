@@ -161,6 +161,16 @@ section {
 	border-radius: 20px;
 	border: 1px solid #0A84FF;
 }
+.blue_orange{
+	display: inline-block;
+	text-align: center;
+	font-size: 16px;
+	background:#FFC926; 
+	color: #fff;
+	padding:10px 25px;
+	border-radius: 20px;
+	border: 1px solid #FFC926;
+}
 .bt_block_blue{
 	text-align: center;
 	width: 100%;
@@ -417,6 +427,11 @@ section {
 	max-width: 550px;
 	color: #fff;
 }
+.caption_banner.max_width{
+
+	max-width: 550px;
+	min-width: 450px;
+}
 #bannerPages .item.item_detail_news .caption_banner{
 	width: 80%;
 	top: 30%;
@@ -498,6 +513,14 @@ section {
 .row-list:after{
 	content: '';
 	clear: both;
+}
+.cols1{
+	float: left;
+	position: relative;
+	width: 100%;
+	padding-right: 15px;
+	padding-left: 15px;
+	margin-bottom: 30px;
 }
 .cols6{
 	float: left;
@@ -806,6 +829,20 @@ section {
 	width: 100%;
 	margin-bottom: 15px;
 	position: relative;
+}
+.form_group .title_input{
+	font-size: 17px;
+	color: #000;
+	margin-bottom: 5px;
+	display: block;
+}
+.item_form_contact h3{
+	font-family: 'Fredoka One', cursive;
+	font-style: normal;
+	font-weight: normal;
+	font-size: 25px;
+	text-transform: uppercase;
+	color: #0A84FF;
 }
 .form_group .error{
 	color: red;
@@ -1120,6 +1157,122 @@ section {
 .icon_thankyou{
 	display: block;
 	margin-bottom: 20px;
+}
+#top_search{
+	text-align: center;
+	display: block;
+	width: 100%;
+	padding: 60px 0 40px 0;
+	position: relative;
+	z-index: 2;
+}
+.title_search h1{
+	color: #0A84FF;
+	font-family: 'Fredoka One', cursive;
+	font-size: 	45px;
+	margin: 0 0 15px 0;
+}
+.title_search h3{
+	font-size: 14px;
+	letter-spacing: 7.5px;
+	color: #323232;
+}
+.search_inner_input{
+	display: block;
+	width: 60%;
+	margin: 0 auto;
+	text-align: left;
+	padding:10px 10px;
+	background: url(../images/eva_search-outline.png) no-repeat 99% center;
+	border: 1px solid #C4C4C4;
+}
+.input_search_row{
+	margin-bottom: 25px;
+}
+.input_search_row p{
+	font-size: 16px;
+	color: #323232;
+}
+.list_exporter_search{
+	width: 100%;
+	text-align: center;
+}
+.item_exporter{
+	display: inline-block;
+	vertical-align: middle;
+	margin: 7px 10px;
+	width: 22%;
+}
+.top_border{
+	border-top: 1px solid #D2D2D2;
+}
+.list_inner,.list_news_search{
+	display: block;
+	max-width: 600px;
+	margin: 0 auto;
+}
+.list_inner ul{
+	margin: 0;
+	padding: 0;
+}
+.list_inner ul li{
+	display: block;
+	padding: 10px ;
+	border-bottom: 1px solid #D2D2D2;
+	font-size: 14px;
+	color: #000000;
+}
+.text_detail h3{
+	font-family: 'Fredoka One', cursive;
+	font-style: normal;
+	font-weight: normal;
+	font-size: 25px;
+	text-transform: uppercase;
+	color: #0A84FF;
+}
+.text_detail p,.text_detail ul li{
+	font-size: 14px;
+	line-height: 26px;
+	color: #000000;
+}
+.justify_flex_beetween{
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+.justify_flex_beetween h3{
+	font-family: 'Fredoka One', cursive;
+	font-style: normal;
+	font-weight: normal;
+	font-size: 25px;
+	text-transform: uppercase;
+	color: #0A84FF;
+}
+.justify_flex_beetween .download_icon a{
+	display: inline-block;
+	vertical-align: middle;
+	margin: 0 10px;
+}
+#contact_call{
+	background: #F9F9F9;
+	width: 100%;
+	padding: 40px 0;
+}
+.item_call{
+	display: block;
+}
+.item_call .fa{
+	display: inline-block;
+	vertical-align: middle;
+	font-size: 20px;
+	color: #0A84FF;
+}
+.item_call span{
+	display: inline-block;
+	vertical-align: middle;
+	font-size: 17px;
+	color: #000;
+	margin-left: 10px;
 }
 /*------------- footer -----------------*/
 #footer{
