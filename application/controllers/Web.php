@@ -923,15 +923,105 @@ class WEB extends CI_Controller {
 
   public function web_inquiry_progress($lang = '')
   {
-        $News = $this->Home_data_query->get_news();
+            $this->load->model('API/Inquiry/Inquiry_query','Inquiry_query', true);
+            $this->load->model('API/Authentication/Auth','Auth', true);
+            $this->load->model('API/User/User_query','User_query', true);
+            $this->form_validation->set_rules('exporter_id', 'exporter_id', 'trim|required|integer');
 
-        $this->master["content"] = $this->load->view("web/dashboard/inquiry_progress.php",[], TRUE);
-        $this->render();
+            
+                  $auth_code = $this->session->user_logged['auth_code'];
+                  $exporter_id =  $this->User_query->detail_exporter($this->session->user_logged['user_id'])['exporter_detail'][0]['id'];
+                  $get_auth_code = $this->Auth->cek_auth($auth_code);
+
+                  if($get_auth_code){
+                        if($get_auth_code['user_id'] == $exporter_id){
+
+                              $page = $this->input->post('page',true);
+                              $limit = 10;
+                              $list_inquiry['data'] = $this->Inquiry_query->get_list_inquiry($limit,$page,$exporter_id);
+
+                              if($list_inquiry['data']){
+                                    $list_inquiry['status'] = true;
+                                    $list_inquiry['message'] = "Data displayed successfully";
+                              }else{
+                                    $list_inquiry['data'] = null;
+                                    $list_inquiry['status'] = false;
+                                    $list_inquiry['message'] = "Data is not displayed";
+                              }
+
+                        }else{
+                              $list_inquiry['data'] = null;
+                              $list_inquiry['status'] = false;
+                              $list_inquiry['message'] = "Your exporter ID cannot be found, please contact the admin";
+                        }
+                  }else{
+                        $list_inquiry['data'] = null;
+                        $list_inquiry['status'] = false;
+                        $list_inquiry['message'] = "Wrong auth code please re-login";
+                  }
+            
+            
+            $auth_code = $this->input->get_request_header('auth_code');
+            $user_id = $this->session->user_logged['user_id'];
+            $list_inquiry['user_id'] = $user_id;
+            $list_inquiry['detail_user'] = $this->User_query->detail_exporter($user_id);
+            //pr($list_inquiry);exit;
+            $this->master["content"] = $this->load->view("web/dashboard/inquiry_progress.php",$list_inquiry, TRUE);
+            $this->render();
   }
-  public function web_inquiry_inbox($lang = '')
+  public function web_inquiry_inbox($inquiry_id)
   {
-        $News = $this->Home_data_query->get_news();
-        $this->master["content"] = $this->load->view("web/dashboard/inquiry_inbox.php",[], TRUE);
+      $lang="";
+      //  pr($id);exit;
+      $this->load->model('API/Inquiry/Inquiry_query','Inquiry_query', true);
+      $this->load->model('API/Authentication/Auth','Auth', true);
+      $this->form_validation->set_rules('inquiry_id', 'inquiry_id', 'trim|integer');
+
+
+      
+            $auth_code = $this->session->user_logged['auth_code'];
+           
+          
+            $get_auth_code = $this->Auth->cek_auth($auth_code);
+
+            if($get_auth_code){
+                  if($get_auth_code['user_id']){
+
+                        $page = $this->input->post('page',true);
+                        if($page == 0){
+                              $page = 0;
+                        }else{
+                              $page = $page * 10;
+                        }
+                        $per_page = 10;
+
+                        $inbox['data'] = $this->Inquiry_query->get_inbox_inquiry($limit,$page,$inquiry_id);
+
+                        if($inbox['data']){
+                              $inbox['status'] = true;
+                              $inbox['message'] = "Data displayed successfully";
+
+                        }else{
+                              $inbox['data'] = null;
+                              $inbox['status'] = false;
+                              $inbox['message'] = "Data is not displayed";
+                        }
+
+                  }else{
+                        $inbox['data'] = null;
+                        $v['status'] = false;
+                        $inbox['message'] = "Your exporter ID cannot be found, please contact the admin";
+                  }
+            }else{
+                  $inbox['data'] = null;
+                  $inbox['status'] = false;
+                  $inbox['message'] = "Wrong auth code please re-login";
+            }
+      
+       // pr($inbox);exit;
+        $inbox['data']['auth_code']=$auth_code;
+        $inbox['data']['exporter_id']=$auth_code;
+        $this->master["content"] = $this->load->view("web/dashboard/inquiry_inbox.php",$inbox, TRUE);
         $this->render();
   }
 

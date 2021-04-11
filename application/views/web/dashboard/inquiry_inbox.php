@@ -18,40 +18,23 @@
                   <div class="cols2">
                     <span class="infoSmall"><strong>Inbox</strong></span>
                     <div class="list_inbox max-height-scroll">
-                      <div class="row_inbox">
-                        <div class="block_inbox active">
-                          <h3>Your Progress (100%)</h3>
-                          <span class="date_inbox">16/02/2021</span>
-                        </div>
-                      </div><!--end.row_inbox-->
-                      <div class="row_inbox">
-                        <div class="block_inbox">
-                          <h3>Lorem Ipsum</h3>
-                          <span class="date_inbox">16/02/2021</span>
-                        </div>
-                      </div><!--end.row_inbox-->
-                      <div class="row_inbox">
-                        <div class="block_inbox">
-                          <h3>Lorem Ipsum</h3>
-                          <span class="date_inbox">16/02/2021</span>
-                        </div>
-                      </div><!--end.row_inbox-->
-                      <div class="row_inbox">
-                        <div class="block_inbox">
-                          <h3>Lorem Ipsum</h3>
-                          <span class="date_inbox">16/02/2021</span>
-                        </div>
-                      </div><!--end.row_inbox-->
-                      <div class="row_inbox">
-                        <div class="block_inbox">
-                          <h3>Lorem Ipsum</h3>
-                          <span class="date_inbox">16/02/2021</span>
-                        </div>
-                      </div><!--end.row_inbox-->
+                      <?php foreach($data['inbox'] as $item) { ?>
+                          <div class="row_inbox inboxinq">
+                            <input type="hidden" class="detail_id_inbox" value='<?php echo $item['inbox_id'];?>' >
+                            <input type="hidden" value='<?php echo $item['inbox_content'];?>' >
+                            <input type="hidden" value='<?php echo $item['inquiry_id'];?>' >
+                            <div class="block_inbox <?php if($item['inbox_read']==1){echo "active";}?>">
+                              <h3>Your Progress (100%)</h3>
+                              <span class="date_inbox"><?=$item['post_date'];?></span>
+                            </div>
+                          </div><!--end.row_inbox-->
+                      <?php } ?>
+                     
                     </div>
                   </div><!--end.cols2-->
-
-                  <div class="cols2">
+                 
+                 
+                  <div class="cols2 rescontent" style="display:none">
                     <span class="infoSmall"><strong>Message</strong></span>
                     <div class="isi-inbox_row">
                       <div class="isi_boxnya">
@@ -63,7 +46,12 @@
                         </button>
                       </div>
                     </div>
-                  </div><!--end.cols2-->
+                   </div><!--end.cols2-->
+
+             
+
+
+
                 </form>
               </div><!--end.row-list-->
             </div><!--end.action_exporter_account-->
@@ -74,9 +62,34 @@
 
   </section>
 </div>
-
 <script type="text/javascript">
 $(document).ready(function() {
+
+  $('.inboxinq').click(function() {
+   
+    var idnya=$(this).children().val();
+    var auth_code='<?php echo $data['auth_code'] ?>';
+    var content=$(this).children().next().val();
+    var inquiry_id=$(this).children().next().next().val();
+    var thiss=$(this);
+    var basedomain= '<?=base_url()?>';
+    //console.log(inquiry_id+','+idnya)
+      $.ajax({
+            url: basedomain+"API/inbox_read",
+            type: "POST",
+            headers: {
+                "auth_code":auth_code
+            },
+            data: 'inquiry_id='+inquiry_id&'inbox_id='+idnya ,
+            success: function (response) {
+              thiss.next().next().next().removeClass('active')
+              $('.rescontent').show();
+              $('.isi_boxnya').html(content);
+            },
+        });
+
+
+});
 
 });
 </script>

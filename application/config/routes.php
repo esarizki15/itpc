@@ -83,5 +83,5 @@ $route[':any/web_add_product'] = 'web/web_add_product';
 $route[':any/web_add_inquiry'] = 'web/web_add_inquiry';
 $route[':any/web_inquiry_list'] = 'web/web_inquiry_list';
 $route[':any/web_inquiry_progress'] = 'web/web_inquiry_progress';
-$route[':any/web_inquiry_inbox'] = 'web/web_inquiry_inbox';
+$route[':any/web_inquiry_inbox/(:any)'] = 'web/web_inquiry_inbox/$1';
 $route[':any/web_thank_you'] = 'web/web_thank_you';
