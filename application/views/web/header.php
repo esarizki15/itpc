@@ -14,7 +14,7 @@
 						<li><a href="<?php echo base_url();?>" class="active"><?php echo $language['home']; ?></a></li>
 						<li><a href="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en'."/web_about_us" : $this->uri->segment(1)."/web_about_us") ?>"><?php echo $language['aboutus']; ?></a></li>
 						<li><a href="#"><?php echo $language['trade']; ?></a></li>
-						<li><a href="#"><?php echo $language['news']; ?></a></li>
+						<li><a href="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en'."/web_news" : $this->uri->segment(1)."/web_news") ?>"><?php echo $language['news']; ?></a></li>
 						<li><a href="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en'."/web_contact_us" : $this->uri->segment(1)."/web_contact_us") ?>"><?php echo $language['contactus']; ?></a></li>
 						<?php  if(!$this->session->user_logged) { ?><li><a href="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en'."/web_itpc_login" : $this->uri->segment(1)."/web_itpc_login") ?>"><?php echo $language['login']; ?></a></li><?php } else { ?>
 						<li><a href="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en'."/web_exporter_account" : $this->uri->segment(1)."/web_exporter_account") ?>"><?php echo $language['exporter_dashboard']; ?></a></li> 
