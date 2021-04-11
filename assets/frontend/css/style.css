@@ -238,6 +238,7 @@ section {
 	display: inline-block;
 	vertical-align: middle;
 	padding: 10px;
+	position: relative;
 }
 .main_menu ul li a{
 	display: block;
@@ -247,6 +248,31 @@ section {
 	color: #FFFFFF;
 	padding-bottom: 3px;
 	border-bottom: 3px solid transparent;
+}
+.main_menu ul .dropdownMenu{
+	position: absolute;
+	width: 100%;
+	background: #FFFFFF;
+	display: none;
+}
+.haveDropdown:hover .dropdownMenu{
+	display: block;
+}
+.main_menu ul .dropdownMenu li{
+	padding: 0;
+	display: block;
+	width: 100%;
+}
+.main_menu ul .dropdownMenu li a{
+	padding: 10px;
+	color: #000;
+	display: block;
+	width: 100%;
+	font-size: 12px;
+}
+.main_menu ul .dropdownMenu li a:hover{
+	background: #FFC926;
+	color: #000;
 }
 
 .main_menu ul li a.active,.main_menu ul li a:hover{
@@ -1273,6 +1299,371 @@ section {
 	font-size: 17px;
 	color: #000;
 	margin-left: 10px;
+}
+#top-exporter-list{
+	background: url(../images/bg_trade_ina.png) no-repeat center center; 
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+	padding-top: 150px;
+	padding-bottom: 350px;
+}
+.title_top_exporter h3{
+	font-family: 'Fredoka One', cursive;
+	font-size: 70px;
+	color: #FFFFFF;
+	margin: 0 0 25px 0;
+}
+.title_top_exporter p{
+	font-size: 17px;
+	color: #fff;
+	font-weight: 500;
+}
+.input_big_text{
+	display: inline-block;
+	vertical-align: middle;
+	width: 45%;
+	margin-right: 25px;
+	height: 90px;
+	background: #fff;
+}
+.input_small_text{
+	display: inline-block;
+	vertical-align: middle;
+	width: 35%;
+	margin-right: 25px;
+	height: 90px;
+	background: #fff;
+
+}
+.group_no_line{
+	width: 100%;
+	background: #fff;
+	padding: 10px 20px;
+}
+.group_no_line label{
+	font-size: 16px;
+	font-weight: bold;
+	line-height: 21px;
+	color: #2C2C2E;
+	display: block;
+}
+.group_no_line .input_exporter{
+	border:none;
+	font-size: 16px;
+	padding: 15px 0;
+	background: #fff;
+	width: 100%;
+}
+.group_no_line .custom_select{
+	border:none;
+}
+.orange_big{
+	border: none;
+	display:inline-block;
+	justify-content: center;
+	align-items: center;
+	vertical-align: middle;
+	text-align: center;
+	background: #FFC926;
+	width: 15%;
+	text-transform: uppercase;
+	padding: 0 20px;
+	font-size: 15px;
+	color: #fff;
+	height: 90px;
+}
+.top-white-box{
+	padding: 20px;
+	margin-bottom: 45px;
+}
+.blue_title{
+	text-align: center;
+	display: block;
+	margin-bottom: 35px;
+}
+.blue_title h3{
+	font-weight: 500;
+	font-size: 20px;
+	letter-spacing: 8.68px;
+	text-transform: uppercase;
+	color: #0A84FF;
+}
+.item_how_to{
+	display: block;
+	width: 100%;
+}
+.icon_howto{
+	display: inline-block;
+	vertical-align: middle;
+	width: 60px;
+	text-align: center;
+}
+.caption_howto{
+	width: 70%;
+	display: inline-block;
+	vertical-align: middle;
+	text-align: left;
+	padding-left: 20px;
+}
+.caption_howto h4{
+	font-weight: 500;
+	font-size: 18px;
+	color: #2C2C2E;
+	margin: 0 0 15px 0;
+}
+.caption_howto p{
+	font-size: 14px;
+	color: #828282;
+}
+.row_list_exporternya{
+	display: block;
+	margin-bottom: 55px;
+}
+.left_content_exporter,.right_content_exporter{
+	display: inline-block;
+	vertical-align: top;
+}
+.item_left_content h3{
+	margin: 0 0 35px 0;
+}
+.left_content_exporter{
+	width: 25%;
+}
+.right_content_exporter{
+	width: 73%;
+}
+.row_filter{
+	display: block;
+	width: 100%;
+	margin-bottom: 35px;
+}
+.row_filter .title_row{
+	display: block;
+	font-weight: 500;
+	font-size: 15px;
+	margin-bottom: 10px;
+	color: #323232;
+}
+.row_filter .custom_select{
+	border: none;
+	background: #F1F1F1;
+}
+.row_filter .custom_select::after{
+	background: #F1F1F1;
+}
+.row_filter .custom_select select{
+	background: transparent;
+	font-size: 14px;
+}
+/* The container */
+.radio_container {
+  display: block;
+  position: relative;
+  padding-left: 35px;
+  margin-bottom: 15px;
+  cursor: pointer;
+  font-size: 14px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Hide the browser's default radio button */
+.radio_container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+
+/* Create a custom radio button */
+.radio_container .checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 17px;
+  width: 17px;
+  background-color: #eee;
+  border-radius: 50%;
+}
+
+/* On mouse-over, add a grey background color */
+.radio_container:hover input ~ .checkmark {
+  background-color: #ccc;
+}
+
+/* When the radio button is checked, add a blue background */
+.radio_container input:checked ~ .checkmark {
+  background-color: #2196F3;
+}
+
+/* Create the indicator (the dot/circle - hidden when not checked) */
+.radio_container .checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the indicator (dot/circle) when checked */
+.radio_container input:checked ~ .checkmark:after {
+  display: block;
+}
+
+/* Style the indicator (dot/circle) */
+.radio_container .checkmark:after {
+ 	top: 5px;
+	left: 5px;
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
+	background: white;
+}
+.thumb_list_exporter{
+	display: inline-block;
+	vertical-align: middle;
+	width: 35%;
+	overflow: hidden;
+}
+.thumb_list_exporter img{
+	width: 100%;
+}
+.caption_list_exporter{
+	display: inline-block;
+	vertical-align: middle;
+	width: 62%;
+	overflow: hidden;
+	padding-left: 35px;
+}
+.caption_list_exporter h3{
+	font-weight: bold;
+	font-size: 18px;
+	color: #0A84FF;
+	margin: 0 0 15px 0;
+}
+.caption_list_exporter p{
+	font-size: 14px;
+	color: #000000;
+
+}
+.label_link{
+	display: block;
+}
+.label_link .fa,.label_link span{
+	display: inline-block;
+	vertical-align: middle;
+	margin-right: 10px;
+}
+.label_link .fa{
+	font-size: 18px;
+}
+.label_link span{
+	font-size: 15px;
+}
+.item_list_exporternya{
+	padding-left: 60px;
+}
+.bottom_row_list_exporter{
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 20px;
+	width: 100%;
+	background: #F8F8F8;
+}
+.link_exporter{
+	display: flex;
+	flex-direction: row;
+}
+.link_exporter .item_call{
+	margin-left: 15px;
+}
+.link_exporter .item_call span{
+	font-size: 15px;
+	margin-left: 5px;
+}
+.inner_exporter_list{
+	margin-top: -330px;
+    background: #fff;
+    padding: 0 20px;
+}
+.section_big_thumb{
+	display: block;
+	width: 100%;
+	position: relative;
+	z-index: 3;
+}
+.title_big_blue{
+	display: block;
+	padding: 20px;
+	background: #0A84FF;
+}
+.title_big_blue h1{
+	font-family: 'Fredoka One', cursive;
+	font-size: 42px;
+	margin: 0;
+	text-transform: uppercase;
+	color: #FFFFFF;
+}
+ul.breadcrumb {
+  padding: 0;
+  list-style: none;
+  margin: 0;
+}
+ul.breadcrumb li {
+  display: inline;
+  font-size: 15px;
+  color: #0A84FF;
+}
+ul.breadcrumb li+li:before {
+  padding: 8px;
+  color: black;
+  content: "\003E";
+}
+ul.breadcrumb li a {
+  color: #000;
+  text-decoration: none;
+}
+ul.breadcrumb li a:hover {
+	color: #0A84FF;
+  	text-decoration: underline;
+}
+.left_detail_exporter,.right_detail_exporter{
+	display: inline-block;
+	vertical-align: top;
+}
+.left_detail_exporter{
+	width: 35%;
+}
+.right_detail_exporter{
+	width: 63%;
+	padding-left: 55px;
+}
+.title_blue_row{
+	display: block;
+	width: 100%;
+	padding: 10px;
+	background: #0A84FF;
+	margin-bottom: 25px;
+}
+.title_blue_row h3{
+	margin: 0;
+	font-weight: bold;
+	font-size: 14px;
+	color: #FFFFFF;
+}
+.item_gallery{
+	height: 180px;
+}
+.item_left_row .label_link .fa{
+	color: #0A84FF;
+}
+.call_detail_exporter .item_call span{
+	font-size: 14px;
+}
+.call_detail_exporter .item_call .fa{
+
 }
 /*------------- footer -----------------*/
 #footer{

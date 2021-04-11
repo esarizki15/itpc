@@ -77,6 +77,17 @@ class WEB extends CI_Controller {
         $this->render();
       }
 
+      public function web_index_exporter($lang = '')
+      {
+        $this->master["content"] = $this->load->view("web/exporter/exporter_index.php",[], TRUE);
+        $this->render();
+      }
+      public function web_index_exporter_detail($lang = '')
+      {
+        $this->master["content"] = $this->load->view("web/exporter/exporter_index_detail.php",[], TRUE);
+        $this->render();
+      }
+
       public function web_itpc_login($lang = '')
       {
         session_start();
@@ -1024,6 +1035,7 @@ class WEB extends CI_Controller {
         $this->master["content"] = $this->load->view("web/dashboard/inquiry_inbox.php",$inbox, TRUE);
         $this->render();
   }
+
 
 
 
