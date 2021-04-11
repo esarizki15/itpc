@@ -27,6 +27,7 @@
 <script src="<?php echo $this->config->item('frontend'); ?>js/jquery.validate.min.js"></script>
 <script src="<?php echo $this->config->item('frontend'); ?>js/js_lib.js"></script>
 <script src="<?php echo $this->config->item('frontend'); ?>js/js_run.js"></script>
+<script src="<?php echo $this->config->item('frontend'); ?>js/jquery.infinitescroll.js"></script>
 
 
 

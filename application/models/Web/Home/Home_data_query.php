@@ -190,6 +190,59 @@ class Home_data_query extends CI_Model{
 
     }
 
+    public function news_all($lang,$limit = null, $start = null) {
+      require_once('News_latest.php');
+      require_once('Exporter_home.php');
+      require_once('Indonesia_product.php');
+      require_once('Useful_link.php');
+
+      $where_exporter_logo = "exporter_logo is  NOT NULL";
+
+      $short='st.english AS short';
+      $long='lt.english AS long';
+      if($lang=='id') { 
+        $short="st.bahasa AS short";
+        $long='lt.bahasa AS long';
+      }else if($lang=='es'){
+        $short='st.spanyol AS short';
+        $long='lt.spanyol AS long';
+      }else if($lang=='en'){
+        $short='st.english AS short';
+        $long='lt.english AS long';
+      }
+      
+      $this->db->select([
+        'inews.news_id as id',
+        'inews.news_title as title',
+        'inews.news_slug as slug',
+        'inews.news_order as order',
+        'inews.news_thumbnail as thumbnail',
+        $short,$long,
+        'inews.post_date as date'
+      ]);
+
+    
+
+      $this->db->where('status', 1);
+      $this->db->where('delete_date', null);
+      $this->db->join('long_translations lt','inews.trans_key = lt.trans_key', 'left');
+      $this->db->join('short_translations st','inews.trans_key = st.trans_key', 'left');
+      $this->db->limit($limit, $start);
+      $this->db->order_by('news_order','DESC');
+      $query = $this->db->get('itpc_news inews');
+      $news_latest = [];
+      array_map(function($item) use(&$news_latest){
+        $news_latest[] = (new News_latest($item))->to_array();
+      }, $query->result_array());
+
+      return [
+        'news' => $news_latest
+      ];
+   
+    }
+
+   
+
     
 
 

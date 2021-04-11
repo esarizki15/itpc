@@ -8,7 +8,7 @@ class WEB extends CI_Controller {
     public $password;
     public $password_text;
     public $email;
-
+    public $perPage = 2;
 
       function __construct(){
            parent::__construct();
@@ -20,6 +20,7 @@ class WEB extends CI_Controller {
            $this->load->library('form_validation');
            $this->load->helper('validation');
            $this->load->model('Web/Home/Home_data_query','Home_data_query', true);
+           
            error_reporting(E_ALL ^ (E_NOTICE | E_WARNING));
       }
 
@@ -44,9 +45,25 @@ class WEB extends CI_Controller {
       }
       public function web_news($lang = '')
       {    
-            $News = $this->Home_data_query->get_news();
-            $this->master["content"] = $this->load->view("web/news/news.php",[], TRUE);
-            $this->render();
+             $data = $this->Home_data_query->news_all($this->isLang());
+             $totalPosts =  count($data['news']);
+             $data['total_pages']  = ceil($totalPosts/$this->perPage);
+
+             if(!empty($this->input->get("page"))){
+                  $start = $this->perPage * $this->input->get('page');
+                  $data['news'] = $this->Home_data_query->news_all($this->isLang(),$this->perPage,$start); //limit,start
+                  $this->load->view('web/news/ajax_news.php',$data);
+              }
+              else {
+                  $start =0;
+                  $data['news'] = $this->Home_data_query->news_all($this->isLang(),$this->perPage,$start); //limit,start
+                  //pr( $data);exit;
+                  $this->master["content"] = $this->load->view("web/news/news.php",$data, TRUE);
+                  $this->render();
+              }
+            
+           // pr($data);exit;
+           
       }
 
       public function web_news_detail($slug)
