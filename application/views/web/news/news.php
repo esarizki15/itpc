@@ -23,11 +23,12 @@
   <section id="news_inner" class="section padSection">
     <div class="wrapper">
       <div class="tab_row_menu">
-        <a href="#" class="tab_menu active">All</a>
-        <a href="#" class="tab_menu">News</a>
-        <a href="#" class="tab_menu">Exhibition</a>
+        <a href="javascript:void(0)" class="tab_menu allberita">All</a>
+        <a href="javascript:void(0)" class="tab_menu newsall">News</a>
+        <a href="javascript:void(0)" class="tab_menu exhibition">Exhibition</a>
       </div>
-      <div class="list_news">
+
+      <div class="list_news tabnya" >
           <div class="row-list" id="posts-infinite">
           <?php foreach($news['news'] as $item) {  ?>
             <div class="cols2">
@@ -41,13 +42,14 @@
                   <a href="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en' : $this->uri->segment(1)."/news_detail") ?>" class="readMore">Read more ></a>
                 </div>
               </div>
-            </div><!--end.cols2-->
+            </div>
             <?php } ?>
-            <!-- <div class="loader"><img src="https://upload.wikimedia.org/wikipedia/commons/c/c7/Loading_2.gif"> </div>
-            -->
+            
           </div>
+          
           <div class="button_load">
-            <a href="#" class="blue_button">SCROLL FOR MORE</a>
+          <div class="loader" style="margin: auto;width: 50%;"><img src="https://upload.wikimedia.org/wikipedia/commons/c/c7/Loading_2.gif" width="100" height="100"> </div>
+          <a href="#" class="blue_button">SCROLL FOR MORE</a>
           </div>
         </div><!--end.list-news-->
     </div>
@@ -56,19 +58,122 @@
 
 
 <script type="text/javascript">
-    var page =0;
-    var total_pages = <?php print $total_pages?>;
-    $(window).scroll(function() {
-        if($(window).scrollTop() + $(window).height() >= $(document).height()) {
-            page++;console.log('ss'+page)
-            if(page < total_pages) {
-              
-                loadData(page);
-            }else{
-                $('.button_load').hide();
-            }
-        }
-    });
+  
+  
+  winscroll(1);
+  $(".allberita").click(function () {
+    $('.tab_menu').removeClass('active');
+    $(this).addClass('active');
+    var basedomain= '<?=base_url()?>';
+      $.ajax({
+              url: basedomain+"en/web_news",
+              type: "POST",
+              data: "category=All",
+              success: function (response) {
+                var myArr = JSON.parse(response);
+                var Str = "";
+               
+                $(myArr['news']).each(function( index ) {
+                  Str=Str+"<div class='cols2'>";
+                  Str=Str+'<div class="item_news">';
+                  Str=Str+'<div class="thumb_news">';
+                  Str=Str+'<img class="object-fit" src="<?php echo $this->config->item('frontend'); ?>images/thumb_news1.png">';
+                  Str=Str+'</div>';
+                  Str=Str+'<div class="caption_news">';
+                  Str=Str+'<span class="category">NEWS</span>';
+                  Str=Str+'<h3>'+myArr['news'][index]['title']+'</h3>';
+                  Str=Str+'<a href="'+basedomain+'en/web_news_detail/'+myArr['news'][index]['slug']+'" class="readMore">Read more ></a>';
+                  Str=Str+'</div>';
+                  Str=Str+'</div>';
+                  Str=Str+'</div>';
+                });
+           
+                $('#posts-infinite').html(Str);
+                winscroll(1);
+              }
+            })
+  })
+
+  $(".newsall").click(function () {
+    $('.tab_menu').removeClass('active');
+    $(this).addClass('active');
+    var basedomain= '<?=base_url()?>';
+      $.ajax({
+              url: basedomain+"en/web_news",
+              type: "POST",
+              data: "category=All",
+              success: function (response) {
+                var myArr = JSON.parse(response);
+                var Str = "";
+               
+                $(myArr['news']).each(function( index ) {
+                  Str=Str+"<div class='cols2'>";
+                  Str=Str+'<div class="item_news">';
+                  Str=Str+'<div class="thumb_news">';
+                  Str=Str+'<img class="object-fit" src="<?php echo $this->config->item('frontend'); ?>images/thumb_news1.png">';
+                  Str=Str+'</div>';
+                  Str=Str+'<div class="caption_news">';
+                  Str=Str+'<span class="category">NEWS</span>';
+                  Str=Str+'<h3>'+myArr['news'][index]['title']+'</h3>';
+                  Str=Str+'<a href="'+basedomain+'en/web_news_detail/'+myArr['news'][index]['slug']+'" class="readMore">Read more ></a>';
+                  Str=Str+'</div>';
+                  Str=Str+'</div>';
+                  Str=Str+'</div>';
+                });
+           
+                $('#posts-infinite').html(Str);
+                winscroll(1);
+              }
+            })
+  })
+
+  $(".exhibition").click(function () {
+    $('.tab_menu').removeClass('active');
+    $(this).addClass('active');
+    var basedomain= '<?=base_url()?>';
+      $.ajax({
+              url: basedomain+"en/web_news",
+              type: "POST",
+              data: "category=All",
+              success: function (response) {
+                var myArr = JSON.parse(response);
+                var Str = "";
+               
+                $(myArr['news']).each(function( index ) {
+                  Str=Str+"<div class='cols2'>";
+                  Str=Str+'<div class="item_news">';
+                  Str=Str+'<div class="thumb_news">';
+                  Str=Str+'<img class="object-fit" src="<?php echo $this->config->item('frontend'); ?>images/thumb_news1.png">';
+                  Str=Str+'</div>';
+                  Str=Str+'<div class="caption_news">';
+                  Str=Str+'<span class="category">NEWS</span>';
+                  Str=Str+'<h3>'+myArr['news'][index]['title']+'</h3>';
+                  Str=Str+'<a href="'+basedomain+'en/web_news_detail/'+myArr['news'][index]['slug']+'" class="readMore">Read more ></a>';
+                  Str=Str+'</div>';
+                  Str=Str+'</div>';
+                  Str=Str+'</div>';
+                });
+           
+                $('#posts-infinite').html(Str);
+                winscroll(1);
+              }
+            })
+  })
+  
+    function winscroll(pagenya){
+      var page =pagenya;
+      var total_pages = <?php print $total_pages?>;
+      $(window).scroll(function() {
+          if($(window).scrollTop() + $(window).height() >= $(document).height()) {
+              page++;
+              if(page < total_pages) {
+                  loadData(page);
+              }else{
+                  $('.button_load').hide();
+              }
+          }
+      });
+    }
 
     /*Load more Function*/
     function loadData(page) {
@@ -86,5 +191,7 @@
 
         });
     }
+
+
 
 </script>

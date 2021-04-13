@@ -241,6 +241,52 @@ class Home_data_query extends CI_Model{
    
     }
 
+
+    public function about_us($lang) {
+      require_once('News_latest.php');
+      require_once('Exporter_home.php');
+      require_once('Indonesia_product.php');
+      require_once('Useful_link.php');
+
+      $where_exporter_logo = "exporter_logo is  NOT NULL";
+
+      $short='st.english AS short';
+      $long='lt.english AS long';
+      if($lang=='id') { 
+        $short="st.bahasa AS short";
+        $long='lt.bahasa AS long';
+      }else if($lang=='es'){
+        $short='st.spanyol AS short';
+        $long='lt.spanyol AS long';
+      }else if($lang=='en'){
+        $short='st.english AS short';
+        $long='lt.english AS long';
+      }
+      
+      $this->db->select([
+        'about.*',
+       
+        $short,$long,
+      
+      ]);
+
+    
+
+ 
+      $this->db->join('long_translations lt','about.trans_key = lt.trans_key', 'left');
+      $this->db->join('short_translations st','about.trans_key = st.trans_key', 'left');
+      $this->db->limit(1);
+      $query = $this->db->get('itpc_about about');
+
+      $about_us = $query->result_array();
+     //pr($about_us);exit;
+
+      return [
+        'about' => $about_us
+      ];
+   
+    }
+
    
 
     

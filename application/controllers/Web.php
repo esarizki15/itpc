@@ -45,9 +45,20 @@ class WEB extends CI_Controller {
       }
       public function web_news($lang = '')
       {    
-             $data = $this->Home_data_query->news_all($this->isLang());
-             $totalPosts =  count($data['news']);
-             $data['total_pages']  = ceil($totalPosts/$this->perPage);
+           // pr($category);exit;
+
+            if($this->input->post("category")=="All"){
+                  $start =0;
+                  $data = $this->Home_data_query->news_all($this->isLang(),$this->perPage,$start);
+                  $totalPosts =  count($data['news']);
+                  $data['total_pages']  = ceil($totalPosts/$this->perPage);
+                  echo json_encode($data); exit;
+                  
+            }else{
+                  $data = $this->Home_data_query->news_all($this->isLang());
+                  $totalPosts =  count($data['news']);
+                  $data['total_pages']  = ceil($totalPosts/$this->perPage);
+            }
 
              if(!empty($this->input->get("page"))){
                   $start = $this->perPage * $this->input->get('page');
@@ -85,7 +96,9 @@ class WEB extends CI_Controller {
       }
       public function web_about_us($lang = '')
       {
-        $this->master["content"] = $this->load->view("web/about/about_us.php",[], TRUE);
+        $data = $this->Home_data_query->about_us($this->isLang());
+        //pr($data);exit;
+        $this->master["content"] = $this->load->view("web/about/about_us.php",$data , TRUE);
         $this->render();
       }
       public function web_contact_us($lang = '')
