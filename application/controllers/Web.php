@@ -109,7 +109,42 @@ class WEB extends CI_Controller {
 
       public function web_index_exporter($lang = '')
       {
-        $this->master["content"] = $this->load->view("web/exporter/exporter_index.php",[], TRUE);
+      $this->load->model('API/Exporter/Exporter_category_query','Exporter_category_query', true);
+      $this->load->model('API/Exporter/Exporter_subcategory_query','Exporter_subcategory_query', true);
+      $this->load->model('API/Authentication/Auth','Auth', true);
+      $this->load->model('API/User/User_query','User_query', true);
+      $this->load->model('Web/Exporter/Exporter_list_query','Exporter_list_query', true);
+      
+      //GET SUBCATEGORY
+      if(@$this->input->post('categoryId')){
+            $subcategory = $this->Exporter_subcategory_query->subcategory_list();
+            $tempcat=array();
+            $i=0;
+            foreach($subcategory as $itemsub){
+                  if($itemsub['category_id']==$this->input->post('categoryId') )
+                  {
+                        $tempcat[$i]['id']=$itemsub['id'];
+                        $tempcat[$i]['title']=$itemsub['title'];
+                        $i++;
+                  }
+            }
+            echo json_encode($tempcat);
+            return json_encode($tempcat);
+      }
+
+      $auth_code = $this->session->user_logged['auth_code'];
+      $get_auth_code = $this->Auth->cek_auth($auth_code);
+    
+      $data=array();
+      if($get_auth_code){
+                  $data['id_ex']  = $this->User_query->detail_exporter($this->session->user_logged['user_id'])['exporter_detail'][0]['id'];
+                  $data['category'] = $this->Exporter_category_query->category_list();
+                  $data['subcategory'] = $this->Exporter_subcategory_query->subcategory_list();
+                  $data['curr_category'] = $this->Exporter_category_query->category_curr_list($this->session->user_logged['user_id']);
+      }
+      $data['exporter']=$this->Exporter_list_query->exporter_list();
+      //pr($data['exporter']);exit;
+        $this->master["content"] = $this->load->view("web/exporter/exporter_index.php",$data, TRUE);
         $this->render();
       }
       public function web_index_exporter_detail($lang = '')
