@@ -1265,6 +1265,86 @@ class Admin extends CI_Controller {
 	}
 
 
+	public function Submit_useful(){
+		if($_SESSION['admin_id'] == null || $_SESSION['admin_id'] == ""){
+			redirect("Admin/Logout");
+			}else{
+					$is_save = true;
+					$this->load->model('Admin/Useful/Useful_query','Useful_query', true);
+
+					$this->form_validation->set_rules('userful_title', 'userful_title', 'trim|required|min_length[3]');
+					$this->form_validation->set_rules('useful_link', 'useful_link', 'trim|required|min_length[3]');
+					$this->form_validation->set_rules('is_draft', 'is_draft', 'trim');
+
+
+					$date = date_create();
+					$update_date = date("Y-m-d H:i:s");
+					$created_date = date("Y-m-d H:i:s");
+
+					if($is_save == true){
+						if($_FILES['logo']['error'] === 0) {
+							$upload_config['upload_path'] = 'assets/' . $this->config->item('useful_link');
+							$upload_config['allowed_types'] = 'jpg|jpeg|png|svg';
+							$upload_config['max_height'] = 300;
+							$upload_config['max_width'] = 500;
+							$upload_config['file_name'] = "userful-logo"."-".date_timestamp_get($date);
+							$this->upload->initialize($upload_config);
+							if($this->upload->do_upload('logo')) {
+								echo $logo = $this->upload->data('file_name');
+								//$is_save = true;
+								//die();
+							} else {
+								$this->session->set_flashdata('error', 'File header: ' . $this->upload->display_errors('', ''));
+								$is_save = false;
+
+							}
+						}else{
+								$this->session->set_flashdata('error', 'File header: ' . $this->upload->display_errors('', ''));
+								$is_save = false;
+						}
+					}
+
+					if($is_save == true){
+
+						$data['userful_title'] = $this->input->post('userful_title');
+						$data['useful_link'] = $this->input->post('useful_link');
+						$data['status'] = $this->input->post('status');
+
+						$Useful[] = [
+									"useful_id" => null,
+									"userful_title" => $data['userful_title'],
+									"useful_logo" => $logo,
+									"useful_link" => $useful_link,
+									"post_date" => 	$created_date ,
+									"post_by" => $_SESSION['admin_id'],
+									"delete_date" => null,
+									"delete_by" => null,
+									"status" => $data['status']
+						];
+
+						$submit_useful = $this->Useful_query->submit($Useful);
+
+					}
+
+
+			}
+	}
+
+	public function Useful_link_managment(){
+		if($_SESSION['admin_id'] == null || $_SESSION['admin_id'] == ""){
+			redirect("Admin/Logout");
+			}else{
+			$this->load->model('Admin/Useful/Useful_query','Useful_query', true);
+			$this->data['data'] = $this->Useful_query->useful_list();
+
+			$this->master["custume_css"] = $this->load->view('admin/useful_link_management/custume_css.php', [], TRUE);
+			$this->master["custume_js"] = $this->load->view('admin/useful_link_management/custume_js.php',$this->data, TRUE);
+			$this->master["content"] = $this->load->view("admin/useful_link_management/content.php",$this->data, TRUE);
+			$this->render();
+			}
+	}
+
+
 
 
 

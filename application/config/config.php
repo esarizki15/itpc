@@ -35,6 +35,7 @@ $config['frontend'] = $root.'assets/frontend/';
 $config['inquiry_file'] = 'website/inquiry';
 $config['news'] = 'website/news';
 $config['indonesia_product'] = 'website/indonesia_product';
+$config['useful_link'] = 'website/useful_link';
 
 
 

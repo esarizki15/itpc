@@ -25,4 +25,11 @@ class Useful_query extends CI_Model {
 		return $useful;
 	}
 
+	function add_useful($useful){
+	  $result =	$this->db->insert_batch('itpc_news', $news);
+	  if(!$result)
+	     $this->session->set_flashdata('error', 'Gagal menyimpan data');
+	  return $result;
+	}
+
 }

@@ -26,38 +26,36 @@
 		<div class="card m-b-30">
 			<div class="card-body">
 				<div class="card-body">
-					<h4 class="mt-0 header-title">Form Add Exporter</h4>
-					<form action="<?php echo base_url(); ?>Admin/Submit_subcategory" method="post" enctype="multipart/form-data">
+					<h4 class="mt-0 header-title">Form Useful link</h4>
+					<form action="<?php echo base_url(); ?>Admin/Submit_useful" method="post" enctype="multipart/form-data">
 						<div class="card mb-0">
 							<div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
 								<div class="card-body">
 									<div class="row">
 										<input type="hidden" name="<?php echo $this->security->get_csrf_token_name(); ?>" value="<?php echo $this->security->get_csrf_hash(); ?>">
-										<div class="col-md-4">
-													<div class="form-group">
-														<label>Categories<span style="color:red">*</span></label>
-                             <select class="js-states form-control" name="category_id" id="category_id" data-live-search="true">
-															 	<option value="0">Select a category</option>
-																 <?php
- 																	foreach ($data as $key_expoter_categories => $item_expoter_categories) {
- 																?>
- 																 <option value="<?php echo $item_expoter_categories['category_id']; ?>"><?php echo $item_expoter_categories['category_title']; ?></option>
- 																 <?php
- 																	 }
- 																 ?>
-                             </select>
-                         </div>
+										<div class="col-md-12">
+											<center>
+												<div class="form-group">
+													<img class="m-t-30" id="blah" name="thumbnail" src="#" alt="your image" style="max-width:200px;max-height:200px;" />
+												</div>
+												<div class="form-group">
+													<label class="col-form-label">Logo Exporter( max 500 x 500px )</label>
+													<div class="field" align="center">
+														<input type="file" id="imgInp" name="logo" />
+													</div>
+												</div>
+											</center>
 										</div>
 										<div class="col-md-4">
 											<div class="form-group">
-												<label>Old subcategory id</label>
-												<input type="text" name="subcategory_old_id" class="form-control"  placeholder="Type something" />
+												<label>Name</label>
+												<input type="text" name="userful_title" class="form-control"  required placeholder="Type something" />
 											</div>
 										</div>
-										<div class="col-md-4">
+										<div class="col-md-8">
 											<div class="form-group">
-												<label>Title subcategory<span style="color:red">*</span></label>
-												<input type="text" name="subcategory_title" class="form-control" required placeholder="Type something" />
+												<label>Link<span style="color:red">*</span></label>
+												<input type="text" name="useful_link" class="form-control" required placeholder="Type something" />
 											</div>
 										</div>
 									</div>
@@ -87,29 +85,51 @@
        <div class="card m-b-30">
 
            <div class="card-body">
-              <table id="empTable"  class="table table-striped table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+              <table id="datatable" class="table table-striped table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                   <thead>
                       <tr>
                           <th>No</th>
-                          <th>Subcategory Title</th>
-                          <th>Category Title</th>
+                          <th>Name</th>
+                          <th>Logo</th>
+													<th>Link</th>
                           <th>Post date</th>
                           <th>Status</th>
                           <th>Action</th>
                       </tr>
                   </thead>
                   <tbody>
-										<tr>
+
 										<?php
 										$no = 1;
 										 foreach ($data as $key_useful => $item_useful) {
 									 ?>
-									 <td><?php echo $no; ?></td>
+									  <tr>
+									 	<td><?php echo $no; ?></td>
+										<td><?php echo $item_useful['userful_title']; ?></td>
+										<td><img src="<?php echo $item_useful['useful_logo'];?>" style="width:50px;"></td>
+										<td><a href="<?php echo $item_useful['useful_link']; ?>" target="_blank"><?php echo $item_useful['useful_link']; ?></a></td>
+										<td><?php echo $item_useful['post_date']; ?></td>
+									 	<td><?php echo $item_useful['status']; ?></td>
+										<td>
+												<a href="" class="btn btn-info waves-effect waves-light"><i class="fas fa-pencil-alt"></i></a>
+												<?php
+													$status = $item_useful['status'];
+													if($status == "actived"){
+														$status = "btn-success";
+													}else{
+														$status = "btn-danger";
+													}
+												?>
+												<a href="" class="btn <?php echo $status; ?> waves-effect waves-light"><i class="fas fa-check"></i></a>
+												<a href="" class="btn btn-danger waves-effect waves-light"><i class="fas fa-trash-alt"></i></a>
+										</td>
+								 	 </tr>
+
 									 <?php
 									 		$no++;
 										 }
 									 ?>
-								 </tr>
+
 									</tbody>
               </table>
            </div>
