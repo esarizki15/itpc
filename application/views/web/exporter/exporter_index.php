@@ -17,12 +17,11 @@
           <div class="group_no_line">
             <label>Category</label>
             <div class="custom_select field">
-              <select name="category_id" id="category" required>
+              <select name="category_id" id="category_atas" required>
                 <option selected disabled value="0">-- Pilih Category --</option>
-                <option value="category01" catTitle="category01">Category 01</option>
-                <option value="category02" catTitle="category02">Category 02</option>
-                <option value="category03" catTitle="category03">Category 03</option>
-                <option value="category04" catTitle="category04">Category 04</option>
+                <?php foreach($category as $itemcat){ ?> 
+                        <option value="<?=$itemcat['id']?>" catTitle="<?=$itemcat['title']?>"><?=$itemcat['title']?></option>
+                      <?php } ?> 
               </select>
             </div>
           </div>
@@ -85,34 +84,27 @@
               <div class="row_filter">
                 <label class="title_row">Select Category</label>
                 <div class="custom_select field">
-                  <select name="category_id" id="category" required>
-                    <option selected disabled value="0">-- Pilih Category --</option>
-                    <option value="category01" catTitle="category01">Category 01</option>
-                    <option value="category02" catTitle="category02">Category 02</option>
-                    <option value="category03" catTitle="category03">Category 03</option>
-                    <option value="category04" catTitle="category04">Category 04</option>
-                  </select>
+                    <select name="category" id="category">
+                      <option selected disabled value="0">Category</option>
+                      <?php foreach($category as $itemcat){ ?> 
+                        <option value="<?=$itemcat['id']?>" catTitle="<?=$itemcat['title']?>"><?=$itemcat['title']?></option>
+                      <?php } ?> 
+                    </select>
                 </div>
-              </div><!--end.row_filter-->
+              </div><!--end.row_filter--> 
               <div class="row_filter">
                 <label class="title_row">Select Sub Category</label>
                 <div class="custom_select field">
-                  <select name="subcategory_id" id="sub_category" required>
-                    <option selected disabled value="0">-- Pilih Sub Category --</option>
-                    <option value="sub_category01" catTitle="sub_category01">Category 01</option>
-                    <option value="sub_category02" catTitle="sub_category02">Category 02</option>
-                    <option value="sub_category03" catTitle="sub_category03">Category 03</option>
-                    <option value="sub_category04" catTitle="sub_category04">Category 04</option>
-                  </select>
+                <select name="subcategory" id="subcategory">
+                          <option selected disabled value="0">Sub Category</option>
+                </select>
                 </div>
               </div><!--end.row_filter-->
               <div class="row_filter">
                 <label class="title_row">Sort Category</label>
                 <div class="sort_by_Radio">
                  <label class="radio_container">Newest First
-
-
-                    <input type="radio" checked="checked" name="radio">
+                   <input type="radio" checked="checked" name="radio">
                     <span class="checkmark"></span>
                   </label>
                   <label class="radio_container">Oldest First
@@ -131,12 +123,14 @@
           <div class="right_content_exporter">
             <div class="item_list_exporternya">
               <div class="row_list_exporternya">
+
+                <?php foreach($exporter['it_ex'] as $item) {  ?>
                 <div class="top_row_list_exporter">
                   <div class="thumb_list_exporter">
                     <img src="<?php echo $this->config->item('frontend'); ?>images/thumb_exporter_list.png">
                   </div><!--en.dthumb_list_exporter-->
                   <div class="caption_list_exporter">
-                    <h3>PT. Kharisma Putra Mandiri</h3>
+                    <h3><?=$item['exporter_name']; ?></h3>
                     <p>We are exporter and manufacturer of rattan and wooden furniture in Central Java. Having experience more than 25 years in furniture business, we have been supplying customers all over the world.....</p>
                     <div class="label_link">
                       <i class="fa fa-tags" aria-hidden="true"></i>
@@ -148,72 +142,20 @@
                   <div class="link_exporter">
                     <div class="item_call">
                       <i class="fa fa-phone" aria-hidden="true"></i>
-                      <span>+34 934 144 662</span>
+                      <span><?=$item['exporter_phone'];?></span>
                     </div>
                     <div class="item_call">
                       <i class="fa fa-link" aria-hidden="true"></i>
-                      <span>http://www.itpc-barcelona.es/</span>
+                      <span><?=$item['exporter_link']; ?></span>
                     </div>
                   </div>
                   <a href="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en'."/web_index_exporter_detail" : $this->uri->segment(1)."/web_index_exporter_detail") ?>" class="see_detail">DETAILS ></a>
                 </div><!--end.bottom_row_list_exporter-->
+        
+              <?php } ?>
+
               </div><!--end.row_list_exporternya-->
-              <div class="row_list_exporternya">
-                <div class="top_row_list_exporter">
-                  <div class="thumb_list_exporter">
-                    <img src="<?php echo $this->config->item('frontend'); ?>images/thumb_exporter_list.png">
-                  </div><!--en.dthumb_list_exporter-->
-                  <div class="caption_list_exporter">
-                    <h3>PT. Kharisma Putra Mandiri</h3>
-                    <p>We are exporter and manufacturer of rattan and wooden furniture in Central Java. Having experience more than 25 years in furniture business, we have been supplying customers all over the world.....</p>
-                    <div class="label_link">
-                      <i class="fa fa-tags" aria-hidden="true"></i>
-                      <span>9403 Furniture</span>
-                    </div>
-                  </div>
-                </div><!--end.top_row_list_exporter-->
-                <div class="bottom_row_list_exporter">
-                  <div class="link_exporter">
-                    <div class="item_call">
-                      <i class="fa fa-phone" aria-hidden="true"></i>
-                      <span>+34 934 144 662</span>
-                    </div>
-                    <div class="item_call">
-                      <i class="fa fa-link" aria-hidden="true"></i>
-                      <span>http://www.itpc-barcelona.es/</span>
-                    </div>
-                  </div>
-                  <a href="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en'."/web_index_exporter_detail" : $this->uri->segment(1)."/web_index_exporter_detail") ?>" class="see_detail">DETAILS ></a>
-                </div><!--end.bottom_row_list_exporter-->
-              </div><!--end.row_list_exporternya-->
-              <div class="row_list_exporternya">
-                <div class="top_row_list_exporter">
-                  <div class="thumb_list_exporter">
-                    <img src="<?php echo $this->config->item('frontend'); ?>images/thumb_exporter_list.png">
-                  </div><!--en.dthumb_list_exporter-->
-                  <div class="caption_list_exporter">
-                    <h3>PT. Kharisma Putra Mandiri</h3>
-                    <p>We are exporter and manufacturer of rattan and wooden furniture in Central Java. Having experience more than 25 years in furniture business, we have been supplying customers all over the world.....</p>
-                    <div class="label_link">
-                      <i class="fa fa-tags" aria-hidden="true"></i>
-                      <span>9403 Furniture</span>
-                    </div>
-                  </div>
-                </div><!--end.top_row_list_exporter-->
-                <div class="bottom_row_list_exporter">
-                  <div class="link_exporter">
-                    <div class="item_call">
-                      <i class="fa fa-phone" aria-hidden="true"></i>
-                      <span>+34 934 144 662</span>
-                    </div>
-                    <div class="item_call">
-                      <i class="fa fa-link" aria-hidden="true"></i>
-                      <span>http://www.itpc-barcelona.es/</span>
-                    </div>
-                  </div>
-                  <a href="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en'."/web_index_exporter_detail" : $this->uri->segment(1)."/web_index_exporter_detail") ?>" class="see_detail">DETAILS ></a>
-                </div><!--end.bottom_row_list_exporter-->
-              </div><!--end.row_list_exporternya-->
+              
 
             </div><!--end.item_list_exporternya-->
 
@@ -223,3 +165,29 @@
   </section>
 
  </div>
+
+ <script>
+TreeCat();
+function TreeCat(){
+    $('#category').on("change",function () {
+        var categoryId = $(this).find('option:selected').val();
+        var basedomain= '<?=base_url()?>';
+        //console.log(basedomain);
+        $.ajax({
+            url: basedomain+"en/web_add_category",
+            type: "POST",
+            data: "categoryId="+categoryId,
+            success: function (response) {
+              var myArr = JSON.parse(response);
+              var Str = "";
+              Str=Str+ "<option selected disabled value='0'>Sub Category</option>";
+              $(myArr).each(function( index ) {
+                Str=Str+ "  <option value='"+myArr[index]['id']+"' title='"+myArr[index]['title'] +"'>"+myArr[index]['title'] + "</option>";
+              });
+              $('#subcategory').html(Str);
+            },
+        });
+    }); 
+}
+
+</script> 

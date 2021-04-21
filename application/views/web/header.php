@@ -68,12 +68,19 @@
 			</div><!--end.right_header-->
 		</div>
 	</div><!--end.wrapper-->
+	<?php  
+	$home="";
+	if($this->uri->segment(1) == '') { $home='active'; }else if($this->uri->segment(1) == 'en' && $this->uri->segment(2) == '') { $home='active'; } else { $home=''; } 
+	
+	
+	?>
+
 
 	<div class="float_mobile_menu">
 	  <div class="close_menu"><img src="<?php echo $this->config->item('frontend'); ?>images/close.png"></div>
 	  <div class="main_mobile_menu">
 	    <ul>
-			<li><a href="<?php echo base_url();?>" class="active"><?php echo $language['home']; ?></a></li>
+			<li><a href="<?php echo base_url();?>" class="<?=$home; ?>"><?php echo $language['home']; ?></a></li>
 			<li><a href="#"><?php echo $language['aboutus']; ?></a></li>
 			<li><a href="#"><?php echo $language['trade']; ?></a></li>
 			<li><a href="#"><?php echo $language['news']; ?></a></li>
