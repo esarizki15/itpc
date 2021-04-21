@@ -104,6 +104,21 @@ class WEB extends CI_Controller {
         $this->master["content"] = $this->load->view("web/exporter/exporter_index_detail.php",[], TRUE);
         $this->render();
       }
+      public function web_exporter_search_result($lang = '')
+      {
+        $this->master["content"] = $this->load->view("web/exporter/exporter_search_result.php",[], TRUE);
+        $this->render();
+      }
+      public function web_importer_list($lang = '')
+      {
+        $this->master["content"] = $this->load->view("web/dashboard/importer_list.php",[], TRUE);
+        $this->render();
+      }
+      public function web_importer_list_detail($lang = '')
+      {
+        $this->master["content"] = $this->load->view("web/dashboard/importer_list_detail.php",[], TRUE);
+        $this->render();
+      }
 
       public function web_itpc_login($lang = '')
       {

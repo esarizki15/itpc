@@ -1082,6 +1082,26 @@ section {
 	display: block;
 	margin-bottom: 5px;
 }
+.rows_detail_importer .group_inquiry p,
+.rows_detail_importer .group_inquiry label{
+	font-size: 14px;
+}
+.rows_detail_importer.withBorder{
+	border-top:0.5px solid #BDBDBD;
+	padding:10px 0 0 0; 
+}
+.title_detail_importer{
+	border-bottom: 0.5px solid #BDBDBD;
+	padding: 10px 0;
+	font-weight: bold;
+	font-size: 14px;
+	color: #0F1419;
+	display: block;
+	margin-bottom: 15px;
+}
+.rows_detail_importer .group_inquiry{
+	margin-bottom: 10px;
+}
 .group_inquiry label{
 	font-size: 16px;
 	color: #828282;
@@ -1564,6 +1584,9 @@ section {
 .item_list_exporternya{
 	padding-left: 60px;
 }
+.list_bottom_exporter{
+	padding: 20px 0;
+}
 .bottom_row_list_exporter{
 	display: flex;
 	justify-content: space-between;
@@ -1586,7 +1609,15 @@ section {
 .inner_exporter_list{
 	margin-top: -330px;
     background: #fff;
-    padding: 0 20px;
+    padding:20px;
+}
+.text_result_search{
+	display: block;
+	padding: 20px 20px 20px 60px;
+}
+.text_result_search span{
+	font-size: 20px;
+	color: #2C2C2E;
 }
 .section_big_thumb{
 	display: block;
@@ -1664,6 +1695,58 @@ ul.breadcrumb li a:hover {
 }
 .call_detail_exporter .item_call .fa{
 
+}
+.list_table_inquiry{
+	display: block;
+	width: 100%;
+}
+.list_table_inquiry table{
+	width: 100%;
+}
+.list_table_inquiry table tr th{
+	background: #FAFAFA;
+	text-align: left;
+	font-weight: 600;
+	font-size: 14px;
+	color: #000000;
+	padding: 10px;
+}
+
+.list_table_inquiry table tr td{
+	font-size: 13px;
+	color: #333333;
+	text-align: left;
+	padding: 20px 10px;
+	border-bottom: 0.5px solid #E5E5EA;
+}
+.inquiry_list_title{
+	display: block;
+	font-size: 13px;
+	font-weight: bold;
+	color: #0A84FF;
+}
+.inquiry_list_title.non_active{
+	color: #636366;
+}
+.sub_title_list,.sub_title_date{
+	font-size: 11px;
+	color: #636366;
+	display: block;
+	margin-bottom: 5px;
+}
+.red{
+	color: #EB5757;
+}
+.detail_importer_link{
+	display: inline-block;
+	font-size: 13px;
+	color: #0A84FF;
+	font-weight: 500;
+}
+.detail_importer_link .fa{
+	font-size: 18px;
+	display: inline-block;
+	vertical-align: middle;
 }
 /*------------- footer -----------------*/
 #footer{

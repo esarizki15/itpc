@@ -87,3 +87,6 @@ $route[':any/web_inquiry_inbox/(:any)'] = 'web/web_inquiry_inbox/$1';
 $route[':any/web_thank_you'] = 'web/web_thank_you';
 $route[':any/web_index_exporter'] = 'web/web_index_exporter';
 $route[':any/web_index_exporter_detail'] = 'web/web_index_exporter_detail';
+$route[':any/web_exporter_search_result'] = 'web/web_exporter_search_result';
+$route[':any/web_importer_list'] = 'web/web_importer_list';
+$route[':any/web_importer_list_detail'] = 'web/web_importer_list_detail';

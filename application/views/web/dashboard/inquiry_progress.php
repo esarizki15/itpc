@@ -25,7 +25,7 @@
             </div>
             <div class="rows">
               <div class="tabs_menu_inquiry">
-                <a href="#" class="tabs_menunya">Importer Lists</a>
+                <a href="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en' : $this->uri->segment(1)."/web_importer_list/".$item['inquiry_id']) ?>" class="tabs_menunya">Importer Lists</a>
                 <a href="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en' : $this->uri->segment(1)."/web_inquiry_inbox/".$item['inquiry_id']) ?>" class="tabs_menunya">Inbox</a>
                 <a href="#" class="tabs_menunya">Additional File</a>
               </div>
