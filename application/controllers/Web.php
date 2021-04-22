@@ -103,8 +103,30 @@ class WEB extends CI_Controller {
       }
       public function web_contact_us($lang = '')
       {
-        $this->master["content"] = $this->load->view("web/contact/contact_us.php",[], TRUE);
+        session_start();
+        $_SESSION['token'] = bin2hex(random_bytes(32));
+        $data['token'] = $_SESSION['token'];
+        $data['content'] = $this->Home_data_query->contact_us($this->isLang());
+        $this->master["content"] = $this->load->view("web/contact/contact_us.php",$data, TRUE);
         $this->render();
+      }
+      public function store_contact_us(){
+            if($this->input->post('csrf_token_reg') !== $_SESSION['token']) {
+                  $this->session->set_flashdata('flsh_msg','failed, please contact the admin');
+                  redirect($this->redirection("web_contact_us"));
+            } 
+       //     pr($_POST);exit;
+       
+            $contact[] = [
+                  "name" => $this->input->post('name'),
+                  "email" => $this->input->post('email'),
+                  "industry" => $this->input->post('industry'),
+                  "phone" => $this->input->post('phone'),
+                  "message" => $this->input->post('message'),
+                  ];
+
+            $submit_user = $this->Home_data_query->save_contact_us($user);
+           
       }
 
       public function web_index_exporter($lang = '')

@@ -27,7 +27,7 @@
           <div class="cols2">
             <div class="item_form_contact">
               <h3>Contact Us</h3>
-              <form>
+              <form id="contactForm" action="<?php echo base_url(). 'store_contact_us'; ?>" method="post">
                 <div class="form_group">
                   <label class="title_input">Your Name (required)</label>
                   <div class="field">
@@ -60,9 +60,8 @@
                   </div>
                 </div><!--end.form_group-->
                 <div class="form_group">
-                  <button type="submit" class="blue_orange ">
-                    Send
-                  </button>
+                <input type="hidden" name="csrf_token_reg" value="<?=$token;?>" />
+                <button  class="bt_block_blue register"><i style="display:none" class="fa fa-spinner fa-spin"></i> Send</button>
                 </div>
 
 
@@ -85,6 +84,7 @@
         <div class="cols3">
           <div class="item_call">
             <i class="fa fa-map-marker" aria-hidden="true"></i>
+            <!-- INI buaT Longnya  <?php echo $about[0]['long']; ?> -->
             <span>Calle Aribau 250 Bj.08006, Barcelona, Spain</span>
           </div>
         </div><!--end.cols2-->
@@ -133,3 +133,17 @@
   </section>
 
  </div>
+
+<script>
+$(document).ready(function() {
+
+$("#contactForm").validate({
+  submitHandler: function() {
+      $(".register").prop( "disabled" );
+      $(".register").html('<i class="fa fa-spinner fa-spin"></i> Loading');
+      form.submit();
+  }
+});
+</script>
+
+

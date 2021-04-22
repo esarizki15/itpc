@@ -61,6 +61,7 @@ $route['store_login'] = 'web/web_store_login';
 $route['store_detail_exporter'] = 'web/store_detail_exporter';
 $route['store_product'] = 'web/store_product';
 $route['store_inquiry'] = 'web/store_inquiry';
+$route['store_contact_us'] = 'web/store_contact_us';
 
 //Handling Language
 $route['id'] = 'web/index';
