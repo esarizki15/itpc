@@ -4,8 +4,13 @@ class About_query extends CI_Model{
     public function get() {
           require_once('About_page.php');
           $this->db->select([
-    			'about_content',
-    			'about_header'
+          'about_title',
+          'about_content',
+    			'about_header',
+          'function_image',
+          'function_content',
+          'mission_content',
+          'mission_image'
     		]);
 
     		$query = $this->db->get('itpc_about');

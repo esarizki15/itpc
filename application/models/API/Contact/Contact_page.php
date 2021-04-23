@@ -1,7 +1,12 @@
 <?php
 class Contact_page {
-	public $contact_content;
+	public $contact_map;
 	public $contact_header;
+	public $contact_location;
+	public $contact_phone;
+	public $contact_fax;
+	public $contact_email;
+	public $contact_website;
 
 	public function __construct($arr) {
 		foreach(get_object_vars($this) as $key => $val) {

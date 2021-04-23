@@ -4,8 +4,13 @@ class Contact_query extends CI_Model{
     public function get() {
           require_once('Contact_page.php');
           $this->db->select([
-    			'contact_content',
-    			'contact_header'
+    			'contact_map',
+    			'contact_header',
+          'contact_location',
+          'contact_phone',
+          'contact_fax',
+          'contact_email',
+          'contact_website'
     		]);
 
     		$query = $this->db->get('itpc_contact');

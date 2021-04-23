@@ -36,6 +36,12 @@ class API extends CI_Controller {
 		//$this->load->view('welcome_message');
 	}
 
+	private function render()
+ {
+	 $this->master["main_css"] = $this->load->view('mobile/main_css.php', [], TRUE);
+	 $this->load->view("mobile/master", $this->master);
+ }
+
 	public function home()
 	{
 			$this->load->model('API/Home/Home_data_query','Home_data_query', true);
@@ -90,8 +96,11 @@ class API extends CI_Controller {
 	public function about(){
 		$this->load->model('API/About/About_query','About_query', true);
 		$this->data["data"] = $this->About_query->get();
+
+
 		if($this->data["data"]){
-			$this->load->view('mobile/About.php',$this->data);
+			$this->master["content"] = $this->load->view("mobile/About.php",$this->data, TRUE);
+			$this->render();
 		}else{
 			echo "sorry page data is not available";
 		}
@@ -101,7 +110,8 @@ class API extends CI_Controller {
 		$this->load->model('API/Contact/Contact_query','Contact_query', true);
 		$this->data["data"] = $this->Contact_query->get();
 		if($this->data["data"]){
-			$this->load->view('mobile/Contact.php',$this->data);
+			$this->master["content"] = $this->load->view("mobile/Contact.php",$this->data, TRUE);
+			$this->render();
 		}else{
 			echo "sorry page data is not available";
 		}
