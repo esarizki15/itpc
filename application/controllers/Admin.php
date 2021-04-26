@@ -1093,7 +1093,9 @@ class Admin extends CI_Controller {
 			$this->load->model('Admin/About/About_query','About_query', true);
 
 			$this->data['data']['language_list'] = $this->langguage_query->language_list();
-			$this->data['data']['about'] = $this->About_query->about();
+			$this->data['data']['about_header'] = $this->About_query->about_header();
+			$this->data['data']['about_detail'] = $this->About_query->about_detail();
+
 
 
 
@@ -1330,19 +1332,7 @@ class Admin extends CI_Controller {
 			}
 	}
 
-	public function Useful_link_managment(){
-		if($_SESSION['admin_id'] == null || $_SESSION['admin_id'] == ""){
-			redirect("Admin/Logout");
-			}else{
-			$this->load->model('Admin/Useful/Useful_query','Useful_query', true);
-			$this->data['data'] = $this->Useful_query->useful_list();
 
-			$this->master["custume_css"] = $this->load->view('admin/useful_link_management/custume_css.php', [], TRUE);
-			$this->master["custume_js"] = $this->load->view('admin/useful_link_management/custume_js.php',$this->data, TRUE);
-			$this->master["content"] = $this->load->view("admin/useful_link_management/content.php",$this->data, TRUE);
-			$this->render();
-			}
-	}
 
 
 

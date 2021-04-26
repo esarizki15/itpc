@@ -26,20 +26,22 @@
 				<div class="card-body">
 					<h4 class="mt-0 header-title">Form About</h4>
 					<form action="<?php echo base_url(); ?>Admin/Update_contact" method="post" enctype="multipart/form-data">
-						<?php
-						 foreach ($data['contact'] as $key_contact => $item_contact) {
-					 ?>
+
 						<div class="card mb-0">
+
 							<div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
 								<div class="card-body">
 									<div class="row">
 										<input type="hidden" name="<?php echo $this->security->get_csrf_token_name(); ?>" value="<?php echo $this->security->get_csrf_hash(); ?>">
 
+										<?php
+										 foreach ($data['about_header'] as $key_about => $item_about) {
+									 ?>
 										<div class="col-md-12">
 											<div class="form-group">
 												<center>
 													<div class="form-group">
-														<img class="m-t-30" id="blah_2" name="header" src="<?php echo $item_contact['contact_header'];?>" alt="your image" style="max-width:300px;max-height:200px;" />
+														<img class="m-t-30" id="blah_2" name="header" src="<?php echo $item_about['about_header'];?>" alt="your image" style="max-width:300px;max-height:200px;" />
 													</div>
 													<div class="form-group">
 														<label class="col-form-label">Header News( max 1360 x 768px )</label>
@@ -51,31 +53,38 @@
 											</div>
 										</div>
 										<?php
+											}
+										?>
+										<?php
+										foreach ($data['about_detail'] as $key_about => $item_about) {
 										 foreach ($data['language_list'] as $key_language => $item_language) {
+											 $title = "title_".$item_language['language_title'];
 											 $content = "content_".$item_language['language_title'];
 									 ?>
 										<div class="col-md-12 m-b-10">
 											<div class="form-group">
-                         <label>Content <?php echo $item_language['language_title']; ?></label>
-                       <textarea id="elm_<?php echo $item_language['language_title']; ?>" name="content[<?php echo $item_language['language_title']; ?>]" ><?php echo $item_contact[$content]; ?>"</textarea>
+                         <label>Title <?php echo $item_language['language_title']; ?></label>
+												 <input type="text" name="title[<?php echo $item_language['language_title'];?>]" value="<?php echo $item_about['about_detail'][$title]; ?>">
+                       	 <textarea id="elm_<?php echo $item_language['language_title']; ?>" name="content[<?php echo $item_language['language_title']; ?>]" ><?php echo $item_about['about_detail'][$content]; ?>"</textarea>
                      </div>
 										</div>
+
 										<?php
-											}
+													}
+												}
 										?>
 
 									</div>
 								</div>
 							</div>
 						</div>
+
 						<div class="row m-t-20 justify-content-md-center">
 							<div class="col-md-6">
 								<button type="submit" class="btn btn-success btn-lg btn-block waves-effect waves-light">Update Data</button>
 							</div>
 						</div>
-						<?php
-								}
-						?>
+
 					</form>
 				</div>
 			</div>

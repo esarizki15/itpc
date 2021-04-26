@@ -1800,7 +1800,8 @@ class API extends CI_Controller {
 				$this->load->model('API/Inquiry/Inquiry_query','Inquiry_query', true);
 				if($importer_id){
 					$this->data["data"] = $this->Inquiry_query->importer_detail($importer_id);
-					$this->load->view('mobile/importer_detail.php',$this->data);
+					$this->master["content"] = $this->load->view("mobile/importer_detail.php",$this->data, TRUE);
+					$this->render();
 				}else{
 					echo "sorry page data is not available";
 				}

@@ -320,7 +320,7 @@ class Inquiry_query extends CI_Model{
       'b.update_date as update_date',
       'd.admin_name as created_by'
     ]);
-    $this->db->where('a.importer_id', $importer_id);
+    $this->db->where('b.importer_id', $importer_id);
     $this->db->where('a.delete_date', null);
     $this->db->where('a.status', 1);
     $this->db->where('b.delete_date', null);

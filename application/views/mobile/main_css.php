@@ -14,3 +14,8 @@
 <link href="<?php echo $this->config->item('admin_source'); ?>plugins/bootstrap-select/bootstrap-select.min.css" rel="stylesheet">
 
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+<style>
+  p {
+    font-size:18px;
+  }
+</style>

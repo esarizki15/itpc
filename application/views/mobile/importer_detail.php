@@ -1,184 +1,177 @@
-<!DOCTYPE html>
-<html dir="ltr" lang="en-US">
-<body>
+
 <?php foreach ($data['importer_detail'] as $key => $item){ ?>
-	<h2 style="font-size:90px;">Name</h2>
-	<p style="font-size:40px;"><?php echo $item['importer_name']; ?>
-		
-	<br/>
-	<h2>Detai</h2>
+	<h4>Name</h4>
+	<p><b><?php echo $item['importer_name']; ?>
+	<h4>Detai</h4>
 	<?php if($item['importer_detail'] == null){
-			echo "<p>data not available</p>";
+			echo "<p><b>data not available</b></p>";
 	}else{ ?>
-	<p><?php echo $item['importer_detail']; ?></p>
+	<p><b><?php echo $item['importer_detail']; ?></b></p>
 	<?php
 		}
 	?>
 
-	<h2>Address</h2>
+	<h4>Address</h4>
 	<?php if($item['importer_address'] == null){
-			echo "<p>data not available</p>";
+			echo "<p><b>data not available</b></p>";
 	}else{ ?>
-	<p><?php echo $item['importer_address']; ?></p>
+	<p><b><?php echo $item['importer_address']; ?></b></p>
 	<?php
 		}
 	?>
 
-	<h2>City</h2>
+	<h4>City</h4>
 	<?php if($item['importer_city'] == null){
-			echo "<p>data not available</p>";
+			echo "<p><b>data not available</b></p>";
 	}else{ ?>
-	<p><?php echo $item['importer_city']; ?></p>
+	<p><b><?php echo $item['importer_city']; ?></b></p>
 	<?php
 		}
 	?>
 
-	<h2>State / Provience / Region</h2>
+	<h4>State / Provience / Region</h4>
 	<?php if($item['importer_provience'] == null){
-			echo "<p>data not available</p>";
+			echo "<p><b>data not available</b></p>";
 	}else{ ?>
-	<p><?php echo $item['importer_provience']; ?></p>
+	<p><b><?php echo $item['importer_provience']; ?></b></p>
 	<?php
 		}
 	?>
 
-	<h2>Postal / Zip Code</h2>
+	<h4>Postal / Zip Code</h4>
 	<?php if($item['importer_postal'] == null){
-			echo "<p>data not available</p>";
+			echo "<p><b>data not available</b></p>";
 	}else{ ?>
-	<p><?php echo $item['importer_postal']; ?></p>
+	<p><b><?php echo $item['importer_postal']; ?></b></p>
 	<?php
 		}
 	?>
 
-	<h2>Country</h2>
+	<h4>Country</h4>
 	<?php if($item['country_name'] == null){
-			echo "<p>data not available</p>";
+			echo "<p><b>data not available</b></p>";
 	}else{ ?>
-	<p><?php echo $item['country_name']; ?></p>
+	<p><b><?php echo $item['country_name']; ?></b></p>
 	<?php
 		}
 	?>
 
-	<h2>Country</h2>
+	<h4>Country</h4>
 	<?php if($item['country_name'] == null){
-			echo "<p>data not available</p>";
+			echo "<p><b>data not available</b></p>";
 	}else{ ?>
-	<p><?php echo $item['country_name']; ?></p>
+	<p><b><?php echo $item['country_name']; ?></b></p>
 	<?php
 		}
 	?>
 
-	<h4>Contact Information</h4>
-	<h2>Name</h2>
+	<hr/>
+	<h4><i class="dripicons-user-id"></i> Contact Information</h4>
+	<h4>Name</h4>
 	<?php if($item['contact_name'] == null){
-			echo "<p>data not available</p>";
+			echo "<p><b>data not available</b></p>";
 	}else{ ?>
-	<p><?php echo $item['contact_name']; ?></p>
+	<p><b><?php echo $item['contact_name']; ?></b></p>
 	<?php
 		}
 	?>
-	<h2>Office Phone</h2>
+	<h4>Office Phone</h4>
 	<?php if($item['contact_office_phone'] == null){
-			echo "<p>data not available</p>";
+			echo "<p><b>data not available</b></p>";
 	}else{ ?>
-	<p><?php echo $item['contact_office_phone']; ?></p>
+	<p><b><?php echo $item['contact_office_phone']; ?></b></p>
 	<?php
 		}
 	?>
-	<h2>Personal Phone</h2>
+	<h4>Personal Phone</h4>
 	<?php if($item['contact_phone'] == null){
-			echo "<p>data not available</p>";
+			echo "<p><b>data not available</b></p>";
 	}else{ ?>
-	<p><?php echo $item['contact_phone']; ?></p>
+	<p><b><?php echo $item['contact_phone']; ?></b></p>
 	<?php
 		}
 	?>
 
-	<h2>Fax</h2>
+	<h4>Fax</h4>
 	<?php if($item['contact_fax'] == null){
-			echo "<p>data not available</p>";
+			echo "<p><b>data not available</b></p>";
 	}else{ ?>
-	<p><?php echo $item['contact_fax']; ?></p>
+	<p><b><?php echo $item['contact_fax']; ?></b></p>
 	<?php
 		}
 	?>
 
-	<h2>Email</h2>
+	<h4>Email</h4>
 	<?php if($item['contact_email'] == null){
-			echo "<p>data not available</p>";
+			echo "<p><b>data not available</b></p>";
 	}else{ ?>
-	<p><?php echo $item['contact_email']; ?></p>
+	<p><b><?php echo $item['contact_email']; ?></b></p>
 	<?php
 		}
 	?>
 
-	<h2>Website</h2>
+	<h4>Website</h4>
 	<?php if($item['contact_website'] == null){
-			echo "<p>data not available</p>";
+			echo "<p><b>data not available</b></p>";
 	}else{ ?>
-	<p><?php echo $item['contact_website']; ?></p>
+	<p><b><?php echo $item['contact_website']; ?></b></p>
 	<?php
 		}
 	?>
 
-	<h4>Social Media</h4>
-	<h2>Twitter</h2>
+	<hr/>
+	<h4><i class="dripicons-user-group"></i> Social Media</h4>
+	<h4>Twitter</h4>
 	<?php if($item['social_twitter'] == null){
-			echo "<p>data not available</p>";
+			echo "<p><b>data not available</b></p>";
 	}else{ ?>
-	<p><?php echo $item['contact_website']; ?></p>
+	<p><b><?php echo $item['contact_website']; ?></b></p>
 	<?php
 		}
 	?>
 
-	<h2>Facebook</h2>
+	<h4>Facebook</h4>
 	<?php if($item['social_facebook'] == null){
-			echo "<p>data not available</p>";
+			echo "<p><b>data not available</b></p>";
 	}else{ ?>
-	<p><?php echo $item['social_facebook']; ?></p>
+	<p><b><?php echo $item['social_facebook']; ?></b></p>
 	<?php
 		}
 	?>
 
-	<h2>Google</h2>
+	<h4>Google</h4>
 	<?php if($item['social_google'] == null){
-			echo "<p>data not available</p>";
+			echo "<p><b>data not available</b></p>";
 	}else{ ?>
-	<p><?php echo $item['social_google']; ?></p>
+	<p><b><?php echo $item['social_google']; ?></b></p>
 	<?php
 		}
 	?>
 
-	<h2>Created</h2>
+	<h4>Created</h4>
 	<?php if($item['post_date'] == null){
-			echo "<p>data not available</p>";
+			echo "<p><b>data not available</b></p>";
 	}else{ ?>
-	<p><?php echo $item['post_date']; ?></p>
+	<p><b><?php echo $item['post_date']; ?></b></p>
 	<?php
 		}
 	?>
-
-	<h2>Update</h2>
+	<hr/>
+	<h4>Update</h4>
 	<?php if($item['update_date'] == null){
-			echo "<p>data not available</p>";
+			echo "<p><b>data not available</b></p>";
 	}else{ ?>
-	<p><?php echo $item['update_date']; ?></p>
+	<p><b><?php echo $item['update_date']; ?></b></p>
 	<?php
 		}
 	?>
 
-	<h2>Created by</h2>
+	<h4>Created by</h4>
 	<?php if($item['created_by'] == null){
-			echo "<p>data not available</p>";
+			echo "<p><b>data not available</b></p>";
 	}else{ ?>
-	<p><?php echo $item['created_by']; ?></p>
+	<p><b><?php echo $item['created_by']; ?></b></p>
 	<?php
 		}
 	?>
-
-
-
 <?php } ?>
-</body>
-</html>
