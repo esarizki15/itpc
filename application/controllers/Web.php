@@ -507,9 +507,10 @@ class WEB extends CI_Controller {
   public function web_exporter_account($lang = '')
   {
        
-        $this->load->model('API/User/User_query','User_query', true);
+        $this->load->model('WEB/Exporter/Exporter_list_query','User_query', true);
         $user_id = $this->session->user_logged['user_id'];
-        $detail_user = $this->User_query->detail_exporter($user_id);
+        $detail_user = $this->User_query->find_exporter($user_id);
+        //pr($detail_user);exit;
         $this->master["content"] = $this->load->view("web/dashboard/exporter_account.php",$detail_user, TRUE);
         $this->render();
   }
@@ -564,6 +565,7 @@ class WEB extends CI_Controller {
                  // pr('ss');exit;
             
 			$this->load->model('API/User/User_query','User_query', true);
+                  $this->load->model('WEB/Exporter/Exporter_list_query','Exporter__query', true);
 			$this->form_validation->set_rules('id', 'id', 'trim|required|numeric');
 			$this->form_validation->set_rules('name', 'name', 'trim|required|min_length[3]');
 			$this->form_validation->set_rules('address', 'address', 'trim|required|min_length[3]');
@@ -611,7 +613,12 @@ class WEB extends CI_Controller {
 				}
 
 				if($save_status == true){
-                                    if (!empty($_FILES['exporter_logo']['name'])) {
+                              //Cek Exporter Home 
+                              $CekExHome=$this->Exporter__query->find_exporter($exporter_id);
+                              //pr($CekExHome['it_ex'][0]['exporter_home']);exit;
+                              if($CekExHome['it_ex'][0]['exporter_home']==0){
+                              if (!empty($_FILES['exporter_logo']['name'])) {
+                                    
 						$update = [
 								'exporter_id' => $exporter_id,
 								'exporter_name' => $exporter_name,
@@ -621,6 +628,7 @@ class WEB extends CI_Controller {
 								'exporter_office_phone' => $exporter_office_phone,
 								'exporter_fax' => $exporter_fax,
 								'exporter_email' => $exporter_email,
+                                                'exporter_home' => 1,
 								'exporter_link' => $exporter_link,
 								'exporter_logo' => $exporter_logo
 						];
@@ -631,12 +639,27 @@ class WEB extends CI_Controller {
                                           'exporter_slug' => $exporter_slug,
                                           'exporter_address' => $exporter_address,
                                           'exporter_phone' => $exporter_phone,
+                                          'exporter_home' => 1,
                                           'exporter_office_phone' => $exporter_office_phone,
                                           'exporter_fax' => $exporter_fax,
                                           'exporter_email' => $exporter_email,
                                           'exporter_link' => $exporter_link
-                              ];
+                                          ];
                               }
+                              
+                        }else{
+                              $update = [
+                                    'exporter_id' => $exporter_id,
+                                    'exporter_name' => $exporter_name,
+                                    'exporter_slug' => $exporter_slug,
+                                    'exporter_address' => $exporter_address,
+                                    'exporter_phone' => $exporter_phone,
+                                    'exporter_office_phone' => $exporter_office_phone,
+                                    'exporter_fax' => $exporter_fax,
+                                    'exporter_email' => $exporter_email,
+                                    'exporter_link' => $exporter_link
+                                    ];
+                        }
 
 						$update_exporter['data'] = $this->User_query->Exporter_data_update($update);
 						$update_exporter['status'] = true;
@@ -668,6 +691,7 @@ class WEB extends CI_Controller {
       $this->load->model('API/Exporter/Exporter_subcategory_query','Exporter_subcategory_query', true);
       $this->load->model('API/Authentication/Auth','Auth', true);
       $this->load->model('API/User/User_query','User_query', true);
+      $this->load->model('WEB/Exporter/Exporter_list_query','Ex_cek', true);
 
       //GET SUBCATEGORY
       if(@$this->input->post('categoryId')){
@@ -760,7 +784,60 @@ class WEB extends CI_Controller {
       $this->master["content"] = $this->load->view("web/dashboard/add_product.php",$update_product, TRUE);  
       $this->render();
   }
+      public function w_add_category_exporter()
+	{
+			$this->load->model('WEB/User/User_query','User_query', true);
+                  $this->load->model('WEB/Exporter/Exporter_list_query','CekIDex', true);
+			$this->form_validation->set_rules('expoter_id', 'expoter_id', 'trim|required|numeric');
+			$this->form_validation->set_rules('category_id[]', 'category_id', 'trim|required|numeric');
+			$this->form_validation->set_rules('subcategory_id[]', 'subcategory_id', 'trim|required|numeric');
 
+			if($this->form_validation->run() == TRUE)
+			{
+				$id = $this->input->post('expoter_id');
+				$category_id = $this->input->post('category_id');
+				$subcategory_id = $this->input->post('subcategory_id');
+				$post_date = date("Y-m-d H:i:s");
+				$post_by = $id;
+
+				for($i=0; $i < count($category_id); $i++) {
+					$category[] = [
+						 'exporter_id' => $id,
+						 'category_id' => $category_id[$i],
+						 'subcategory_id' => $subcategory_id[$i],
+						 'post_date' => $post_date,
+						 'post_by' => $post_by
+					];
+				}
+
+                        
+				$add_category['data'] = $this->User_query->Submit_category($category);
+                        
+
+				if($add_category['data']){
+                              $update = [
+                                          'exporter_id' => $id,
+                                          'exporter_home' => 2
+                                        ];
+                             
+                              $update_exporter['data'] = $this->User_query->Exporter_data_update($update);
+                        	$add_category['status'] = true;
+					$add_category['message'] = "Data saved successfully";
+				}else{
+					$add_category['data'] = null;
+					$add_category['status'] = true;
+					$add_category['message'] = "Data failed to save";
+				}
+
+			}else{
+				$add_category['data'] = null;
+				$add_category['status'] = false;
+				$add_category['message'] = validation_errors();
+			}
+
+			echo json_encode($add_category); //send data to script
+			return json_encode($add_category);
+	}
   public function store_product(){
       $date = date_create();
       if (!empty($_FILES['ex_pro_image']['name'])) {

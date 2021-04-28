@@ -62,7 +62,7 @@ $route['store_detail_exporter'] = 'web/store_detail_exporter';
 $route['store_product'] = 'web/store_product';
 $route['store_inquiry'] = 'web/store_inquiry';
 $route['store_contact_us'] = 'web/store_contact_us';
-
+$route['store_category_exporter'] = 'web/w_add_category_exporter';
 //Handling Language
 $route['id'] = 'web/index';
 $route['en'] = 'web/index';

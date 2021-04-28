@@ -74,48 +74,46 @@
 </div>
 
 <script type="text/javascript">
+function clickRemove(){$(".trigger_remove").click(function(){console.log("ss");var e=$(this).closest(".row_added_cat"),t=$(this).children().next().val();$.ajax({url:"<?=base_url()?>API/delete_category_exporter",type:"POST",data:"ex_cat_id="+t,success:function(e){console.log(e)}}),$(e).remove()})}function TreeCat(){$("#category").on("change",function(){var e=$(this).find("option:selected").val();$.ajax({url:"<?=base_url()?>en/web_add_category",type:"POST",data:"categoryId="+e,success:function(e){var t=JSON.parse(e),o="";o+="<option selected disabled value='0'>Sub Category</option>",$(t).each(function(e){o=o+"  <option value='"+t[e].id+"' title='"+t[e].title+"'>"+t[e].title+"</option>"}),$("#subcategory").html(o)}})})}
+// function clickRemove(){
+//  $(".trigger_remove").click(function () {
+//     console.log('ss')
+//     var parentDiv = $(this).closest(".row_added_cat")
+//     var idnya=$(this).children().next().val();
+//     var basedomain= '<?=base_url()?>';
+//       $.ajax({
+//             url: basedomain+"API/delete_category_exporter",
+//             type: "POST",
+//             data: 'ex_cat_id=' + idnya ,
+//             success: function (response) {
+//                 console.log(response)
+//             },
+//         });
+//     $(parentDiv).remove();
+//   });
+// }
 
-function clickRemove(){
-
-  $(".trigger_remove").click(function () {
-    console.log('ss')
-    var parentDiv = $(this).closest(".row_added_cat")
-    var idnya=$(this).children().next().val();
-    var basedomain= '<?=base_url()?>';
-      $.ajax({
-            url: basedomain+"API/delete_category_exporter",
-            type: "POST",
-            data: 'ex_cat_id=' + idnya ,
-            success: function (response) {
-                console.log(response)
-            },
-        });
-    $(parentDiv).remove();
-  });
-}
-
-
-function TreeCat(){
-    $('#category').on("change",function () {
-        var categoryId = $(this).find('option:selected').val();
-        var basedomain= '<?=base_url()?>';
-        //console.log(basedomain);
-        $.ajax({
-            url: basedomain+"en/web_add_category",
-            type: "POST",
-            data: "categoryId="+categoryId,
-            success: function (response) {
-              var myArr = JSON.parse(response);
-              var Str = "";
-              Str=Str+ "<option selected disabled value='0'>Sub Category</option>";
-              $(myArr).each(function( index ) {
-                Str=Str+ "  <option value='"+myArr[index]['id']+"' title='"+myArr[index]['title'] +"'>"+myArr[index]['title'] + "</option>";
-              });
-              $('#subcategory').html(Str);
-            },
-        });
-    }); 
-}
+// function TreeCat(){
+//     $('#category').on("change",function () {
+//         var categoryId = $(this).find('option:selected').val();
+//         var basedomain= '<?=base_url()?>';
+//         //console.log(basedomain);
+//         $.ajax({
+//             url: basedomain+"en/web_add_category",
+//             type: "POST",
+//             data: "categoryId="+categoryId,
+//             success: function (response) {
+//               var myArr = JSON.parse(response);
+//               var Str = "";
+//               Str=Str+ "<option selected disabled value='0'>Sub Category</option>";
+//               $(myArr).each(function( index ) {
+//                 Str=Str+ "  <option value='"+myArr[index]['id']+"' title='"+myArr[index]['title'] +"'>"+myArr[index]['title'] + "</option>";
+//               });
+//               $('#subcategory').html(Str);
+//             },
+//         });
+//     }); 
+// }
 
 $(document).ready(function() {
   clickRemove();
@@ -137,7 +135,7 @@ $(document).ready(function() {
       var basedomain= '<?=base_url()?>';
       console.log('expoter_id=' + id + '&category_id=' + category_id + '&subcategory_id=' + subcategory_id)
       $.ajax({
-            url: basedomain+"API/add_category_exporter",
+            url: basedomain+"/store_category_exporter",
             type: "POST",
             data: 'expoter_id=' + id + '&category_id[]=' + category_id + '&subcategory_id[]=' + subcategory_id,
             success: function (response) {

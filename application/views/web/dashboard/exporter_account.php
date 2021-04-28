@@ -23,14 +23,14 @@
                     <span class="infoSmall">You haven’t input category and product. Add below</span>
                       <div class="row_action_button">
 
-                        <?php if($exporter_detail[0]['name'] == "" ) {?>
+                        <?php if($it_ex[0]['exporter_home'] == '0' ) {?>
                         <a href="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en' : $this->uri->segment(1)."/web_update_account") ?>" class="button_with_icon">
                           <img src="<?php echo $this->config->item('frontend'); ?>images/icon_add_profile.png" />
                           <span>Add Exporter Profile</span>
                         </a>
                         <?php } ?>
 
-                        <?php if($exporter_detail[0]['name']) {?>
+                        <?php if($it_ex[0]['exporter_home'] == '1' || $it_ex[0]['exporter_home'] == '2' ) {?>
                         <a href="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en' : $this->uri->segment(1)."/web_update_account") ?>" class="button_with_icon">
                           <img src="<?php echo $this->config->item('frontend'); ?>images/icon_add_edit.png" />
                           <span>Edit Exporter Profile</span>
@@ -49,7 +49,7 @@
                   </div><!--end.action_item-->
                 </div><!--end.cols2-->
 
-                <?php if($exporter_detail[0]['name']) {?>
+                <?php if($it_ex[0]['exporter_home'] == '2' ) {?>
                 <div class="cols2">
                   <div class="action_item">
                     <span class="infoSmall"><strong>Create Inquiry</strong></span>
