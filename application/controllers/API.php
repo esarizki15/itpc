@@ -1887,6 +1887,33 @@ class API extends CI_Controller {
 					return json_encode($news_data);
 			}
 		}
+
+		public function search_indonesia_product(){
+				$this->load->model('API/Indonesia_product/Indonesia_product_data_query','Indonesia_product_data_query', true);
+				$this->form_validation->set_rules('page', 'page', 'required');
+				$this->form_validation->set_rules('keyword', 'keyword', 'required');
+
+				if($this->form_validation->run() == TRUE)
+				{
+
+					$page = $this->input->post('page',true);
+					$keyword = $this->input->post('keyword');
+
+					if($page == 0){
+						$page = 0;
+					}else{
+						$page = $page * 10;
+					}
+
+					$per_page = 10;
+					$indonesia_product_data = $this->Indonesia_product_data_query->get_indoensia_product_search($per_page,$page,$keyword);
+
+
+
+				echo json_encode($indonesia_product_data); //send data to script
+				return json_encode($indonesia_product_data);
+		}
+	}
 			//$message = $this->load->view('email/actived_account.php',$this->data,TRUE);
 
 		/*public function submit_data_inquiry_file()
