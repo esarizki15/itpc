@@ -33,6 +33,7 @@ class WEB extends CI_Controller {
             $this->master["main_css"] = $this->load->view('web/main_css.php', [], TRUE);
             $this->master["main_js"] = $this->load->view("web/main_js.php", [], TRUE);
             $this->master["header"] = $this->load->view("web/header.php",$this->master, TRUE);
+            
             $this->load->view("web/master", $this->master);
       }
       public function index($lang = '')
@@ -506,7 +507,7 @@ class WEB extends CI_Controller {
 
   public function web_exporter_account($lang = '')
   {
-       
+        if(!$this->session->user_logged['user_id']){  redirect("/en/web_itpc_login"); }
         $this->load->model('WEB/Exporter/Exporter_list_query','User_query', true);
         $user_id = $this->session->user_logged['user_id'];
         $detail_user = $this->User_query->find_exporter($user_id);
