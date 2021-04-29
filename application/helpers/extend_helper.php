@@ -8,6 +8,11 @@ function pr($var){
 
 }
 
+function clean($string) {
+    $string = str_replace(' ', '-', $string); // Replaces all spaces with hyphens.
+    return preg_replace('/\D/', '', $string); // Removes special chars.
+ }
+
 			
 function getLang($parlang){
     $langnya=$parlang;

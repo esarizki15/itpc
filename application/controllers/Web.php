@@ -182,13 +182,20 @@ class WEB extends CI_Controller {
       }
       public function web_importer_list($lang = '')
       {
-        $this->master["content"] = $this->load->view("web/dashboard/importer_list.php",[], TRUE);
-        $this->render();
+           $this->load->model('API/Inquiry/Inquiry_query','Inquiry_query', true);
+            $getIdImporter=clean($this->input->get('detail'));
+            $importerlist=$this->Inquiry_query->importer_inquiry(10,0,$getIdImporter);
+            $this->master["content"] = $this->load->view("web/dashboard/importer_list.php",$importerlist, TRUE);
+            $this->render();
       }
-      public function web_importer_list_detail($lang = '')
+      public function web_importer_list_detail($id)
       {
-        $this->master["content"] = $this->load->view("web/dashboard/importer_list_detail.php",[], TRUE);
-        $this->render();
+          
+            $this->load->model('API/Inquiry/Inquiry_query','Inquiry_query', true);
+            $importerlist=$this->Inquiry_query->importer_detail($id);
+            //pr($importerlist);exit;
+            $this->master["content"] = $this->load->view("web/dashboard/importer_list_detail.php",$importerlist, TRUE);
+            $this->render();
       }
 
       public function web_itpc_login($lang = '')

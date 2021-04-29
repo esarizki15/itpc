@@ -21,18 +21,18 @@
                     <div class="item_inquiry">
                       <div class="group_inquiry">
                         <label>Nama</label>
-                        <p>Margaclor, S.L. - Hidrocloriberica</p>
+                        <p><?php echo $importer_detail[0]['importer_name'];?></p>
                       </div><!--end.group_inquiry-->
 
                       <div class="group_inquiry">
                         <label>Detail</label>
-                        <p>Hidrocloriberica mengkhususkan diri dalam pengembangan, manufaktur dan distribusi produk kimia untuk pengolahan air kolam renang dan desinfeksi air</p>
+                        <p><?php echo $importer_detail[0]['importer_detail'];?></p>
                       </div><!--end.group_inquiry-->
 
 
                       <div class="group_inquiry">
                         <label>Alamat</label>
-                        <p>Avda. Tropical, 6</p>
+                        <p><?php echo $importer_detail[0]['importer_address'];?></p>
                       </div><!--end.group_inquiry-->
 
                     </div>
@@ -42,26 +42,26 @@
                     <div class="item_inquiry">
                       <div class="group_inquiry">
                         <label>City</label>
-                        <p>Alhaurin de la Torre</p>
+                        <p><?php echo $importer_detail[0]['importer_city'];?></p>
                       </div><!--end.group_inquiry-->
 
                       <div class="group_inquiry">
                         <label>State / Provience / Region</label>
-                        <p>Malaga</p>
+                        <p><?php echo $importer_detail[0]['importer_provience'];?></p>
                       </div><!--end.group_inquiry-->
 
                       <div class="group_inquiry">
                         <label>Postal / Zip Code</label>
-                        <p>29130</p>
+                        <p><?php echo $importer_detail[0]['importer_postal'];?></p>
                       </div><!--end.group_inquiry-->
 
                       <div class="group_inquiry">
                         <label>Country</label>
-                        <p>Spain</p>
+                        <p><?php echo $importer_detail[0]['country_name'];?></p>
                       </div><!--end.group_inquiry-->
                       <div class="group_inquiry">
-                        <label>Jenis Produk </label>
-                        <p>Bahan Kimia</p>
+                        <!-- <label>Jenis Produk </label> -->
+                        <p></p>
                       </div><!--end.group_inquiry-->
                     </div>
                   </div>
@@ -77,22 +77,22 @@
                     <div class="item_inquiry">
                       <div class="group_inquiry">
                         <label>Nama</label>
-                        <p>-</p>
+                        <p><?php echo $importer_detail[0]['contact_name'];?></p>
                       </div><!--end.group_inquiry-->
 
                       <div class="group_inquiry">
                         <label>Telepon</label>
-                        <p>34 952 415 509</p>
+                        <p><?php echo $importer_detail[0]['contact_phone'];?>  </p>
                       </div><!--end.group_inquiry-->
 
 
                       <div class="group_inquiry">
                         <label>Handphone</label>
-                        <p>-</p>
+                        <p><?php echo $importer_detail[0]['contact_office_phone'];?>  </p>
                       </div><!--end.group_inquiry-->
                       <div class="group_inquiry">
                         <label>Faximile</label>
-                        <p>-</p>
+                        <p><?php echo $importer_detail[0]['contact_fax'];?></p>
                       </div><!--end.group_inquiry-->
 
                     </div>
@@ -102,12 +102,12 @@
                     <div class="item_inquiry">
                       <div class="group_inquiry">
                         <label>Email</label>
-                        <p><strong>margaclor@margaclor.es/hidrocloriberica@margaclor.es</strong></p>
+                        <p><strong><?php echo $importer_detail[0]['contact_email'];?></strong></p>
                       </div><!--end.group_inquiry-->
 
                       <div class="group_inquiry">
                         <label>Website</label>
-                        <p><strong>www.margaclor.es</strong></p>
+                        <p><strong><?php echo $importer_detail[0]['contact_website'];?></strong></p>
                       </div><!--end.group_inquiry-->
                     </div>
                   </div>
@@ -122,18 +122,18 @@
                     <div class="item_inquiry">
                       <div class="group_inquiry">
                         <label>Twitter</label>
-                        <p>-</p>
+                        <p><?php echo $importer_detail[0]['social_twitter'];?></p>
                       </div><!--end.group_inquiry-->
 
                       <div class="group_inquiry">
                         <label>Facebook</label>
-                        <p>-</p>
+                        <p><?php echo $importer_detail[0]['social_facebook'];?></p>
                       </div><!--end.group_inquiry-->
 
 
                       <div class="group_inquiry">
                         <label>Google+</label>
-                        <p>-</p>
+                        <p><?php echo $importer_detail[0]['social_google'];?></p>
                       </div><!--end.group_inquiry-->
                     </div>
                   </div><!--end.cols2-->
@@ -151,18 +151,18 @@
                     <div class="item_inquiry">
                       <div class="group_inquiry">
                         <label>Created</label>
-                        <p>08 Januari 2021</p>
+                        <p><?php echo $importer_detail[0]['post_date'];?></p>
                       </div><!--end.group_inquiry-->
 
                       <div class="group_inquiry">
                         <label>Last Update</label>
-                        <p>08 Januari 2021</p>
+                        <p><?php echo $importer_detail[0]['update_date'];?></p>
                       </div><!--end.group_inquiry-->
 
 
                       <div class="group_inquiry">
                         <label>Created By+</label>
-                        <p>Sonja Rasjid Gandha</p>
+                        <p><?php echo $importer_detail[0]['created_by'];?></p>
                       </div><!--end.group_inquiry-->
                     </div>
                   </div><!--end.cols2-->
