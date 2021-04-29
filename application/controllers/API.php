@@ -1849,6 +1849,44 @@ class API extends CI_Controller {
 				return json_encode($importer_detail);
 
 			}
+
+
+			public function search_news(){
+					$this->load->model('API/News/News_data_query','News_data_query', true);
+					$this->form_validation->set_rules('page', 'page', 'required');
+					$this->form_validation->set_rules('language', 'language', 'required');
+					$this->form_validation->set_rules('keyword', 'keyword', 'required');
+
+					if($this->form_validation->run() == TRUE)
+					{
+
+						$page = $this->input->post('page',true);
+						$language = $this->input->post('language',true);
+					  $keyword = $this->input->post('keyword');
+
+						if($page == 0){
+							$page = 0;
+						}else{
+							$page = $page * 10;
+						}
+
+						if($language == 'es'){
+							 $language = 'spanyol';
+						}else if($language == 'id'){
+							 $language = 'bahasa';
+						}else{
+							 $language = 'english';
+						}
+
+						$per_page = 10;
+						$news_data = $this->News_data_query->get_web_search($per_page,$page,$keyword,$language);
+
+
+
+					echo json_encode($news_data); //send data to script
+					return json_encode($news_data);
+			}
+		}
 			//$message = $this->load->view('email/actived_account.php',$this->data,TRUE);
 
 		/*public function submit_data_inquiry_file()
