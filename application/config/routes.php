@@ -62,7 +62,7 @@ $route['store_detail_exporter'] = 'web/store_detail_exporter';
 $route['store_product'] = 'web/store_product';
 $route['store_inquiry'] = 'web/store_inquiry';
 $route['store_contact_us'] = 'web/store_contact_us';
-
+$route['store_category_exporter'] = 'web/w_add_category_exporter';
 //Handling Language
 $route['id'] = 'web/index';
 $route['en'] = 'web/index';
@@ -90,4 +90,4 @@ $route[':any/web_index_exporter'] = 'web/web_index_exporter';
 $route[':any/web_index_exporter_detail'] = 'web/web_index_exporter_detail';
 $route[':any/web_exporter_search_result'] = 'web/web_exporter_search_result';
 $route[':any/web_importer_list'] = 'web/web_importer_list';
-$route[':any/web_importer_list_detail'] = 'web/web_importer_list_detail';
+$route[':any/web_importer_list_detail/(:any)'] = 'web/web_importer_list_detail/$1';

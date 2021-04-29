@@ -25,49 +25,36 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>1</td>
-                    <td>
-                      <a href="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en' : $this->uri->segment(1)."/web_inquiry_progress") ?>" class="inquiry_list_title">Lorem Ipsum Dolor Sit Amet </a>
-                      <span class="sub_title_list">Crustaceans, Molluscs Prepared or Preserved</span>
-                      <span class="sub_title_date">17 Feb 2021</span>
-                    </td>
-                    <td>100%</td>
-                  </tr>
-                  <tr>
-                    <td>2</td>
-                    <td>
-                      <a href="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en' : $this->uri->segment(1)."/web_inquiry_progress") ?>" class="inquiry_list_title">Lorem Ipsum Dolor Sit Amet</a>
-                      <span class="sub_title_list">Animal or Vegetable Fats</span>
-                      <span class="sub_title_date">17 Feb 2021</span>
-                    </td>
-                    <td>100%</td>
-                  </tr>
-                  <tr>
-                    <td>3</td>
-                    <td>
-                      <a href="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en' : $this->uri->segment(1)."/web_inquiry_progress") ?>" class="inquiry_list_title non_active">Lorem Ipsum Dolor Sit Amet </a>
-                      <span class="sub_title_list">Crustaceans, Molluscs Prepared or Preserved</span>
-                      <span class="sub_title_date">17 Feb 2021</span>
-                    </td>
-                    <td><span class="red">closed</span></td>
-                  </tr>
-                </tbody>
 
+                <?php if ($data) {
+    $i=1;
+    foreach ($data as $item) { ?>
+                                    <tr>
+                                      <td><?=$i++; ?></td>
+                                      <td>
+                                        <a href="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en' : $this->uri->segment(1)."/web_inquiry_progress?detail=".$item['inquiry_id']) ?>" class="inquiry_list_title">
+                                        <?php echo $item['inquiry_title']; ?> </a>
+                                        <span class="sub_title_list"> <?php echo $item['subcategory_title']; ?> </span>
+                                        <span class="sub_title_date"><?php echo $item['post_date'] ?></span>
+                                      </td>
+                                      <td><?php echo $item['progress']; ?></td>
+                                    </tr>
+                             <?php
+                             }
+} else { ?>
+                              <tr>
+                                      
+                                      <td colspan="3" style="margin:auto;text-align:center;">
+                                        Belum ada data
+                                      </td>
+                                      
+                                    </tr>
+                <?php }  ?>
+                </tbody>
               </table>
             </div><!--end.list_table_inquiry-->
           </div>
-        <?php 
-        if($data){
-        foreach($data as $item) { ?>
-  				          <table>
-                      <tr><th>no</th><th>list</th></tr>
-                      <tr><td>1</td><td><a href="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en' : $this->uri->segment(1)."/web_inquiry_progress") ?>">detail </a></td></tr>
-                    </table>
-          <?php } ?>
-          <?php } ?>
-
-  			</div>
+        </div>
   		</div><!--end.inner_flex_middle-->
   	</div>
   </section>
