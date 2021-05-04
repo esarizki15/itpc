@@ -287,12 +287,34 @@ class Home_data_query extends CI_Model{
    
     }
 
-   public function save_contact_us(){
-    $result =	$this->db->insert_batch('itpc_contact',$user);
-		if(!$result)
-			 $this->session->set_flashdata('error', 'Gagal menyimpan data');
-		return $result;
+   public function save_contact_us($param){
+     //pr($param);exit;
+      $result =	$this->db->insert('itpc_feedback',$param);
+      if(!$result)
+        $this->session->set_flashdata('error', 'Gagal menyimpan data');
+      return $result;
    }
+
+   public function selectemailcc(){
+    $this->db->select([
+      '*'
+    ]);
+    $query = $this->db->get('itpc_email_cc');
+    $email = $query->result_array();
+    return $email;
+ 
+  }
+
+  public function download_apps(){
+    $this->db->select([
+      '*'
+    ]);
+    $query = $this->db->get('itpc_download');
+    $email = $query->result_array();
+    return $email;
+ 
+  }
+   
 
     public function contact_us($lang) {
       require_once('News_latest.php');

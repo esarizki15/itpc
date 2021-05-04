@@ -108,6 +108,9 @@ class WEB extends CI_Controller {
         $_SESSION['token'] = bin2hex(random_bytes(32));
         $data['token'] = $_SESSION['token'];
         $data['content'] = $this->Home_data_query->contact_us($this->isLang());
+        $data['download'] = $this->Home_data_query->download_apps($this->isLang());
+
+       //pr($data);exit;
         $this->master["content"] = $this->load->view("web/contact/contact_us.php",$data, TRUE);
         $this->render();
       }
@@ -116,18 +119,49 @@ class WEB extends CI_Controller {
                   $this->session->set_flashdata('flsh_msg','failed, please contact the admin');
                   redirect($this->redirection("web_contact_us"));
             } 
-       //     pr($_POST);exit;
        
-            $contact[] = [
-                  "name" => $this->input->post('name'),
+            $contact = [
+                  "full_name" => $this->input->post('name'),
                   "email" => $this->input->post('email'),
                   "industry" => $this->input->post('industry'),
-                  "phone" => $this->input->post('phone'),
+                  "phone_number" => $this->input->post('phone'),
                   "message" => $this->input->post('message'),
-                  ];
+                  "create_date" => date("Y-m-d H:i:s") 
+            ];
 
-            $submit_user = $this->Home_data_query->save_contact_us($user);
-           
+            $submit_user = $this->Home_data_query->save_contact_us($contact);
+            if($submit_user){
+                  $select_email_cc =  $this->Home_data_query->selectemailcc();
+                  foreach($select_email_cc as $item){
+                        $this->load->library('email');
+                        $this->data['data'] = $contact;
+                       // pr($this->data);exit;
+                        $send_to = $item['email'];
+                        $message = $this->load->view('email/confirm_contact_us.php',$this->data,TRUE);
+                        $this->email->from('itpcmaster2020@gmail.com', 'ITPC system');
+                        $this->email->to($send_to);
+                        $this->email->cc('itpcmaster2020@gmail.com');
+                        $this->email->reply_to('itpcmaster2020@gmail.com');
+                        $this->email->subject('ITPC Feedback');
+                        $this->email->message($message);
+                        $this->email->send();
+
+                        if($this->email->send(FALSE)){
+                              $register['data'] = null;
+                              $register['status'] = true;
+                              $register['message'] = "Sory you have already submit ";
+                        }else{
+                              $register['data'] = null;
+                              $register['status'] = true;
+                              $register['message'] = "you have already submit ";
+                        }
+                  }
+               
+            }
+            //pr($register);exit;
+            $this->session->set_flashdata('flsh_msg',$register['message']);
+            redirect($this->redirection("web_contact_us"));
+          
       }
 
       public function web_index_exporter($lang = '')
