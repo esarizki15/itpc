@@ -18,6 +18,7 @@
 							<a href="#"><?php echo $language['trade']; ?> <i class="fa fa-caret-down" aria-hidden="true"></i></a>
 							<ul class="dropdownMenu">
 								<li><a href="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en'."/web_index_exporter" : $this->uri->segment(1)."/web_index_exporter") ?>">Indonesian Exporter Lists</a></li>
+								<li><a href="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en'."/web_index_exporter" : $this->uri->segment(1)."/web_indonesian_product") ?>">Indonesian Product</a></li>
 								<li><a href="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en'."/web_index_exporter" : $this->uri->segment(1)."/web_index_exporter") ?>">Company Dashboard</a></li>
 								<li><a href="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en'."/web_index_exporter" : $this->uri->segment(1)."/web_index_exporter") ?>">Make an Inquiry</a></li>
 							</ul>

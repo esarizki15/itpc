@@ -90,6 +90,11 @@ class WEB extends CI_Controller {
         $this->master["content"] = $this->load->view("web/login/welcome_login.php",[], TRUE);
         $this->render();
       }
+      public function web_indonesian_product($lang = '')
+      {
+        $this->master["content"] = $this->load->view("web/indonesian_product/indonesian_product.php",[], TRUE);
+        $this->render();
+      }
       public function web_search_result($lang = '')
       {
         $this->master["content"] = $this->load->view("web/search/search_result.php",[], TRUE);
