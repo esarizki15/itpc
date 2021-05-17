@@ -12,9 +12,10 @@
       </div>
       <div class="rows input_search_inner">
         <div class="input_search_row">
-          <input type="text" class="search_inner_input" name="" value="Chocolate" />
+          <input type="text" class="search_inner_input search" name="search" value="<?=$param?>" />
+          <input type="hidden" value="<?=$language?>" class="language"/>
         </div>
-        <p>Search result of “Chocolate”</p>
+        <p>Search result of <?=$param?></p>
       </div>
     </div>
   </section>
@@ -37,28 +38,9 @@
         <h3>Exporter</h3>
       </div>
       <div class="list_inner">
-        <div class="list_exporter_search">
-          <div class="item_exporter">
-            <a href="#">
-              <img src="<?php echo $this->config->item('frontend'); ?>images/dua_kelinci.png">
-            </a>
-          </div><!--end.item_exporter-->
-          <div class="item_exporter">
-            <a href="#">
-              <img src="<?php echo $this->config->item('frontend'); ?>images/kino_exporter.png">
-            </a>
-          </div><!--end.item_exporter-->
-          <div class="item_exporter">
-            <a href="#">
-              <img src="<?php echo $this->config->item('frontend'); ?>images/asw_foods.png">
-            </a>
-          </div><!--end.item_exporter-->
-          <div class="item_exporter">
-            <a href="#">
-              <img src="<?php echo $this->config->item('frontend'); ?>images/marizafoods.png">
-            </a>
-          </div><!--end.item_exporter-->
-        </div><!--end.list_exporter_search-->
+        <div class="list_exporter_search res_exporter">
+          
+        </div>
       </div>
     </div>
   </section>
@@ -90,32 +72,10 @@
       </div>
       <div class="list_inner">
         <div class="list_news_search">
-          <div class="row-list">
-            <div class="cols1">
-              <div class="item_news">
-                <div class="thumb_news">
-                  <img class="object-fit" src="http://itpc_frontend.test/assets/website/news/news-thumbnail-1615518151.png">
-                </div>
-                <div class="caption_news">
-                  <span class="category">News</span>
-                  <h3 class="line-clamp">Lorem Ipsum Dolor sit Amet Constectur Adipiscing Elite...</h3>
-                  <a href="http://itpc_frontend.test/en/web_news_detail/sadsadasqwert2" class="readMore">Read more &gt;</a>
-                </div>
-              </div>
-            </div>
+          <div class="row-list res_news">
 
-            <div class="cols1">
-              <div class="item_news">
-                <div class="thumb_news">
-                  <img class="object-fit" src="http://itpc_frontend.test/assets/website/news/news-thumbnail-1615518151.png">
-                </div>
-                <div class="caption_news">
-                  <span class="category">News</span>
-                  <h3 class="line-clamp">Lorem Ipsum Dolor sit Amet Constectur Adipiscing Elite...</h3>
-                  <a href="http://itpc_frontend.test/en/web_news_detail/sadsadasqwert2" class="readMore">Read more &gt;</a>
-                </div>
-              </div>
-            </div>
+
+          
           </div><!--end.row-list-->
         </div><!--end.list_exporter_search-->
       </div>
@@ -127,6 +87,70 @@
 
 <script type="text/javascript">
 
+SearchForNews();
+SearchForProduct();
+
+function SearchForNews(){
+        var search = $('.search').val();
+        var lang = $('.language').val();
+        var basedomain= '<?=base_url()?>';
+         $.ajax({
+            url: basedomain+"API/search_news",
+            type: "POST",
+            data:  {keyword: search, page: 0,language:lang},
+            success: function (response) {
+              var myArr = JSON.parse(response);
+              var Str = "";
+           
+               
+               $(myArr).each(function( index ) {
+                 console.log(myArr[index]['news_title']);
+
+                  Str=Str+'<div class="cols1">';
+                  Str=Str+'<div class="item_news">';
+                  Str=Str+'<div class="thumb_news">';
+                  Str=Str+'<img class="object-fit" src="'+myArr[index]['news_thumbnail']+'">';
+                  Str=Str+'</div>';
+                  Str=Str+'<div class="caption_news">';
+                  Str=Str+'<span class="category">'+myArr[index]['tag_title']+'</span>';
+                  Str=Str+'<h3 class="line-clamp">'+myArr[index]['news_title']+'</h3>';
+                  Str=Str+'<a href="http://itpc_frontend.test/en/web_news_detail/sadsadasqwert2" class="readMore">Read more &gt;</a>';
+                  Str=Str+'</div>';
+                  Str=Str+'</div>';
+                  Str=Str+'</div>';
+                  });
+           
+           $('.res_news').append(Str);
+        
+            },
+        });
+ 
+}
+
+function SearchForProduct(){
+        var search = $('.search').val();
+        var lang = $('.language').val();
+        var basedomain= '<?=base_url()?>';
+         $.ajax({
+            url: basedomain+"API/search_indonesia_product",
+            type: "POST",
+            data:  {keyword: search, page: 0,language:lang},
+            success: function (response) {
+              var myArr = JSON.parse(response);
+              var Str = "";
+              $(myArr).each(function( index ) {
+                Str=Str+'<div class="item_exporter">';
+                Str=Str+'<a href="#">';
+                Str=Str+'<img src="'+myArr[index]['thumbnail']+'">';
+                Str=Str+'</a>';
+                Str=Str+'</div>';
+              });
+              $('.res_exporter').append(Str);
+
+            },
+        });
+ 
+}
 
 
 </script>

@@ -91,7 +91,7 @@
       <div class="wrapper">
         <div class="title_section_left">
           <h3>Exporters</h3>
-          <a href="#" class="viewAll">View All</a>
+          <a href="" class="viewAll">View All</a>
         </div>
       </div>
       
@@ -105,7 +105,7 @@
           </div>
         </div>
       <?php } ?>
-
+     
       </div>
 
   </section>
@@ -114,7 +114,7 @@
       <div class="wrapper">
         <div class="title_section_left">
           <h3>Lates News</h3>
-          <a href="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en' : $this->uri->segment(1)."/news") ?>" class="viewAll">View All</a>
+          <a href="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en/web_news' : $this->uri->segment(1)."/web_news") ?>" class="viewAll">View All</a>
         </div>
         <div class="list_news">
           <div class="row-list">

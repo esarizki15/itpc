@@ -63,13 +63,14 @@ $route['store_product'] = 'web/store_product';
 $route['store_inquiry'] = 'web/store_inquiry';
 $route['store_contact_us'] = 'web/store_contact_us';
 $route['store_category_exporter'] = 'web/w_add_category_exporter';
+$route['store_search'] = 'web/web_search_result';
 //Handling Language
 $route['id'] = 'web/index';
 $route['en'] = 'web/index';
 $route['es'] = 'web/index';
 $route[':any/web_exporter'] = 'web/web_exporter';
 $route[':any/web_news'] = 'web/web_news';
-$route[':any/web_search_result'] = 'web/web_search_result';
+$route[':any/store_search'] = 'web/web_search_result';
 $route[':any/web_about_us'] = 'web/web_about_us';
 $route[':any/web_contact_us'] = 'web/web_contact_us';
 $route[':any/web_news_detail/(:any)'] = 'web/web_news_detail/$1';

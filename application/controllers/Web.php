@@ -46,36 +46,69 @@ class WEB extends CI_Controller {
       }
       public function web_news($lang = '')
       {    
-           // pr($category);exit;
-
-            if($this->input->post("category")=="All"){
+            
+            $category="";
+            if($this->input->post("category")=="All" && empty($this->input->post("page"))){
+                  
                   $start =0;
-                  $data = $this->Home_data_query->news_all($this->isLang(),$this->perPage,$start);
+                  $data = $this->Home_data_query->news_all($this->isLang(),$this->perPage,$start,null);
                   $totalPosts =  count($data['news']);
                   $data['total_pages']  = ceil($totalPosts/$this->perPage);
+                  $data['tag']='All';
+                  $data['category']='All';
+                  $data['block']=0;
                   echo json_encode($data); exit;
                   
-            }else{
-                  $data = $this->Home_data_query->news_all($this->isLang());
+            }else if($this->input->post("category") && empty($this->input->post("page"))){
+                  $start =0;
+                  $category=$this->input->post("category");
+                 
+                  //pr($data['tag'][0]['tag_title']);exit;
+                  $data = $this->Home_data_query->news_all($this->isLang(),$this->perPage,$start,$category);
                   $totalPosts =  count($data['news']);
                   $data['total_pages']  = ceil($totalPosts/$this->perPage);
+                  $intag=$this->Home_data_query->tag_category($category);
+                  $data['tag']=$intag[0]['tag_title'];
+                  $data['category']=$category;
+                  $data['block']=1;
+                  echo json_encode($data); exit;
             }
 
-             if(!empty($this->input->get("page"))){
-                  $start = $this->perPage * $this->input->get('page');
-                  $data['news'] = $this->Home_data_query->news_all($this->isLang(),$this->perPage,$start); //limit,start
-                  $this->load->view('web/news/ajax_news.php',$data);
+             if(!empty($this->input->post("page"))){
+                
+                  $category=$this->input->post("category");
+                  $start = ($this->perPage * $this->input->post('page')) - $this->perPage;
+                  if ($category=='All') {
+                      $data['news'] = $this->Home_data_query->news_all($this->isLang(), $this->perPage, $start,null); //limit,start
+                      $total = $this->Home_data_query->news_total($this->isLang(),$this->perPage,$start, null);
+                      $data['total_pages'] =count($total['news']);
+                      $data['category']='All';
+                      $data['block']=2;
+                  }else{
+                      $data['news'] = $this->Home_data_query->news_all($this->isLang(), $this->perPage, $start,$category); //limit,start
+                      $total = $this->Home_data_query->news_total($this->isLang(),$this->perPage,$start, $category);
+                      $data['total_pages'] =count($total['news']);
+                      $data['category']=$category;
+                      $data['block']=3;
+                  }
+                  echo json_encode($data); exit;
+                        // $this->load->view('web/news/ajax_news.php',$data);
               }
               else {
+                  $category=$this->input->post("category");
                   $start =0;
-                  $data['news'] = $this->Home_data_query->news_all($this->isLang(),$this->perPage,$start); //limit,start
-                  //pr( $data);exit;
+                  //$this->Home_data_query->news_all($this->isLang(),$this->perPage,$start,null);
+
+                  $data['news'] = $this->Home_data_query->news_all($this->isLang(),$this->perPage,$start, null); //limit,start
+                  $total = $this->Home_data_query->news_total($this->isLang(),$this->perPage,$start, null);
+                  
+                  $data['total_pages'] =count($total['news']);
+                  $data['tag']=$this->Home_data_query->tag_category(null);
+                  $data['category']=$category;
+                  $data['block']=4;
                   $this->master["content"] = $this->load->view("web/news/news.php",$data, TRUE);
                   $this->render();
               }
-            
-           // pr($data);exit;
-           
       }
 
       public function web_news_detail($slug)
@@ -90,15 +123,12 @@ class WEB extends CI_Controller {
         $this->master["content"] = $this->load->view("web/login/welcome_login.php",[], TRUE);
         $this->render();
       }
-      public function web_indonesian_product($lang = '')
-      {
-        $this->master["content"] = $this->load->view("web/indonesian_product/indonesian_product.php",[], TRUE);
-        $this->render();
-      }
       public function web_search_result($lang = '')
       {
-        $this->master["content"] = $this->load->view("web/search/search_result.php",[], TRUE);
-        $this->render();
+            $parameter['language']=$this->isLang();
+            $parameter['param']=$this->input->post('search');
+            $this->master["content"] = $this->load->view("web/search/search_result.php",$parameter, TRUE);
+            $this->render();
       }
       public function web_about_us($lang = '')
       {
