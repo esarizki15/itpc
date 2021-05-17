@@ -195,8 +195,8 @@ $(document).ready(function() {
           },
           1000:{
               items:5,
-              margin:55,
-              stagePadding:150,
+              margin:10,
+              stagePadding:20,
           }
     }
   });
