@@ -19,7 +19,7 @@
           <a href="<?php echo base_url();?>Admin/Inquiry_management"><i class="dripicons-document"></i>Inquiry</a>
       </li>
       <li class="has-submenu">
-          <a href="<?php echo base_url();?>Admin"><i class="dripicons-user"></i> Importer</a>
+          <a href="<?php echo base_url();?>Admin/Importer_management"><i class="dripicons-user"></i> Importer</a>
       </li>
       <li class="has-submenu">
           <a href="#"><i class="dripicons-suitcase"></i> News & Exhibitions<i class="mdi mdi-chevron-down mdi-drop"></i></a>
@@ -40,7 +40,7 @@
           <ul class="submenu megamenu">
               <li>
                   <ul>
-                      <li><a href="<?php echo base_url()?>Admin/` About_managment">About Us</a></li>
+                      <li><a href="<?php echo base_url()?>Admin/About_managment">About Us</a></li>
                       <li><a href="<?php echo base_url()?>Admin/Contact_managment">Contact Us</a></li>
                       <li><a href="<?php echo base_url()?>Admin/Indonesia_product_managment">Indonesia Product</a></li>
                       <li><a href="<?php echo base_url()?>Admin/Useful_link_managment">Useful links</a></li>

@@ -1097,8 +1097,6 @@ class Admin extends CI_Controller {
 			$this->data['data']['about_detail'] = $this->About_query->about_detail();
 
 
-
-
 			$this->master["custume_css"] = $this->load->view('admin/about/custume_css.php', [], TRUE);
 			$this->master["custume_js"] = $this->load->view('admin/about/custume_js.php',$this->data, TRUE);
 			$this->master["content"] = $this->load->view("admin/about/content.php",$this->data, TRUE);
@@ -1150,15 +1148,11 @@ class Admin extends CI_Controller {
 				$is_save = true;
 				$this->load->model('Admin/Langguage/langguage_query','langguage_query', true);
 				$this->load->model('Admin/Indonesia_product/Indonesia_product_query','Indonesia_product_query', true);
-
 				$this->form_validation->set_rules('title', 'title', 'trim|required|min_length[3]');
 				$this->form_validation->set_rules('is_draft', 'is_draft', 'trim');
-
-
 				$date = date_create();
 				$update_date = date("Y-m-d H:i:s");
 				$created_date = date("Y-m-d H:i:s");
-
 				if($is_save == true){
 					if($_FILES['thumbnail']['error'] === 0) {
 						$upload_config['upload_path'] = 'assets/' . $this->config->item('indonesia_product');
@@ -1327,9 +1321,89 @@ class Admin extends CI_Controller {
 						$submit_useful = $this->Useful_query->submit($Useful);
 
 					}
+			}
+	}
+
+	public function Update_about(){
+		if($_SESSION['admin_id'] == null || $_SESSION['admin_id'] == ""){
+			redirect("Admin/Logout");
+			}else{
+					$this->form_validation->set_rules('title_english', 'title_english', 'trim|required');
+					$this->form_validation->set_rules('content_english', 'content_english', 'trim|required');
+					$this->form_validation->set_rules('vision_english', 'vision_english', 'trim|required');
+					$this->form_validation->set_rules('mission_english', 'mission_english', 'trim|required');
+
+					$this->form_validation->set_rules('title_bahasa', 'title_bahasa', 'trim|required');
+					$this->form_validation->set_rules('content_bahasa', 'content_bahasa', 'trim|required');
+					$this->form_validation->set_rules('vision_bahasa', 'vision_bahasa', 'trim|required');
+					$this->form_validation->set_rules('mission_bahasa', 'mission_bahasa', 'trim|required');
+
+					$this->form_validation->set_rules('title_spanyol', 'title_spanyol', 'trim|required');
+					$this->form_validation->set_rules('content_spanyol', 'content_spanyol', 'trim|required');
+					$this->form_validation->set_rules('vision_spanyol', 'vision_spanyol', 'trim|required');
+					$this->form_validation->set_rules('mission_spanyol', 'mission_spanyol', 'trim|required');
+
+					if($this->form_validation->run() == TRUE)
+					{
+							$title_english = $this->input->post('title_english');
+							$content_english = $this->input->post('content_english');
+							$vision_english = $this->input->post('vision_english');
+							$mission_english = $this->input->post('mission_english');
+
+							$title_bahasa = $this->input->post('title_bahasa');
+							$content_bahasa = $this->input->post('content_bahasa');
+							$vision_bahasa = $this->input->post('vision_bahasa');
+							$mission_bahasa = $this->input->post('mission_bahasa');
+
+							$title_spanyol = $this->input->post('title_spanyol');
+							$content_spanyol = $this->input->post('content_spanyol');
+							$vision_spanyol = $this->input->post('vision_spanyol');
+							$mission_spanyol = $this->input->post('mission_spanyol');
+
+
+							$about[] = [
+								'title_english' => $title_english,
+								'content_english' => $content_english,
+								'vision_english' => $vision_english,
+								'mission_english' => $mission_english,
+
+							];
+
+					}else{
+
+					}
 
 
 			}
+	}
+
+	public function Importer_management()
+	{
+		if($_SESSION['admin_id'] == null || $_SESSION['admin_id'] == ""){
+		 	redirect("Admin/Logout");
+			}else{
+			//$this->load->model('admin/invoice/Invoice_admin','Invoice_admin', true);
+			//$this->data['data'] = $this->Invoice_admin->list_invoice();
+			//$this->data
+			$this->master["custume_css"] = $this->load->view('admin/importer_managment/custume_css.php', [], TRUE);
+			$this->master["custume_js"] = $this->load->view('admin/importer_managment/custume_js.php', [], TRUE);
+			$this->master["content"] = $this->load->view("admin/importer_managment/content.php",[], TRUE);
+			$this->render();
+			}
+	}
+
+	public function Importer_list_data()
+	{
+			$this->load->model('Admin/Importer/Importer_query','Importer_query', true);
+
+			$postData = $this->input->get();
+
+			//$exporter_list = $this->Exporter_query->get_list();
+
+			$importer_list = $this->Importer_query->getImporter($postData);
+
+			echo json_encode($importer_list);
+
 	}
 
 
