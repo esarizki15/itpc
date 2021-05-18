@@ -190,7 +190,8 @@ class Home_data_query extends CI_Model{
 
     }
 
-    public function news_all($lang,$limit = null, $start = null) {
+    public function news_all($lang= null,$limit = null, $start = null,$category) {
+    // pr($start);exit;
       require_once('News_latest.php');
       require_once('Exporter_home.php');
       require_once('Indonesia_product.php');
@@ -210,36 +211,112 @@ class Home_data_query extends CI_Model{
         $short='st.english AS short';
         $long='lt.english AS long';
       }
-      
+     
       $this->db->select([
         'inews.news_id as id',
         'inews.news_title as title',
         'inews.news_slug as slug',
         'inews.news_order as order',
+        'it.tag_title as tag_title',
         'inews.news_thumbnail as thumbnail',
         $short,$long,
         'inews.post_date as date'
       ]);
 
-    
-
-      $this->db->where('status', 1);
-      $this->db->where('delete_date', null);
+      $this->db->where('inews.status', 1);
+      if($category!== null) {
+          $this->db->where('inews.tag_id', $category);
+      }
+      $this->db->where('inews.delete_date', null);
       $this->db->join('long_translations lt','inews.trans_key = lt.trans_key', 'left');
+      $this->db->join('itpc_tag it','inews.tag_id = it.tag_id', 'left');
       $this->db->join('short_translations st','inews.trans_key = st.trans_key', 'left');
       $this->db->limit($limit, $start);
       $this->db->order_by('news_order','DESC');
       $query = $this->db->get('itpc_news inews');
+      //pr($limit);exit;
       $news_latest = [];
       array_map(function($item) use(&$news_latest){
         $news_latest[] = (new News_latest($item))->to_array();
       }, $query->result_array());
-
+      //pr($news_latest);exit;
       return [
         'news' => $news_latest
       ];
    
     }
+    public function news_total($lang= null,$limit = null, $start = null,$category) {
+    
+      require_once('News_latest.php');
+      require_once('Exporter_home.php');
+      require_once('Indonesia_product.php');
+      require_once('Useful_link.php');
+
+      $where_exporter_logo = "exporter_logo is  NOT NULL";
+
+      $short='st.english AS short';
+      $long='lt.english AS long';
+      if($lang=='id') { 
+        $short="st.bahasa AS short";
+        $long='lt.bahasa AS long';
+      }else if($lang=='es'){
+        $short='st.spanyol AS short';
+        $long='lt.spanyol AS long';
+      }else if($lang=='en'){
+        $short='st.english AS short';
+        $long='lt.english AS long';
+      }
+     
+      $this->db->select([
+        'inews.news_id as id',
+        'inews.news_title as title',
+        'inews.news_slug as slug',
+        'inews.news_order as order',
+        'it.tag_title as tag_title',
+        'inews.news_thumbnail as thumbnail',
+        $short,$long,
+        'inews.post_date as date'
+      ]);
+
+      $this->db->where('inews.status', 1);
+      if($category!== null) {
+          $this->db->where('inews.tag_id', $category);
+      }
+      $this->db->where('inews.delete_date', null);
+      $this->db->join('long_translations lt','inews.trans_key = lt.trans_key', 'left');
+      $this->db->join('itpc_tag it','inews.tag_id = it.tag_id', 'left');
+      $this->db->join('short_translations st','inews.trans_key = st.trans_key', 'left');
+      $this->db->order_by('news_order','DESC');
+      $query = $this->db->get('itpc_news inews');
+      //pr($limit);exit;
+      $news_latest = [];
+      array_map(function($item) use(&$news_latest){
+        $news_latest[] = (new News_latest($item))->to_array();
+      }, $query->result_array());
+      //pr($news_latest);exit;
+      return [
+        'news' => $news_latest
+      ];
+   
+    }
+    
+
+    public function tag_category($id){
+
+
+      $this->db->select([
+        '*'
+      ]);
+      if($id !== null) {
+          $this->db->where('tag_id', $id);
+      }
+      $query = $this->db->get('itpc_tag');
+
+      $email = $query->result_array();
+      return $email;
+   
+    }
+
 
 
     public function about_us($lang) {

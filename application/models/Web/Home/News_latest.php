@@ -4,6 +4,7 @@ class News_latest {
 	public $title;
 	public $slug;
 	public $short;
+	public $tag_title;
 	public $long;
 	public $order;
 	public $thumbnail;
