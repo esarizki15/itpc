@@ -55,17 +55,13 @@
       <div class="list_inner">
         <div class="list_news_search">
           <div class="row-list res_news">
-
-
-          
-          </div><!--end.row-list-->
-        </div><!--end.list_exporter_search-->
+          </div>
+        </div>
       </div>
     </div>
   </section>
-
 </div>
-<!-- end of middle -->
+
 
 <script type="text/javascript">
 

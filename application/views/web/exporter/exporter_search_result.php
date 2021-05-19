@@ -41,7 +41,25 @@
           <div class="left_content_exporter">
             <div class="item_left_content">
               <h3>Filter</h3>
-              
+              <div class="row_filter">
+                <label class="title_row">Select Category</label>
+                <div class="custom_select field">
+                    <select name="category" id="category">
+                      <option selected disabled value="0">Category</option>
+                      <?php foreach($category as $itemcat){ ?> 
+                        <option value="<?=$itemcat['id']?>" catTitle="<?=$itemcat['title']?>"><?=$itemcat['title']?></option>
+                      <?php } ?> 
+                    </select>
+                </div>
+              </div><!--end.row_filter--> 
+              <div class="row_filter">
+                <label class="title_row">Select Sub Category</label>
+                <div class="custom_select field">
+                <select name="subcategory" id="subcategory">
+                          <option selected disabled value="0">Sub Category</option>
+                </select>
+                </div>
+              </div><!--end.row_filter-->
               <div class="row_filter">
                 <label class="title_row">Sort Category</label>
                 <div class="sort_by_Radio">
@@ -107,3 +125,28 @@
   </section>
 
  </div>
+ <script>
+TreeCat();
+function TreeCat(){
+    $('#category').on("change",function () {
+        var categoryId = $(this).find('option:selected').val();
+        var basedomain= '<?=base_url()?>';
+        //console.log(basedomain);
+        $.ajax({
+            url: basedomain+"en/web_add_category",
+            type: "POST",
+            data: "categoryId="+categoryId,
+            success: function (response) {
+              var myArr = JSON.parse(response);
+              var Str = "";
+              Str=Str+ "<option selected disabled value='0'>Sub Category</option>";
+              $(myArr).each(function( index ) {
+                Str=Str+ "  <option value='"+myArr[index]['id']+"' title='"+myArr[index]['title'] +"'>"+myArr[index]['title'] + "</option>";
+              });
+              $('#subcategory').html(Str);
+            },
+        });
+    }); 
+}
+
+</script> 
