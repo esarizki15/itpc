@@ -25,117 +25,24 @@
 
       <div class="list_indonesian_product tabnya" >
           <div class="row-list">
-            <div class="cols4">
-              <div class="item_product">
-                <div class="thumb_product">
-                  <img src="<?php echo $this->config->item('frontend'); ?>images/book1.jpg">
-                </div>
-                <div class="caption_thumb">
-                  <div class="module line-clamp">
-                    <h3>Glassware Product</h3>
-                  </div>
-                  <a href="#">View</a>
-                </div>
-              </div><!--end.item_product-->
-            </div><!--end.cols4-->
 
-            <div class="cols4">
-              <div class="item_product">
-                <div class="thumb_product">
-                  <img src="<?php echo $this->config->item('frontend'); ?>images/book2.jpg">
-                </div>
-                <div class="caption_thumb">
-                  <div class="module line-clamp">
-                    <h3>Glassware Product</h3>
+            <?php foreach($indonesian_product as $item) { ?>
+              <div class="cols4">
+                <div class="item_product">
+                  <div class="thumb_product">
+                    <img src="<?php echo $this->config->item('website_assets').'indonesia_product/'.$item['thumbnail']; ?>">
                   </div>
-                  <a href="#">View</a>
-                </div>
-              </div><!--end.item_product-->
-            </div><!--end.cols4-->
+                  <div class="caption_thumb">
+                    <div class="module line-clamp">
+                      <h3><?php echo $item['title']; ?></h3>
+                    </div>
+                    <a href="<?php echo $this->config->item('website_assets').'indonesia_product/'.$item['file']; ?>" target="_blank">View</a>
+                  </div>
+                </div><!--end.item_product-->
+              </div><!--end.cols4-->
+            <?php } ?>
 
-            <div class="cols4">
-              <div class="item_product">
-                <div class="thumb_product">
-                  <img src="<?php echo $this->config->item('frontend'); ?>images/book1.jpg">
-                </div>
-                <div class="caption_thumb">
-                  <div class="module line-clamp">
-                    <h3>Glassware Product</h3>
-                  </div>
-                  <a href="#">View</a>
-                </div>
-              </div><!--end.item_product-->
-            </div><!--end.cols4-->
-
-            <div class="cols4">
-              <div class="item_product">
-                <div class="thumb_product">
-                  <img src="<?php echo $this->config->item('frontend'); ?>images/book2.jpg">
-                </div>
-                <div class="caption_thumb">
-                  <div class="module line-clamp">
-                    <h3>Glassware Product</h3>
-                  </div>
-                  <a href="#">View</a>
-                </div>
-              </div><!--end.item_product-->
-            </div><!--end.cols4-->
-
-            <div class="cols4">
-              <div class="item_product">
-                <div class="thumb_product">
-                  <img src="<?php echo $this->config->item('frontend'); ?>images/book1.jpg">
-                </div>
-                <div class="caption_thumb">
-                  <div class="module line-clamp">
-                    <h3>Glassware Product</h3>
-                  </div>
-                  <a href="#">View</a>
-                </div>
-              </div><!--end.item_product-->
-            </div><!--end.cols4-->
-
-            <div class="cols4">
-              <div class="item_product">
-                <div class="thumb_product">
-                  <img src="<?php echo $this->config->item('frontend'); ?>images/book2.jpg">
-                </div>
-                <div class="caption_thumb">
-                  <div class="module line-clamp">
-                    <h3>Glassware Product</h3>
-                  </div>
-                  <a href="#">View</a>
-                </div>
-              </div><!--end.item_product-->
-            </div><!--end.cols4-->
-
-            <div class="cols4">
-              <div class="item_product">
-                <div class="thumb_product">
-                  <img src="<?php echo $this->config->item('frontend'); ?>images/book1.jpg">
-                </div>
-                <div class="caption_thumb">
-                  <div class="module line-clamp">
-                    <h3>Glassware Product</h3>
-                  </div>
-                  <a href="#">View</a>
-                </div>
-              </div><!--end.item_product-->
-            </div><!--end.cols4-->
-
-            <div class="cols4">
-              <div class="item_product">
-                <div class="thumb_product">
-                  <img src="<?php echo $this->config->item('frontend'); ?>images/book2.jpg">
-                </div>
-                <div class="caption_thumb">
-                  <div class="module line-clamp">
-                    <h3>Glassware Product</h3>
-                  </div>
-                  <a href="#">View</a>
-                </div>
-              </div><!--end.item_product-->
-            </div><!--end.cols4-->
+            
           </div>
           
         </div><!--end.list-news-->
