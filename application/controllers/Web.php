@@ -44,6 +44,11 @@ class WEB extends CI_Controller {
             $this->master["content"] = $this->load->view("web/home/home.php",$data, TRUE);
             $this->render();
       }
+      public function web_indonesian_product($lang = '')
+      {
+        $this->master["content"] = $this->load->view("web/indonesian_product/indonesian_product.php",[], TRUE);
+        $this->render();
+      }
       public function web_news($lang = '')
       {    
             
@@ -246,7 +251,16 @@ class WEB extends CI_Controller {
       }
       public function web_exporter_search_result($lang = '')
       {
-        $this->master["content"] = $this->load->view("web/exporter/exporter_search_result.php",[], TRUE);
+      $category = $this->input->get('categoryId');
+      $exporterName = $this->input->get('name');
+        $this->load->model('Web/Exporter/Exporter_list_query','Exporter_list_query', true);
+        $data['exporter']=$this->Exporter_list_query->search($exporterName, $category);
+        $data['category'] = "All";
+        if(!empty($data["exporter"]["data"])){
+              $data['category'] = $data["exporter"]["category"]["category_title"];
+        }
+        $data['exporterName'] = $exporterName;
+        $this->master["content"] = $this->load->view("web/exporter/exporter_search_result.php",$data, TRUE);
         $this->render();
       }
       public function web_importer_list($lang = '')

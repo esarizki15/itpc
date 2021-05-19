@@ -66,20 +66,21 @@
 
           <div class="right_content_exporter">
             <div class="text_result_search">
-              <span>Result for <strong>Desk</strong> in <strong>Furniture</strong></span>
+              <span>Result for <strong><?= $exporterName; ?></strong> in <strong><?= $category; ?></strong></span>
             </div>
             <div class="item_list_exporternya">
+            <?php foreach($exporter["data"] as $data):?>
               <div class="row_list_exporternya">
                 <div class="top_row_list_exporter">
                   <div class="thumb_list_exporter">
                     <img src="<?php echo $this->config->item('frontend'); ?>images/thumb_exporter_list.png">
                   </div><!--en.dthumb_list_exporter-->
                   <div class="caption_list_exporter">
-                    <h3>PT. Kharisma Putra Mandiri</h3>
-                    <p>We are exporter and manufacturer of rattan and wooden furniture in Central Java. Having experience more than 25 years in furniture business, we have been supplying customers all over the world.....</p>
+                    <h3><?= $data["exporter_name"] ?></h3>
+                    <p><?= $data["exporter_address"] ?></p>
                     <div class="label_link">
                       <i class="fa fa-tags" aria-hidden="true"></i>
-                      <span>9403 Furniture</span>
+                      <span><?= $category; ?></span>
                     </div>
                   </div>
                 </div><!--end.top_row_list_exporter-->
@@ -87,73 +88,17 @@
                   <div class="link_exporter">
                     <div class="item_call">
                       <i class="fa fa-phone" aria-hidden="true"></i>
-                      <span>+34 934 144 662</span>
+                      <span><?= $data["exporter_phone"]; ?>2</span>
                     </div>
                     <div class="item_call">
                       <i class="fa fa-link" aria-hidden="true"></i>
-                      <span>http://www.itpc-barcelona.es/</span>
+                      <span><?= $data["exporter_link"]; ?></span>
                     </div>
                   </div>
                   <a href="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en'."/web_index_exporter_detail" : $this->uri->segment(1)."/web_index_exporter_detail") ?>" class="see_detail">DETAILS ></a>
                 </div><!--end.bottom_row_list_exporter-->
               </div><!--end.row_list_exporternya-->
-              <div class="row_list_exporternya">
-                <div class="top_row_list_exporter">
-                  <div class="thumb_list_exporter">
-                    <img src="<?php echo $this->config->item('frontend'); ?>images/thumb_exporter_list.png">
-                  </div><!--en.dthumb_list_exporter-->
-                  <div class="caption_list_exporter">
-                    <h3>PT. Kharisma Putra Mandiri</h3>
-                    <p>We are exporter and manufacturer of rattan and wooden furniture in Central Java. Having experience more than 25 years in furniture business, we have been supplying customers all over the world.....</p>
-                    <div class="label_link">
-                      <i class="fa fa-tags" aria-hidden="true"></i>
-                      <span>9403 Furniture</span>
-                    </div>
-                  </div>
-                </div><!--end.top_row_list_exporter-->
-                <div class="bottom_row_list_exporter">
-                  <div class="link_exporter">
-                    <div class="item_call">
-                      <i class="fa fa-phone" aria-hidden="true"></i>
-                      <span>+34 934 144 662</span>
-                    </div>
-                    <div class="item_call">
-                      <i class="fa fa-link" aria-hidden="true"></i>
-                      <span>http://www.itpc-barcelona.es/</span>
-                    </div>
-                  </div>
-                  <a href="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en'."/web_index_exporter_detail" : $this->uri->segment(1)."/web_index_exporter_detail") ?>" class="see_detail">DETAILS ></a>
-                </div><!--end.bottom_row_list_exporter-->
-              </div><!--end.row_list_exporternya-->
-              <div class="row_list_exporternya">
-                <div class="top_row_list_exporter">
-                  <div class="thumb_list_exporter">
-                    <img src="<?php echo $this->config->item('frontend'); ?>images/thumb_exporter_list.png">
-                  </div><!--en.dthumb_list_exporter-->
-                  <div class="caption_list_exporter">
-                    <h3>PT. Kharisma Putra Mandiri</h3>
-                    <p>We are exporter and manufacturer of rattan and wooden furniture in Central Java. Having experience more than 25 years in furniture business, we have been supplying customers all over the world.....</p>
-                    <div class="label_link">
-                      <i class="fa fa-tags" aria-hidden="true"></i>
-                      <span>9403 Furniture</span>
-                    </div>
-                  </div>
-                </div><!--end.top_row_list_exporter-->
-                <div class="bottom_row_list_exporter">
-                  <div class="link_exporter">
-                    <div class="item_call">
-                      <i class="fa fa-phone" aria-hidden="true"></i>
-                      <span>+34 934 144 662</span>
-                    </div>
-                    <div class="item_call">
-                      <i class="fa fa-link" aria-hidden="true"></i>
-                      <span>http://www.itpc-barcelona.es/</span>
-                    </div>
-                  </div>
-                  <a href="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en'."/web_index_exporter_detail" : $this->uri->segment(1)."/web_index_exporter_detail") ?>" class="see_detail">DETAILS ></a>
-                </div><!--end.bottom_row_list_exporter-->
-              </div><!--end.row_list_exporternya-->
-
+            <?php endforeach;?>
             </div><!--end.item_list_exporternya-->
 
         </div>

@@ -45,25 +45,7 @@
     </div>
   </section>
 
-  <section id="exporter_category_search" class="section padSection ">
-    <div class="wrapper top_border">
-      <div class="black_title text-center">
-        <h3>Exporter Category</h3>
-      </div>
-      <div class="list_inner">
-        <div class="list_exporter_category">
-          <ul>
-            <li>
-              <a href="#">1806 Chocolate and other food preparations containing cocoa</a>
-            </li>
-            <li>
-              <a href="#">1704 Sugar Confection (incl White Chocolate)</a>
-            </li>
-          </ul>
-        </div><!--end.list_exporter_search-->
-      </div>
-    </div>
-  </section>
+  
 
   <section id="exporter_category_search" class="section padSection ">
     <div class="wrapper top_border">

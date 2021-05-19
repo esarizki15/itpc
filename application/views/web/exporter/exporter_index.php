@@ -5,29 +5,31 @@
         <h3>Trade with<br/>Indonesia</h3>
         <p>Search & Find Indonesian exporter for your business</p>
       </div><!--end.title_top_exporter-->
-      <div class="row_input_filter">
-        <div class="input_big_text">
-          <div class="group_no_line">
-            <label>Exporter Name</label>
-            <input type="text" class="input_exporter" name="" placeholder="Ex. Category">
-          </div>
-        </div><!--end.input_big_text-->
-
-        <div class="input_small_text">
-          <div class="group_no_line">
-            <label>Category</label>
-            <div class="custom_select field">
-              <select name="category_id" id="category_atas" required>
-                <option selected disabled value="0">-- Pilih Category --</option>
-                <?php foreach($category as $itemcat){ ?> 
-                        <option value="<?=$itemcat['id']?>" catTitle="<?=$itemcat['title']?>"><?=$itemcat['title']?></option>
-                      <?php } ?> 
-              </select>
+      <form method="get" action="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en'."/web_exporter_search_result" : $this->uri->segment(1)."/web_exporter_search_result") ?>">
+        <div class="row_input_filter">
+          <div class="input_big_text">
+            <div class="group_no_line">
+              <label>Exporter Name</label>
+              <input type="text" class="input_exporter" name="name" placeholder="Ex. Category">
             </div>
-          </div>
-        </div><!--end.input_big_text-->
-        <a href="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en'."/web_exporter_search_result" : $this->uri->segment(1)."/web_exporter_search_result") ?>"  class="orange_big">Search</a>
-      </div><!--end,row_input_filter-->
+          </div><!--end.input_big_text-->
+
+          <div class="input_small_text">
+            <div class="group_no_line">
+              <label>Category</label>
+              <div class="custom_select field">
+                <select name="categoryId" id="category_atas" required>
+                  <option selected disabled value="0">-- Pilih Category --</option>
+                  <?php foreach($category as $itemcat){ ?> 
+                          <option value="<?=$itemcat['id']?>" catTitle="<?=$itemcat['title']?>"><?=$itemcat['title']?></option>
+                        <?php } ?> 
+                </select>
+              </div>
+            </div>
+          </div><!--end.input_big_text-->
+          <button type="submit" class="orange_big">Search</button>
+        </div><!--end,row_input_filter-->
+      </form>
     </div><!--end,wrapper-->
   </section>
 

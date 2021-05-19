@@ -124,7 +124,9 @@
 
 	<div class="close_search"><img src="<?php echo $this->config->item('frontend'); ?>images/close.png"></div>
 	<div class="form_search">
-		<input type="text" class="search_input" placeholder="type to search...">
+	<form action="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en/store_search' : $this->uri->segment(1).'/store_search');?>" method="post" class="form_search">
+			<input type="text" name="search" class="search_input" placeholder="type to search...">
+	</form>
 	</div>
 </div>
 <!-- end of header -->
