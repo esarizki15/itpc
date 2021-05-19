@@ -69,7 +69,7 @@
        <?php foreach($indonesia_product as $item) { ?>
         <div class="item">
           <div class="item_product">
-            <a href="#">
+            <a href="<?php echo $item['file']; ?>" target="_blank">
               <div class="thumb_product">
               <img src="<?php echo $item['thumbnail']; ?>"   />
               </div>

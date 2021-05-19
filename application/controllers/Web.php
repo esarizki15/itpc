@@ -37,8 +37,7 @@ class WEB extends CI_Controller {
             $this->load->view("web/master", $this->master);
       }
       public function index($lang = '')
-      {
-           
+      {    
             $data = $this->Home_data_query->get_news($this->isLang());
             //pr($data);exit;
             $this->master["content"] = $this->load->view("web/home/home.php",$data, TRUE);
@@ -46,7 +45,11 @@ class WEB extends CI_Controller {
       }
       public function web_indonesian_product($lang = '')
       {
-        $this->master["content"] = $this->load->view("web/indonesian_product/indonesian_product.php",[], TRUE);
+        $this->load->model('Web/Product/indonesian_product_model','indonesian_product_m', TRUE);
+        $data['indonesian_product'] = $this->indonesian_product_m->indonesian_product($this->isLang());
+
+        //pr($data);exit;
+        $this->master["content"] = $this->load->view("web/indonesian_product/indonesian_product.php",$data, TRUE);
         $this->render();
       }
       public function web_news($lang = '')
