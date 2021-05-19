@@ -236,12 +236,12 @@ class WEB extends CI_Controller {
       $get_auth_code = $this->Auth->cek_auth($auth_code);
     
       $data=array();
-      if($get_auth_code){
+      // if($get_auth_code){
                   $data['id_ex']  = $this->User_query->detail_exporter($this->session->user_logged['user_id'])['exporter_detail'][0]['id'];
                   $data['category'] = $this->Exporter_category_query->category_list();
                   $data['subcategory'] = $this->Exporter_subcategory_query->subcategory_list();
                   $data['curr_category'] = $this->Exporter_category_query->category_curr_list($this->session->user_logged['user_id']);
-      }
+      //}
       $data['exporter']=$this->Exporter_list_query->exporter_list();
       //pr($data['exporter']);exit;
         $this->master["content"] = $this->load->view("web/exporter/exporter_index.php",$data, TRUE);
