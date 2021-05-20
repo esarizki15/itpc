@@ -5,14 +5,14 @@
         <h3>Trade with<br/>Indonesia</h3>
         <p>Search & Find Indonesian exporter for your business</p>
       </div><!--end.title_top_exporter-->
-      <form method="get" action="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en'."/web_exporter_search_result" : $this->uri->segment(1)."/web_exporter_search_result") ?>">
+      <!-- <form method="get" action="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en'."/web_exporter_search_result" : $this->uri->segment(1)."/web_exporter_search_result") ?>"> -->
         <div class="row_input_filter">
           <div class="input_big_text">
             <div class="group_no_line">
               <label>Exporter Name</label>
-              <input type="text" class="input_exporter" name="name" placeholder="Ex. Category">
+              <input type="text" class="input_exporter exporter_name" name="name" placeholder="Ex. Category">
             </div>
-          </div><!--end.input_big_text-->
+          </div>
 
           <div class="input_small_text">
             <div class="group_no_line">
@@ -27,9 +27,9 @@
               </div>
             </div>
           </div><!--end.input_big_text-->
-          <button type="submit" class="orange_big">Search</button>
+          <button href="javascript:void(0)" class="orange_big searchexporter">Search</button>
         </div><!--end,row_input_filter-->
-      </form>
+      <!-- </form> -->
     </div><!--end,wrapper-->
   </section>
 
@@ -86,7 +86,7 @@
               <div class="row_filter">
                 <label class="title_row">Select Category</label>
                 <div class="custom_select field">
-                    <select name="category" id="category">
+                    <select name="category" id="category" class="catbawah">
                       <option selected disabled value="0">Category</option>
                       <?php foreach($category as $itemcat){ ?> 
                         <option value="<?=$itemcat['id']?>" catTitle="<?=$itemcat['title']?>"><?=$itemcat['title']?></option>
@@ -97,7 +97,7 @@
               <div class="row_filter">
                 <label class="title_row">Select Sub Category</label>
                 <div class="custom_select field">
-                <select name="subcategory" id="subcategory">
+                <select name="subcategory" id="subcategory" class="subcatbawah">
                           <option selected disabled value="0">Sub Category</option>
                 </select>
                 </div>
@@ -133,10 +133,13 @@
                   </div><!--en.dthumb_list_exporter-->
                   <div class="caption_list_exporter">
                     <h3><?=$item['exporter_name']; ?></h3>
-                    <p>We are exporter and manufacturer of rattan and wooden furniture in Central Java. Having experience more than 25 years in furniture business, we have been supplying customers all over the world.....</p>
+                    <p><?=$item['exporter_address']; ?></p>
                     <div class="label_link">
                       <i class="fa fa-tags" aria-hidden="true"></i>
-                      <span>9403 Furniture</span>
+                      <span> 
+                      <?php
+                        echo $item['category']['category_title'];
+                        ?></span>
                     </div>
                   </div>
                 </div><!--end.top_row_list_exporter-->
@@ -191,5 +194,70 @@ function TreeCat(){
         });
     }); 
 }
+
+search();
+function search(){
+  $('.searchexporter').on("click",function () {
+        var categoryId = "";
+        if($('#category_atas').find('option:selected').val() !== 0){
+            var categoryId = $('#category_atas').find('option:selected').val();
+        }
+        var ExName = $('.exporter_name').val();
+        var basedomain= '<?=base_url()?>';
+        //console.log(basedomain);
+        $.ajax({
+            url: basedomain+"en/web_exporter_search_result",
+            type: "GET",
+            data: {name:ExName,categoryId:categoryId},
+            success: function (response) {
+              var myArr = JSON.parse(response);
+              myArr=myArr['exporter']['data'];
+              var Str = "";
+              $(myArr).each(function( index ) {
+                console.log(myArr[index]);
+                if(myArr[index] !== null){
+                    Str=Str+'<div class="top_row_list_exporter">';
+                    Str=Str+'<div class="thumb_list_exporter">';
+                    Str=Str+'<img src="<?php echo $this->config->item('frontend'); ?>images/thumb_exporter_list.png">';
+                    Str=Str+'</div>';
+                    Str=Str+'<div class="caption_list_exporter">';
+                    Str=Str+'<h3>'+myArr[index]["exporter_name"]+'</h3>';
+                    Str=Str+'<p>'+myArr[index]["exporter_address"]+'</p> ';
+                    Str=Str+'<div class="label_link"> ';
+                    Str=Str+'<i class="fa fa-tags" aria-hidden="true"></i> ';
+                    Str=Str+'<span>'+myArr[index]["category"]["category_title"]+'</span> ';
+                    Str=Str+'</div> ';
+                    Str=Str+'</div> ';
+                    Str=Str+'</div>';
+                    Str=Str+'<div class="bottom_row_list_exporter"> ';
+                    Str=Str+'<div class="link_exporter"> ';
+                    Str=Str+'<div class="item_call"> ';
+                    Str=Str+'<i class="fa fa-phone" aria-hidden="true"></i> ';
+                    Str=Str+'<span>'+myArr[index]["exporter_phone"]+'</span> ';
+                    Str=Str+'</div> ';
+                    Str=Str+'<div class="item_call"> ';
+                    Str=Str+'<i class="fa fa-link" aria-hidden="true"></i> ';
+                    Str=Str+'<span>'+myArr[index]["exporter_link"]+'</span> ';
+                    Str=Str+'</div> ';
+                    Str=Str+'</div> ';
+                    Str=Str+'<a href="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en'."/web_index_exporter_detail" : $this->uri->segment(1)."/web_index_exporter_detail") ?>" class="see_detail">DETAILS ></a> ';
+                    Str=Str+'</div> ';
+                }else{
+                  Str=Str+'<div class="top_row_list_exporter">';
+                  Str=Str+'<div class="">';
+                  Str=Str+'<center><h4>Data Cannot Found !</h4></center>';
+                  Str=Str+'</div> ';
+                  Str=Str+'</div> ';
+
+                }
+               });
+               $(".row_list_exporternya").attr("tabindex",-1).focus();
+               $('.row_list_exporternya').html(Str);
+            }
+          })
+  });
+ 
+}
+
 
 </script> 
