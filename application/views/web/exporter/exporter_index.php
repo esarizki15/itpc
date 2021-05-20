@@ -154,7 +154,7 @@
                       <span><?=$item['exporter_link']; ?></span>
                     </div>
                   </div>
-                  <a href="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en'."/web_index_exporter_detail" : $this->uri->segment(1)."/web_index_exporter_detail") ?>" class="see_detail">DETAILS ></a>
+                  <a href="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en'."/web_index_exporter_detail/".$item['exporter_id']: $this->uri->segment(1)."/web_index_exporter_detail/".$item['exporter_id']) ?>" class="see_detail">DETAILS ></a>
                 </div><!--end.bottom_row_list_exporter-->
         
               <?php } ?>
@@ -194,6 +194,10 @@ function TreeCat(){
                 Str=Str+ "  <option value='"+myArr[index]['id']+"' title='"+myArr[index]['title'] +"'>"+myArr[index]['title'] + "</option>";
               });
               $('#subcategory').html(Str);
+              search();
+              sortcategory();
+              SortOrder();
+
             },
         });
     }); 
@@ -244,12 +248,15 @@ function search(){
                     Str=Str+'<span>'+myArr[index]["exporter_link"]+'</span> ';
                     Str=Str+'</div> ';
                     Str=Str+'</div> ';
-                    Str=Str+'<a href="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en'."/web_index_exporter_detail" : $this->uri->segment(1)."/web_index_exporter_detail") ?>" class="see_detail">DETAILS ></a> ';
+                    Str=Str+'<a href="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en'."/web_index_exporter_detail/" : $this->uri->segment(1)."/web_index_exporter_detail/") ?>'+myArr[index]["exporter_name"]+'" class="see_detail">DETAILS ></a> ';
                     Str=Str+'</div> ';
                 }
                });
                $(".row_list_exporternya").attr("tabindex",-1).focus();
                $('.row_list_exporternya').html(Str);
+                TreeCat();
+                sortcategory();
+                SortOrder();
             }
           })
   });
@@ -300,12 +307,15 @@ function sortcategory(){
                     Str=Str+'<span>'+myArr[index]["exporter_link"]+'</span> ';
                     Str=Str+'</div> ';
                     Str=Str+'</div> ';
-                    Str=Str+'<a href="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en'."/web_index_exporter_detail" : $this->uri->segment(1)."/web_index_exporter_detail") ?>" class="see_detail">DETAILS ></a> ';
+                    Str=Str+'<a href="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en'."/web_index_exporter_detail" : $this->uri->segment(1)."/web_index_exporter_detail") ?>'+myArr[index]["exporter_name"]+'" class="see_detail">DETAILS ></a> ';
                     Str=Str+'</div> ';
                 }
                });
                $(".row_list_exporternya").attr("tabindex",-1).focus();
                $('.row_list_exporternya').html(Str);
+                TreeCat();
+                search();
+                SortOrder();
             }
           })
   });
@@ -357,12 +367,16 @@ function filtersubcategory(){
                     Str=Str+'<span>'+myArr[index]["exporter_link"]+'</span> ';
                     Str=Str+'</div> ';
                     Str=Str+'</div> ';
-                    Str=Str+'<a href="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en'."/web_index_exporter_detail" : $this->uri->segment(1)."/web_index_exporter_detail") ?>" class="see_detail">DETAILS ></a> ';
+                    Str=Str+'<a href="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en'."/web_index_exporter_detail" : $this->uri->segment(1)."/web_index_exporter_detail") ?>'+myArr[index]["exporter_name"]+'" class="see_detail">DETAILS ></a> ';
                     Str=Str+'</div> ';
                 }
                });
                $(".row_list_exporternya").attr("tabindex",-1).focus();
                $('.row_list_exporternya').html(Str);
+                TreeCat();
+                search();
+                sortcategory();
+                SortOrder();
             }
           })
   });
@@ -415,7 +429,7 @@ function SortOrder(){
                     Str=Str+'<span>'+myArr[index]["exporter_link"]+'</span> ';
                     Str=Str+'</div> ';
                     Str=Str+'</div> ';
-                    Str=Str+'<a href="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en'."/web_index_exporter_detail" : $this->uri->segment(1)."/web_index_exporter_detail") ?>" class="see_detail">DETAILS ></a> ';
+                    Str=Str+'<a href="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en'."/web_index_exporter_detail" : $this->uri->segment(1)."/web_index_exporter_detail") ?>'+myArr[index]["exporter_name"]+'" class="see_detail">DETAILS ></a> ';
                     Str=Str+'</div> ';
                 }
                });

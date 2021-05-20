@@ -243,9 +243,21 @@ class WEB extends CI_Controller
         $this->master["content"] = $this->load->view("web/exporter/exporter_index.php", $data, true);
         $this->render();
     }
-    public function web_index_exporter_detail($lang = '')
+    public function web_index_exporter_detail($id)
     {
-        $this->master["content"] = $this->load->view("web/exporter/exporter_index_detail.php", [], true);
+    
+     // pr($order);exit;
+      $idnya = $id;
+      $this->load->model('Web/Exporter/Exporter_list_query','Exporter_list_query', true);
+      $data['exporter']=$this->Exporter_list_query->search(null,null,null,null,$idnya);
+      $data['product'] =$this->Exporter_list_query->dataproduct($idnya);
+      $data['category'] = "All";
+      if(!empty($data["exporter"]["data"])){
+      $data['category'] = $data["exporter"]["category"]["category_title"];
+      }
+      $data['exporterName'] = $exporterName;
+
+        $this->master["content"] = $this->load->view("web/exporter/exporter_index_detail.php", $data, true);
         $this->render();
     }
     public function web_exporter_search_result($lang = '')
@@ -257,6 +269,7 @@ class WEB extends CI_Controller
       $exporterName = $this->input->get('name');
       $this->load->model('Web/Exporter/Exporter_list_query','Exporter_list_query', true);
       $data['exporter']=$this->Exporter_list_query->search($exporterName, $category,$order,$subcategoryId);
+      
       $data['category'] = "All";
       if(!empty($data["exporter"]["data"])){
       $data['category'] = $data["exporter"]["category"]["category_title"];

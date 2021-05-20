@@ -5,22 +5,22 @@
     </div>
     <div class="wrapper">
       <div class="section_big_thumb">
-        <img src="<?php echo $this->config->item('frontend'); ?>images/big_thumb_exporter_list.png">
+      <img src="<?php echo $this->config->item('website_assets').'exporter/'.$exporter['data'][0]['exporter_logo']; ?>">
       </div>  
       <div class="title_big_blue">
-        <h1>PT. Kharisma Rotan Mandiri</h1>
+        <h1><?php echo $exporter['data'][0]['exporter_name']?></h1>
       </div>
     </div><!--end.wrapper-->
   </section>
   <section id="detail_exporter" class="section padSection">
     <div class="wrapper">
       <div class="rows">
-        <ul class="breadcrumb">
+        <!-- <ul class="breadcrumb">
           <li><a href="#">Home</a></li>
           <li><a href="#">Trade With Indonesia</a></li>
           <li><a href="#">Company</a></li>
           <li>Furniture</li>
-        </ul>
+        </ul> -->
       </div><!--end.rows-->
       <div class="list_detail_exporter">
         <div class="left_detail_exporter">
@@ -31,34 +31,17 @@
                 <h3>GALLERY</h3>
               </div>
               <div class="row-list">
+              <?php foreach($product as $item){  ?>
                 <div class="cols2">
+             
                   <div class="item_gallery">
-                    <a href="<?php echo $this->config->item('frontend'); ?>images/thumb_exporter_list1.png" class="single_gallery">
-                      <img src="<?php echo $this->config->item('frontend'); ?>images/thumb_exporter_list1.png">
+                    <a href="<?php echo $this->config->item('website_assets').'exporter_product/'.$item['ex_pro_image']; ?>" class="single_gallery">
+                        <img src="<?php echo $this->config->item('website_assets').'exporter_product/'.$item['ex_pro_image']; ?>">
                     </a>
                   </div>
                 </div><!--end.cols2-->
-                <div class="cols2">
-                  <div class="item_gallery">
-                    <a href="<?php echo $this->config->item('frontend'); ?>images/thumb_exporter_list2.png" class="single_gallery">
-                      <img src="<?php echo $this->config->item('frontend'); ?>images/thumb_exporter_list2.png">
-                    </a>
-                  </div>
-                </div><!--end.cols2-->
-                <div class="cols2">
-                  <div class="item_gallery">
-                    <a href="<?php echo $this->config->item('frontend'); ?>images/thumb_exporter_list3.png" class="single_gallery">
-                      <img src="<?php echo $this->config->item('frontend'); ?>images/thumb_exporter_list3.png">
-                    </a>
-                  </div>
-                </div><!--end.cols2-->
-                <div class="cols2">
-                  <div class="item_gallery">
-                    <a href="<?php echo $this->config->item('frontend'); ?>images/thumb_exporter_list4.png" class="single_gallery">
-                      <img src="<?php echo $this->config->item('frontend'); ?>images/thumb_exporter_list4.png">
-                    </a>
-                  </div>
-                </div><!--end.cols2-->
+                <?php } ?>
+                
               </div><!--end.row-list"-->
             </div><!--end.rows-->
             <div class="rows">
@@ -79,7 +62,7 @@
               <h3>DESCRIPTION</h3>
             </div>
             <div class="description_exporter">
-              <p>We are exporter and manufacturer of rattan and wooden furniture in Central Java. Having experience more than 25 years in furniture business, we have been supplying customers all over the world</p>
+              <p><?php echo $exporter['data'][0]['exporter_address']?></p>
             </div>
           </div><!--end.rows-->
           <div class="rows">
@@ -91,43 +74,43 @@
                 <div class="cols2">
                   <div class="item_call">
                     <i class="fa fa-map-marker" aria-hidden="true"></i>
-                    <span>Calle Aribau 250 Bj.08006, Barcelona, Spain</span>
+                    <span><?php echo $exporter['data'][0]['exporter_address']?></span>
                   </div>
                 </div><!--end.cols2-->
                 <div class="cols2">
                   <div class="item_call">
                     <i class="fa fa-envelope" aria-hidden="true"></i>
-                    <span>info@itpc-barcelona.es</span>
+                    <span><?php echo $exporter['data'][0]['exporter_email']?></span>
                   </div>
                 </div><!--end.cols2-->
                 <div class="cols2">
                   <div class="item_call">
                     <i class="fa fa-fax" aria-hidden="true"></i>
-                    <span>+34 934 146 188</span>
+                    <span><?php echo $exporter['data'][0]['exporter_phone']?></span>
                   </div>
                 </div><!--end.cols2-->
                 <div class="cols2">
                   <div class="item_call">
                     <i class="fa fa-phone" aria-hidden="true"></i>
-                    <span>+34 934 144 662</span>
+                    <span><?php echo $exporter['data'][0]['exporter_office_phone']?></span>
                   </div>
                 </div><!--end.cols2-->
                 <div class="cols2">
                   <div class="item_call">
                     <i class="fa fa-link" aria-hidden="true"></i>
-                    <span>http://www.itpc-barcelona.es/</span>
+                    <span><?php echo $exporter['data'][0]['exporter_link']?></span>
                   </div>
                 </div><!--end.cols2-->
               </div>
             </div>
           </div><!--end.rows-->
           <div class="share_row">
-          <span>Share to</span>
+          <span>Share to </span>
           <div class="share_lnk">
-            <a href="#"><img src="http://itpc_frontend.test/assets/frontend/images/share_email.png"></a>
-            <a href="#"><img src="http://itpc_frontend.test/assets/frontend/images/share_twitter.png"></a>
-            <a href="#"><img src="http://itpc_frontend.test/assets/frontend/images/share_fb.png"></a>
-            <a href="#"><img src="http://itpc_frontend.test/assets/frontend/images/share_wa.png"></a>
+            <a href="mailto:?subject=I wanted you to see this site&amp;body=Check out this site <?=urlencode(current_url())?>"  target="_blank"> <img src="<?php echo base_url('assets/frontend/images/share_email.png'); ?>"></a>
+            <a href="https://twitter.com/intent/tweet?url=<?=urlencode(current_url())?>"  target="_blank"><img src="<?php echo base_url('assets/frontend/images/share_twitter.png'); ?>"></a>
+            <a href="https://www.facebook.com/sharer/sharer.php?u=<?=urlencode(current_url())?>" target="_blank"><img src="<?php echo base_url('assets/frontend/images/share_fb.png'); ?>"></a>
+            <a href="https://twitter.com/intent/tweet?url=<?=urlencode(current_url())?>"  target="_blank"><img src="<?php echo base_url('assets/frontend/images/share_wa.png'); ?>"></a>
           </div>
         </div>
         </div><!--end.right_detail_exporter-->
