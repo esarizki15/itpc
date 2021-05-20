@@ -249,7 +249,7 @@ class WEB extends CI_Controller
      // pr($order);exit;
       $idnya = $id;
       $this->load->model('Web/Exporter/Exporter_list_query','Exporter_list_query', true);
-      $data['exporter']=$this->Exporter_list_query->search(null,null,null,null,$idnya);
+      $data['exporter']=$this->Exporter_list_query->detailexporter($idnya);
       $data['product'] =$this->Exporter_list_query->dataproduct($idnya);
       $data['category'] = "All";
       if(!empty($data["exporter"]["data"])){
