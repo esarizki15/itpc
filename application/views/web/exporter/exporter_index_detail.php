@@ -50,7 +50,7 @@
               </div>
               <div class="label_link">
                 <i class="fa fa-tags" aria-hidden="true"></i>
-                <span>9403 Furniture</span>
+                <span><?php echo $exporter['data'][0]['category']['category_title']; ?></span>
               </div>
              
             </div><!--end.rows-->
