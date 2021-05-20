@@ -106,16 +106,16 @@
                 <label class="title_row">Sort Category</label>
                 <div class="sort_by_Radio">
                  <label class="radio_container">Newest First
-                   <input type="radio" checked="checked" name="radio">
+                   <input type="radio" checked="checked" name="radio" value="newor" class="pilihan">
                     <span class="checkmark"></span>
                   </label>
                   <label class="radio_container">Oldest First
-                    <input type="radio" name="radio">
+                    <input type="radio" name="radio" value="oldor" class="pilihan">
                     <span class="checkmark"></span>
                   </label>
                   <label class="radio_container">By Title
-                    <input type="radio" name="radio">
-                    <span class="checkmark"></span>
+                    <input type="radio" name="radio" value="titor" class="pilihan" >
+                    <span class="checkmark" ></span>
                   </label>
                 </div><!--end.row_filter-->
               </div>
@@ -129,7 +129,7 @@
                 <?php foreach($exporter['it_ex'] as $item) {  ?>
                 <div class="top_row_list_exporter">
                   <div class="thumb_list_exporter">
-                    <img src="<?php echo $this->config->item('frontend'); ?>images/thumb_exporter_list.png">
+                    <img src="<?php echo $this->config->item('website_assets').'exporter_product/'.$item['imagenya']; ?>">
                   </div><!--en.dthumb_list_exporter-->
                   <div class="caption_list_exporter">
                     <h3><?=$item['exporter_name']; ?></h3>
@@ -173,11 +173,15 @@
 
  <script>
 TreeCat();
+search();
+sortcategory();
+SortOrder();
+
 function TreeCat(){
     $('#category').on("change",function () {
         var categoryId = $(this).find('option:selected').val();
         var basedomain= '<?=base_url()?>';
-        //console.log(basedomain);
+       
         $.ajax({
             url: basedomain+"en/web_add_category",
             type: "POST",
@@ -195,7 +199,7 @@ function TreeCat(){
     }); 
 }
 
-search();
+
 function search(){
   $('.searchexporter').on("click",function () {
         var categoryId = "";
@@ -204,7 +208,7 @@ function search(){
         }
         var ExName = $('.exporter_name').val();
         var basedomain= '<?=base_url()?>';
-        //console.log(basedomain);
+
         $.ajax({
             url: basedomain+"en/web_exporter_search_result",
             type: "GET",
@@ -214,11 +218,11 @@ function search(){
               myArr=myArr['exporter']['data'];
               var Str = "";
               $(myArr).each(function( index ) {
-                console.log(myArr[index]);
+      
                 if(myArr[index] !== null){
                     Str=Str+'<div class="top_row_list_exporter">';
                     Str=Str+'<div class="thumb_list_exporter">';
-                    Str=Str+'<img src="<?php echo $this->config->item('frontend'); ?>images/thumb_exporter_list.png">';
+                    Str=Str+'<img src="<?php echo $this->config->item('website_assets')."exporter_product/"; ?>'+myArr[index]["imagenya"]+'">';
                     Str=Str+'</div>';
                     Str=Str+'<div class="caption_list_exporter">';
                     Str=Str+'<h3>'+myArr[index]["exporter_name"]+'</h3>';
@@ -242,13 +246,62 @@ function search(){
                     Str=Str+'</div> ';
                     Str=Str+'<a href="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en'."/web_index_exporter_detail" : $this->uri->segment(1)."/web_index_exporter_detail") ?>" class="see_detail">DETAILS ></a> ';
                     Str=Str+'</div> ';
-                }else{
-                  Str=Str+'<div class="top_row_list_exporter">';
-                  Str=Str+'<div class="">';
-                  Str=Str+'<center><h4>Data Cannot Found !</h4></center>';
-                  Str=Str+'</div> ';
-                  Str=Str+'</div> ';
+                }
+               });
+               $(".row_list_exporternya").attr("tabindex",-1).focus();
+               $('.row_list_exporternya').html(Str);
+            }
+          })
+  });
+}
 
+
+function sortcategory(){
+  $('.catbawah').on("change",function () {
+        var categoryId = "";
+        if($('.catbawah').find('option:selected').val() !== 0){
+            var categoryId = $('.catbawah').find('option:selected').val();
+        }
+   
+        var basedomain= '<?=base_url()?>';
+      
+        $.ajax({
+            url: basedomain+"en/web_exporter_search_result",
+            type: "GET",
+            data: {categoryId:categoryId},
+            success: function (response) {
+              var myArr = JSON.parse(response);
+              myArr=myArr['exporter']['data'];
+              var Str = "";
+              $(myArr).each(function( index ) {
+    
+                if(myArr[index] !== null){
+                    Str=Str+'<div class="top_row_list_exporter">';
+                    Str=Str+'<div class="thumb_list_exporter">';
+                    Str=Str+'<img src="<?php echo $this->config->item('website_assets')."exporter_product/"; ?>'+myArr[index]["imagenya"]+'">';
+                    Str=Str+'</div>';
+                    Str=Str+'<div class="caption_list_exporter">';
+                    Str=Str+'<h3>'+myArr[index]["exporter_name"]+'</h3>';
+                    Str=Str+'<p>'+myArr[index]["exporter_address"]+'</p> ';
+                    Str=Str+'<div class="label_link"> ';
+                    Str=Str+'<i class="fa fa-tags" aria-hidden="true"></i> ';
+                    Str=Str+'<span>'+myArr[index]["category"]["category_title"]+'</span> ';
+                    Str=Str+'</div> ';
+                    Str=Str+'</div> ';
+                    Str=Str+'</div>';
+                    Str=Str+'<div class="bottom_row_list_exporter"> ';
+                    Str=Str+'<div class="link_exporter"> ';
+                    Str=Str+'<div class="item_call"> ';
+                    Str=Str+'<i class="fa fa-phone" aria-hidden="true"></i> ';
+                    Str=Str+'<span>'+myArr[index]["exporter_phone"]+'</span> ';
+                    Str=Str+'</div> ';
+                    Str=Str+'<div class="item_call"> ';
+                    Str=Str+'<i class="fa fa-link" aria-hidden="true"></i> ';
+                    Str=Str+'<span>'+myArr[index]["exporter_link"]+'</span> ';
+                    Str=Str+'</div> ';
+                    Str=Str+'</div> ';
+                    Str=Str+'<a href="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en'."/web_index_exporter_detail" : $this->uri->segment(1)."/web_index_exporter_detail") ?>" class="see_detail">DETAILS ></a> ';
+                    Str=Str+'</div> ';
                 }
                });
                $(".row_list_exporternya").attr("tabindex",-1).focus();
@@ -257,6 +310,122 @@ function search(){
           })
   });
  
+}
+
+function filtersubcategory(){
+  $('.subcatbawah').on("change",function () {
+        var categoryId = "";
+        if($('.catbawah').find('option:selected').val() !== 0){
+            var categoryId = $('.catbawah').find('option:selected').val();
+        }
+        var subcategory=$(this).find('option:selected').val();
+   
+        var basedomain= '<?=base_url()?>';
+      
+        $.ajax({
+            url: basedomain+"en/web_exporter_search_result",
+            type: "GET",
+            data: {categoryId:categoryId,subcategoryId:subcategory},
+            success: function (response) {
+              var myArr = JSON.parse(response);
+              myArr=myArr['exporter']['data'];
+              var Str = "";
+              $(myArr).each(function( index ) {
+    
+                if(myArr[index] !== null){
+                    Str=Str+'<div class="top_row_list_exporter">';
+                    Str=Str+'<div class="thumb_list_exporter">';
+                    Str=Str+'<img src="<?php echo $this->config->item('website_assets')."exporter_product/"; ?>'+myArr[index]["imagenya"]+'">';
+                    Str=Str+'</div>';
+                    Str=Str+'<div class="caption_list_exporter">';
+                    Str=Str+'<h3>'+myArr[index]["exporter_name"]+'</h3>';
+                    Str=Str+'<p>'+myArr[index]["exporter_address"]+'</p> ';
+                    Str=Str+'<div class="label_link"> ';
+                    Str=Str+'<i class="fa fa-tags" aria-hidden="true"></i> ';
+                    Str=Str+'<span>'+myArr[index]["category"]["category_title"]+'</span> ';
+                    Str=Str+'</div> ';
+                    Str=Str+'</div> ';
+                    Str=Str+'</div>';
+                    Str=Str+'<div class="bottom_row_list_exporter"> ';
+                    Str=Str+'<div class="link_exporter"> ';
+                    Str=Str+'<div class="item_call"> ';
+                    Str=Str+'<i class="fa fa-phone" aria-hidden="true"></i> ';
+                    Str=Str+'<span>'+myArr[index]["exporter_phone"]+'</span> ';
+                    Str=Str+'</div> ';
+                    Str=Str+'<div class="item_call"> ';
+                    Str=Str+'<i class="fa fa-link" aria-hidden="true"></i> ';
+                    Str=Str+'<span>'+myArr[index]["exporter_link"]+'</span> ';
+                    Str=Str+'</div> ';
+                    Str=Str+'</div> ';
+                    Str=Str+'<a href="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en'."/web_index_exporter_detail" : $this->uri->segment(1)."/web_index_exporter_detail") ?>" class="see_detail">DETAILS ></a> ';
+                    Str=Str+'</div> ';
+                }
+               });
+               $(".row_list_exporternya").attr("tabindex",-1).focus();
+               $('.row_list_exporternya').html(Str);
+            }
+          })
+  });
+ 
+}
+
+
+function SortOrder(){
+  
+  $('.pilihan').on("change",function () {
+        var categoryId = "";
+        if($('.catbawah').find('option:selected').val() !== 0){
+            var categoryId = $('.catbawah').find('option:selected').val();
+        }
+        var order =$(this).val();
+        var basedomain= '<?=base_url()?>';
+      
+        $.ajax({
+            url: basedomain+"en/web_exporter_search_result",
+            type: "GET",
+            data: {categoryId:categoryId,order:order},
+            success: function (response) {
+              var myArr = JSON.parse(response);
+              myArr=myArr['exporter']['data'];
+              var Str = "";
+              $(myArr).each(function( index ) {
+        
+                if(myArr[index] !== null){
+                    Str=Str+'<div class="top_row_list_exporter">';
+                    Str=Str+'<div class="thumb_list_exporter">';
+                    Str=Str+'<img src="<?php echo $this->config->item('website_assets')."exporter_product/"; ?>'+myArr[index]["imagenya"]+'">';
+                    Str=Str+'</div>';
+                    Str=Str+'<div class="caption_list_exporter">';
+                    Str=Str+'<h3>'+myArr[index]["exporter_name"]+'</h3>';
+                    Str=Str+'<p>'+myArr[index]["exporter_address"]+'</p> ';
+                    Str=Str+'<div class="label_link"> ';
+                    Str=Str+'<i class="fa fa-tags" aria-hidden="true"></i> ';
+                    Str=Str+'<span>'+myArr[index]["category"]["category_title"]+'</span> ';
+                    Str=Str+'</div> ';
+                    Str=Str+'</div> ';
+                    Str=Str+'</div>';
+                    Str=Str+'<div class="bottom_row_list_exporter"> ';
+                    Str=Str+'<div class="link_exporter"> ';
+                    Str=Str+'<div class="item_call"> ';
+                    Str=Str+'<i class="fa fa-phone" aria-hidden="true"></i> ';
+                    Str=Str+'<span>'+myArr[index]["exporter_phone"]+'</span> ';
+                    Str=Str+'</div> ';
+                    Str=Str+'<div class="item_call"> ';
+                    Str=Str+'<i class="fa fa-link" aria-hidden="true"></i> ';
+                    Str=Str+'<span>'+myArr[index]["exporter_link"]+'</span> ';
+                    Str=Str+'</div> ';
+                    Str=Str+'</div> ';
+                    Str=Str+'<a href="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en'."/web_index_exporter_detail" : $this->uri->segment(1)."/web_index_exporter_detail") ?>" class="see_detail">DETAILS ></a> ';
+                    Str=Str+'</div> ';
+                }
+               });
+               $(".row_list_exporternya").attr("tabindex",-1).focus();
+               $('.row_list_exporternya').html(Str);
+            }
+          })
+  });
+ 
+
 }
 
 

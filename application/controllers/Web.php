@@ -251,9 +251,12 @@ class WEB extends CI_Controller
     public function web_exporter_search_result($lang = '')
     {
       $category = $this->input->get('categoryId');
+      $order=$this->input->get('order');
+      $subcategoryId=$this->input->get('subcategoryId');
+     // pr($order);exit;
       $exporterName = $this->input->get('name');
       $this->load->model('Web/Exporter/Exporter_list_query','Exporter_list_query', true);
-      $data['exporter']=$this->Exporter_list_query->search($exporterName, $category);
+      $data['exporter']=$this->Exporter_list_query->search($exporterName, $category,$order,$subcategoryId);
       $data['category'] = "All";
       if(!empty($data["exporter"]["data"])){
       $data['category'] = $data["exporter"]["category"]["category_title"];
