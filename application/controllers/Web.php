@@ -206,19 +206,23 @@ class WEB extends CI_Controller
 
     public function web_index_exporter($lang = '')
     {
+        $category=$this->input->get("categoryId");
+        $start=$this->input->get("start");
+        $page=$this->input->get("page");
+        $limit=$this->perPage;
         $this->load->model('API/Exporter/Exporter_category_query', 'Exporter_category_query', true);
         $this->load->model('API/Exporter/Exporter_subcategory_query', 'Exporter_subcategory_query', true);
         $this->load->model('API/Authentication/Auth', 'Auth', true);
         $this->load->model('API/User/User_query', 'User_query', true);
         $this->load->model('Web/Exporter/Exporter_list_query', 'Exporter_list_query', true);
-      
+        
         //GET SUBCATEGORY
-        if (@$this->input->post('categoryId')) {
+        if (@$category && empty($start) && empty($page)) {
             $subcategory = $this->Exporter_subcategory_query->subcategory_list();
             $tempcat=array();
             $i=0;
             foreach ($subcategory as $itemsub) {
-                if ($itemsub['category_id']==$this->input->post('categoryId')) {
+                if ($itemsub['category_id']==$category) {
                     $tempcat[$i]['id']=$itemsub['id'];
                     $tempcat[$i]['title']=$itemsub['title'];
                     $i++;
@@ -227,21 +231,31 @@ class WEB extends CI_Controller
             echo json_encode($tempcat);
             return json_encode($tempcat);
         }
-
+        if (!empty($page)) {
+            $data=array();
+            $data['exporter']=$this->Exporter_list_query->exporter_list($limit, $start);
+            $data["start"] = ((int) $start + (int) count($data["exporter"]["it_ex"]));
+            $data["page"] = (!empty($page) && (int) count($data["exporter"]["it_ex"]) > 0) ? (int) $page+=1 : (int) $page;
+            echo json_encode($data);
+            return json_encode($data);
+        }
         $auth_code = $this->session->user_logged['auth_code'];
         $get_auth_code = $this->Auth->cek_auth($auth_code);
-    
-        $data=array();
+        
+        if (empty($category) && empty($start) && empty($page)) {
+            $data=array();
         // if($get_auth_code){
-        $data['id_ex']  = $this->User_query->detail_exporter($this->session->user_logged['user_id'])['exporter_detail'][0]['id'];
-        $data['category'] = $this->Exporter_category_query->category_list();
-        $data['subcategory'] = $this->Exporter_subcategory_query->subcategory_list();
-        $data['curr_category'] = $this->Exporter_category_query->category_curr_list($this->session->user_logged['user_id']);
-        //}
-        $data['exporter']=$this->Exporter_list_query->exporter_list();
-        //pr($data['exporter']);exit;
-        $this->master["content"] = $this->load->view("web/exporter/exporter_index.php", $data, true);
-        $this->render();
+            $data['id_ex']  = $this->User_query->detail_exporter($this->session->user_logged['user_id'])['exporter_detail'][0]['id'];
+            $data['category'] = $this->Exporter_category_query->category_list();
+            $data['subcategory'] = $this->Exporter_subcategory_query->subcategory_list();
+            $data['curr_category'] = $this->Exporter_category_query->category_curr_list($this->session->user_logged['user_id']);
+            //}
+            $data['exporter']=$this->Exporter_list_query->exporter_list($limit, $start);
+            $data["start"] = !empty($start) ? (int) $start : (int) count($data["exporter"]["it_ex"]);
+            $data["page"] = !empty($page) ? (int) $page : (int) 1;
+            $this->master["content"] = $this->load->view("web/exporter/exporter_index.php", $data, true);
+            $this->render();
+        }
     }
     public function web_index_exporter_detail($id)
     {

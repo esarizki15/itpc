@@ -1,12 +1,13 @@
 <?php
 class Exporter_list_query extends CI_Model
 {
-    public function exporter_list()
+    public function exporter_list($limit=2, $start=0)
     {
         $this->db->select([
               'it_ex.*'
             ]);
         $this->db->where('it_ex.status', 1);
+        $this->db->limit($limit, $start);
         $query = $this->db->get('itpc_exporter it_ex');
         $it_ex = $query->result_array();
         $arrRes=array();
@@ -109,7 +110,7 @@ class Exporter_list_query extends CI_Model
       'category' => $category,
     ];
  }
-    public function search($name, $categoryId,$order,$subcategoryId)
+    public function search($name, $categoryId,$order,$subcategoryId, $limit=2, $start=0)
     {
      
         $this->db->select([
@@ -126,10 +127,10 @@ class Exporter_list_query extends CI_Model
         } elseif ($order === "titor") {
         $this->db->order_by("it_ex.exporter_name", "asc");
         }
+        $this->db->limit($limit, $start);
         $query = $this->db->get('itpc_exporter it_ex');
        
         $it_ex = $query->result_array();
-       
         $arrRes=array();
         foreach ($it_ex as $x => $val) {
             //find category
@@ -146,7 +147,7 @@ class Exporter_list_query extends CI_Model
             }
             $this->db->group_by("b.category_id");
             $cat = $this->db->get('itpc_exporter a')->result_array();
-          
+            // var_dump($cat); exit;
             $it_ex[$x]['category']="";
             foreach ($cat as $catfish) {
                 if ($catfish['category_id']==$val['exporter_id']) {
@@ -168,7 +169,8 @@ class Exporter_list_query extends CI_Model
         //pr($it_ex);exit;
         return [
           'data' => $it_ex,
-          'category' => $category,
+          'start' => $start += count($it_ex),
+          // 'category' => $category,
         ];
     }
     public function dataproduct($id){

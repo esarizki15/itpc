@@ -172,6 +172,9 @@
  </div>
 
  <script>
+var start = parseInt('<?=$start?>');
+var page = parseInt('<?=$page?>');
+winscroll(start);
 TreeCat();
 search();
 sortcategory();
@@ -202,8 +205,84 @@ function TreeCat(){
         });
     }); 
 }
-
-
+function winscroll(start,category){
+  $(window).scroll(function() {
+    var currentPage = page - 1;
+      if($(window).scrollTop() + $(window).height() >= $(document).height()) {
+          console.log(start);
+          console.log(page);
+          if(currentPage < page) {
+            loadData(page,category);
+            // page = page + 1
+          }
+      }
+  });
+}
+/*Load more Function*/
+function loadData(page,category) {
+    var basedomain= '<?=base_url()?>';
+    var categoryId = "";
+        if($('.catbawah').find('option:selected').val() !== 0){
+            var categoryId = $('.catbawah').find('option:selected').val();
+        }
+    var subcategory=$('.subcatbawah').find('option:selected').val();
+      console.log("categoryId = ", categoryId);
+      console.log("subCategory = ", subcategory);
+    $.ajax({
+        dataType: "json",
+        type: "GET",
+        url: basedomain+"en/web_index_exporter",
+        data: { 'start':start,
+                'page' : page += 1,
+                'categoryId':categoryId,
+                'subCategory':subcategory,
+               }
+    })
+    .done(function( response ) {
+      page = response["page"];
+      start = response["start"];
+      // var myArr = JSON.parse(response);
+      // param = myArr['news']['category'];
+            var Str = "";
+            var myArr=response['exporter']['it_ex'];
+              $(myArr).each(function( index ) {
+                var categoryName = "";
+                if(myArr[index]["category"] != undefined){
+                  categoryName = myArr[index]["category"]["category_title"];
+                }
+                if(myArr[index] !== null){
+                    Str=Str+'<div class="top_row_list_exporter">';
+                    Str=Str+'<div class="thumb_list_exporter">';
+                    Str=Str+'<img src="<?php echo $this->config->item('website_assets')."exporter_product/"; ?>'+myArr[index]["imagenya"]+'">';
+                    Str=Str+'</div>';
+                    Str=Str+'<div class="caption_list_exporter">';
+                    Str=Str+'<h3>'+myArr[index]["exporter_name"]+'</h3>';
+                    Str=Str+'<p>'+myArr[index]["exporter_address"]+'</p> ';
+                    Str=Str+'<div class="label_link"> ';
+                    Str=Str+'<i class="fa fa-tags" aria-hidden="true"></i> ';
+                    Str=Str+'<span>'+categoryName+'</span> ';
+                    Str=Str+'</div> ';
+                    Str=Str+'</div> ';
+                    Str=Str+'</div>';
+                    Str=Str+'<div class="bottom_row_list_exporter"> ';
+                    Str=Str+'<div class="link_exporter"> ';
+                    Str=Str+'<div class="item_call"> ';
+                    Str=Str+'<i class="fa fa-phone" aria-hidden="true"></i> ';
+                    Str=Str+'<span>'+myArr[index]["exporter_phone"]+'</span> ';
+                    Str=Str+'</div> ';
+                    Str=Str+'<div class="item_call"> ';
+                    Str=Str+'<i class="fa fa-link" aria-hidden="true"></i> ';
+                    Str=Str+'<span>'+myArr[index]["exporter_link"]+'</span> ';
+                    Str=Str+'</div> ';
+                    Str=Str+'</div> ';
+                    Str=Str+'<a href="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en'."/web_index_exporter_detail/" : $this->uri->segment(1)."/web_index_exporter_detail/") ?>'+myArr[index]["exporter_name"]+'" class="see_detail">DETAILS ></a> ';
+                    Str=Str+'</div> ';
+                }
+               });
+              //  $(".row_list_exporternya").attr("tabindex",-1).focus();
+               $('.row_list_exporternya').append(Str);
+    });
+}
 function search(){
   $('.searchexporter').on("click",function () {
         var categoryId = "";
