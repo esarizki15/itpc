@@ -35,11 +35,13 @@
             <div class="cols2">
               <div class="item_news">
                 <div class="thumb_news">
+                <a href="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en'."/web_news_detail/".$item['slug'] : $this->uri->segment(1)."/web_news_detail/".$item['slug']) ?>">
                   <img class="object-fit" src="<?php echo $this->config->item('frontend'); ?>images/thumb_news1.png">
+                </a>
                 </div>
                 <div class="caption_news">
                   <span class="category">NEWS</span>
-                  <h3><?php echo $item['title']; ?></h3>
+                  <h3><a href="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en'."/web_news_detail/".$item['slug'] : $this->uri->segment(1)."/web_news_detail/".$item['slug']) ?>"><?php echo $item['title']; ?></a></h3>
                   <a href="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en' : $this->uri->segment(1)."/news_detail") ?>" class="readMore">Read more ></a>
                 </div>
               </div>
@@ -83,11 +85,15 @@
                   Str=Str+"<div class='cols2'>";
                   Str=Str+'<div class="item_news">';
                   Str=Str+'<div class="thumb_news">';
+                  Str=Str+'<a href="'+basedomain+'en/web_news_detail/'+myArr['news'][index]['slug']+'">';
                   Str=Str+'<img class="object-fit" src="<?php echo $this->config->item('frontend'); ?>images/thumb_news1.png">';
+                  Str=Str+'</a>';
                   Str=Str+'</div>';
                   Str=Str+'<div class="caption_news">';
                   Str=Str+'<span class="category">'+myArr['news'][index]['tag_title']+'</span>';
+                  Str=Str+'<a href="'+basedomain+'en/web_news_detail/'+myArr['news'][index]['slug']+'">';
                   Str=Str+'<h3>'+myArr['news'][index]['title']+'</h3>';
+                  Str=Str+'</a>';
                   Str=Str+'<a href="'+basedomain+'en/web_news_detail/'+myArr['news'][index]['slug']+'" class="readMore">Read more ></a>';
                   Str=Str+'</div>';
                   Str=Str+'</div>';
@@ -120,11 +126,15 @@
                   Str=Str+"<div class='cols2'>";
                   Str=Str+'<div class="item_news">';
                   Str=Str+'<div class="thumb_news">';
+                  Str=Str+'<a href="'+basedomain+'en/web_news_detail/'+myArr['news'][index]['slug']+'">';
                   Str=Str+'<img class="object-fit" src="<?php echo $this->config->item('frontend'); ?>images/thumb_news1.png">';
+                  Str=Str+'</a>';
                   Str=Str+'</div>';
                   Str=Str+'<div class="caption_news">';
                   Str=Str+'<span class="category">'+myArr['tag']+'</span>';
+                  Str=Str+'<a href="'+basedomain+'en/web_news_detail/'+myArr['news'][index]['slug']+'">';
                   Str=Str+'<h3>'+myArr['news'][index]['title']+'</h3>';
+                  Str=Str+'</a>';
                   Str=Str+'<a href="'+basedomain+'en/web_news_detail/'+myArr['news'][index]['slug']+'" class="readMore">Read more ></a>';
                   Str=Str+'</div>';
                   Str=Str+'</div>';
@@ -183,11 +193,15 @@
                   Str=Str+"<div class='cols2'>";
                   Str=Str+'<div class="item_news">';
                   Str=Str+'<div class="thumb_news">';
+                  Str=Str+'<a href="'+basedomain+'en/web_news_detail/'+myArr['news']['news'][index]['slug']+'">';
                   Str=Str+'<img class="object-fit" src="<?php echo $this->config->item('frontend'); ?>images/thumb_news1.png">';
+                  Str=Str+'</a>';
                   Str=Str+'</div>';
                   Str=Str+'<div class="caption_news">';
                   Str=Str+'<span class="category">'+myArr['news']['news'][index]['tag_title']+'</span>';
+                  Str=Str+'<a href="'+basedomain+'en/web_news_detail/'+myArr['news']['news'][index]['slug']+'">';
                   Str=Str+'<h3>'+myArr['news']['news'][index]['title']+'</h3>';
+                  Str=Str+'</a>';
                   Str=Str+'<a href="'+basedomain+'en/web_news_detail/'+myArr['news']['news'][index]['slug']+'" class="readMore">Read more ></a>';
                   Str=Str+'</div>';
                   Str=Str+'</div>';
