@@ -47,7 +47,7 @@
         <?php foreach($useful_link as $useful) { ?>
           <div class="cols6">
             <div class="item_client">
-              <a href="<?php echo $useful['link']; ?>">
+            <a target="_blank" href="<?php echo $useful['link']; ?>">
               <img src="<?php echo $useful['logo']; ?>"   />
               </a>
             </div>
