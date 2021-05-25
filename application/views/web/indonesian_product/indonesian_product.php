@@ -53,4 +53,58 @@
 
 <script type="text/javascript">
   
+var start = parseInt('<?=$start?>');
+var page = parseInt('<?=$page?>');
+winscroll(start);
+function winscroll(start,category){
+  $(window).scroll(function() {
+    var currentPage = page - 1;
+      if($(window).scrollTop() + $(window).height() >= $(document).height()) {
+          console.log(start);
+          console.log(page);
+          if(currentPage < page) {
+            loadData(page,category);
+            // page = page + 1
+          }
+      }
+  });
+}
+/*Load more Function*/
+function loadData(page,category) {
+    var basedomain= '<?=base_url()?>';
+    $.ajax({
+        dataType: "json",
+        type: "GET",
+        url: basedomain+"en/web_indonesian_product",
+        data: { 'start':start,
+                'page' : page += 1
+               }
+    })
+    .done(function( response ) {
+      console.log(response['indonesian_product']);
+      page = response["page"];
+      start = response["start"];
+      var Str = "";
+      var myArr=response['indonesian_product'];
+        $(myArr).each(function( index ) {
+          console.log(myArr[index]['thumbnail']);
+          if(myArr[index] !== null){
+              Str=Str+'<div class="cols4">';
+              Str=Str+'<div class="item_product">';
+              Str=Str+'<div class="thumb_product">';
+              Str=Str+'<img src="<?php echo $this->config->item('website_assets').'indonesia_product/'; ?>'+ myArr[index]['thumbnail'] +'">';
+              Str=Str+'</div>';
+              Str=Str+'<div class="caption_thumb">';
+              Str=Str+'<div class="module line-clamp">';
+              Str=Str+'<h3>'+ myArr[index]['title'] +'</h3>';
+              Str=Str+'</div>';
+              Str=Str+'<a href="<?php echo $this->config->item('website_assets').'indonesia_product/'; ?>'+ myArr[index]['file'] +'" target="_blank">View</a>';
+              Str=Str+'</div>';
+              Str=Str+'</div>';
+              Str=Str+'</div>';
+          }
+        });
+        $('.row-list').append(Str);
+    });
+}
 </script>

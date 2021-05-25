@@ -189,6 +189,17 @@ class Home_data_query extends CI_Model{
       ];
 
     }
+    public function getSlider(){
+      $this->db->select([
+        '*'
+      ]);
+      $this->db->where('status', 1);
+      $this->db->where('delete_date', null);
+      $query = $this->db->get('itpc_slider');
+      $data = $query->result_array();
+      return $data;
+    }
+  
 
     public function news_all($lang= null,$limit = null, $start = null,$category) {
     // pr($start);exit;

@@ -40,19 +40,38 @@ class WEB extends CI_Controller
     public function index($lang = '')
     {
         $data = $this->Home_data_query->get_news($this->isLang());
-        //pr($data);exit;
+        $data["slider"] = $this->Home_data_query->getSlider(); 
         $this->master["content"] = $this->load->view("web/home/home.php", $data, true);
         $this->render();
     }
     public function web_indonesian_product($lang = '')
     {
+        $start = $this->input->get("start");
+        $page =  $this->input->get("page");
+        $limit=$this->perPage;
         $this->load->model('Web/Product/indonesian_product_model', 'indonesian_product_m', true);
-        $data['indonesian_product'] = $this->indonesian_product_m->indonesian_product($this->isLang());
-
-        //pr($data);exit;
+        $data['indonesian_product'] = $this->indonesian_product_m->indonesian_product();
+        $data["start"] = (int) count($data["indonesian_product"]);
+        $data["page"] = (int) 1;
+        if(!empty($start) && !empty($page)){
+            $data['indonesian_product'] = $this->indonesian_product_m->indonesian_product($limit, $start);
+            $data["start"] = ((int) $start + (int) count($data["indonesian_product"]));
+            $data["page"] = (!empty($page) && (int) count($data["indonesian_product"]) > 0) ? (int) $page+=1 : (int) $page;
+            echo json_encode($data);
+            return json_encode($data);
+        }
         $this->master["content"] = $this->load->view("web/indonesian_product/indonesian_product.php", $data, true);
         $this->render();
     }
+    // public function web_indonesian_product($lang = '')
+    // {
+    //     $this->load->model('Web/Product/indonesian_product_model', 'indonesian_product_m', true);
+    //     $data['indonesian_product'] = $this->indonesian_product_m->indonesian_product($this->isLang());
+
+    //     //pr($data);exit;
+    //     $this->master["content"] = $this->load->view("web/indonesian_product/indonesian_product.php", $data, true);
+    //     $this->render();
+    // }
     public function web_news($lang = '')
     {
         $category="";

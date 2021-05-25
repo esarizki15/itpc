@@ -1,44 +1,25 @@
 <!-- middle -->
 <div id="middle-content" class="homePage">
+  <?php if(count($slider) > 1): ?>
   <section id="home_banner" class="section">
     <div class="doodle_dots">
       <img src="<?php echo $this->config->item('frontend'); ?>images/dots_banner.png">
     </div>
     <div class="offside_banner">
       <div class="banner_slider">
-
         <div class="owl-carousel_banner owl-carousel owl-theme">
+        <?php foreach($slider as $data): ?>
           <div class="item">
             <div class="images_banner">
-              <img src="<?php echo $this->config->item('frontend'); ?>images/banner1.jpg">
+              <img src="<?= $this->config->item('website_assets') . "slider/" . $data["file_patch"]; ?>">
             </div>
             <div class="caption_banner">
               <h3>WELCOME TO ITPC BARCELONA</h3>
               <p>Lorem Ipsum Dolor Sit Amet</p>
-              <a href="#" class="bt_banner">Learn More</a>
+              <a target="_blank" href="<?= $data["link"] ?>" class="bt_banner">Learn More</a>
             </div>
-          </div><!--end.item-->
-
-          <div class="item">
-            <div class="images_banner">
-              <img src="<?php echo $this->config->item('frontend'); ?>images/banner2.jpg">
-            </div>
-            <div class="caption_banner">
-              <h3>WELCOME TO ITPC BARCELONA</h3>
-              <p>Lorem Ipsum Dolor Sit Amet</p>
-              <a href="#" class="bt_banner">Learn More</a>
-            </div>
-          </div><!--end.item-->
-          <div class="item">
-            <div class="images_banner">
-              <img src="<?php echo $this->config->item('frontend'); ?>images/banner1.jpg">
-            </div>
-            <div class="caption_banner">
-              <h3>WELCOME TO ITPC BARCELONA</h3>
-              <p>Lorem Ipsum Dolor Sit Amet</p>
-              <a href="#" class="bt_banner">Learn More</a>
-            </div>
-          </div><!--end.item-->
+          </div>
+        <?php endforeach;?>
         </div>
       </div>
       <div class="client_list">
@@ -47,7 +28,7 @@
         <?php foreach($useful_link as $useful) { ?>
           <div class="cols6">
             <div class="item_client">
-            <a target="_blank" href="<?php echo $useful['link']; ?>">
+              <a target="_blank" href="<?php echo $useful['link']; ?>">
               <img src="<?php echo $useful['logo']; ?>"   />
               </a>
             </div>
@@ -58,7 +39,7 @@
       </div>
     </div>
   </section>
-
+  <?php endif; ?>
   <section id="product_home" class="section">
     <div class="title_section">
       <h3>Indonesian<br/>Product</h3>
@@ -150,6 +131,13 @@
 
 $(document).ready(function() {
 
+  $('.owl-carousel_banner').owlCarousel({
+    center: true,
+    loop:true,
+    autoplay:false,
+    autoplayTimeout:5000,
+    nav:false,
+  });
 
   $('.product_carousel').owlCarousel({
     center: true,
