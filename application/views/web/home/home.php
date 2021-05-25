@@ -123,11 +123,13 @@
             <div class="cols2">
               <div class="item_news">
                 <div class="thumb_news">
+                <a href="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en'."/web_news_detail/".$item['slug'] : $this->uri->segment(1)."/web_news_detail/".$item['slug']) ?>">
                   <img class="object-fit" src="<?php echo $item['thumbnail']; ?>">
+                </a>
                 </div>
                 <div class="caption_news">
                   <span class="category">News</span>
-                  <h3 class="line-clamp"><?php echo $item['title'];?></h3>
+                  <h3 class="line-clamp"><a href="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en'."/web_news_detail/".$item['slug'] : $this->uri->segment(1)."/web_news_detail/".$item['slug']) ?>"><?php echo $item['title'];?></a></h3>
                   <a href="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en'."/web_news_detail/".$item['slug'] : $this->uri->segment(1)."/web_news_detail/".$item['slug']) ?>" class="readMore">Read more ></a>
                 </div>
               </div>
