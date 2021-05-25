@@ -138,8 +138,8 @@ class WEB extends CI_Controller
     }
     public function web_about_us($lang = '')
     {
-        $data = $this->Home_data_query->about_us($this->isLang());
-        //pr($data);exit;
+        $data['data'] = $this->Home_data_query->about_us($this->isLang());
+        $data['dataDownload'] = $this->Home_data_query->download_apps();
         $this->master["content"] = $this->load->view("web/about/about_us.php", $data, true);
         $this->render();
     }

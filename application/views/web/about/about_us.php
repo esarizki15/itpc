@@ -25,7 +25,7 @@
       <div class="padSection">
         <div class="text_detail">
 
-        <?php foreach($about as $item) { ?>
+        <?php foreach($data['about'] as $item) { ?>
           <h3><?=$item['short']?></h3>
           <?=$item['long']?>
         <?php } ?>
@@ -36,14 +36,16 @@
       <div class="padSection">
         <div class="justify_flex_beetween">
           <h3>DOWNLOAD ITPC BARCELONA OFFICIAL APP</h3>
+          <?php foreach($dataDownload as $item):  ?>
           <div class="download_icon">
-            <a href="#">
+            <a href="<?= $item['playstore'] ?>" target="_blank">
                 <img src="<?php echo $this->config->item('frontend'); ?>images/google_play.png">
             </a>
-            <a href="#">
+            <a href="<?= $item['appstore'] ?>" target="_blank">
                 <img src="<?php echo $this->config->item('frontend'); ?>images/appstore.png">
             </a>
           </div><!--end.download_icon-->
+          <?php endforeach; ?>
         </div>
       </div><!--emd.padSection-->
 

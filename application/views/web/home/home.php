@@ -91,7 +91,7 @@
       <div class="wrapper">
         <div class="title_section_left">
           <h3>Exporters</h3>
-          <a href="" class="viewAll">View All</a>
+          <a href="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en'."/web_index_exporter": $this->uri->segment(1)."/web_index_exporter") ?>" class="viewAll">View All</a>
         </div>
       </div>
       
@@ -99,7 +99,7 @@
       <?php foreach($exporter_home as $item) { ?>
         <div class="item">
           <div class="item_exporter">
-            <a href="#">
+            <a href="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en'."/web_index_exporter_detail/".$item['id']: $this->uri->segment(1)."/web_index_exporter_detail/".$item['id']) ?>">
               <img src="<?php echo $item['logo']; ?>" width="200" height="40"  />
             </a>
           </div>
