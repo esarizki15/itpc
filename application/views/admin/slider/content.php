@@ -4,10 +4,16 @@
 		<div class="page-title-box">
 			<div class="row align-items-center">
 				<div class="col-md-8">
-					<h4 class="page-title m-0">Slider</h4>
-					<span>Other Fiture / SliderManagment</span>
+					<h4 class="page-title m-0">Useful link</h4>
+					<span>Other Fiture / Useful link Managment</span>
 				</div>
-
+				<div class="col-md-4">
+					<div class="float-right d-none d-md-block">
+						<a href="<?php echo base_url(); ?>Admin/Expoter_management" class="btn btn-primary text-white">
+							<i class="dripicons-arrow-thin-left"></i> Back
+						</a>
+					</div>
+				</div>
 
 			</div>
 
