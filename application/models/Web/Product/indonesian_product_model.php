@@ -1,5 +1,5 @@
 <?php
-class indonesian_product_model extends CI_Model{
+class Indonesian_product_model extends CI_Model{
     public function indonesian_product($limit=4, $start=0) {
 
       $this->db->select([
@@ -16,6 +16,6 @@ class indonesian_product_model extends CI_Model{
       //$this->db->limit(4);
       $query = $this->db->get('itpc_indo_product');
       return $query->result_array();
-  
+
 
 }}

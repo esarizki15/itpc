@@ -21,7 +21,7 @@ class WEB extends CI_Controller
         $this->load->library('form_validation');
         $this->load->helper('validation');
         $this->load->model('Web/Home/Home_data_query', 'Home_data_query', true);
-           
+
         error_reporting(E_ALL ^ (E_NOTICE | E_WARNING));
     }
 
@@ -34,13 +34,13 @@ class WEB extends CI_Controller
         $this->master["main_css"] = $this->load->view('web/main_css.php', [], true);
         $this->master["main_js"] = $this->load->view("web/main_js.php", [], true);
         $this->master["header"] = $this->load->view("web/header.php", $this->master, true);
-            
+
         $this->load->view("web/master", $this->master);
     }
     public function index($lang = '')
     {
         $data = $this->Home_data_query->get_news($this->isLang());
-        $data["slider"] = $this->Home_data_query->getSlider(); 
+        $data["slider"] = $this->Home_data_query->getSlider();
         $this->master["content"] = $this->load->view("web/home/home.php", $data, true);
         $this->render();
     }
@@ -88,7 +88,7 @@ class WEB extends CI_Controller
         } elseif ($this->input->post("category") && empty($this->input->post("page"))) {
             $start =0;
             $category=$this->input->post("category");
-                 
+
             //pr($data['tag'][0]['tag_title']);exit;
             $data = $this->Home_data_query->news_all($this->isLang(), $this->perPage, $start, $category);
             $totalPosts =  count($data['news']);
@@ -127,7 +127,7 @@ class WEB extends CI_Controller
 
             $data['news'] = $this->Home_data_query->news_all($this->isLang(), $this->perPage, $start, null); //limit,start
             $total = $this->Home_data_query->news_total($this->isLang(), $this->perPage, $start, null);
-                  
+
             $data['total_pages'] =count($total['news']);
             $data['tag']=$this->Home_data_query->tag_category(null);
             $data['category']=$category;
@@ -180,7 +180,7 @@ class WEB extends CI_Controller
             $this->session->set_flashdata('flsh_msg', 'failed, please contact the admin');
             redirect($this->redirection("web_contact_us"));
         }
-       
+
         $contact = [
                   "full_name" => $this->input->post('name'),
                   "email" => $this->input->post('email'),
@@ -234,7 +234,7 @@ class WEB extends CI_Controller
         $this->load->model('API/Authentication/Auth', 'Auth', true);
         $this->load->model('API/User/User_query', 'User_query', true);
         $this->load->model('Web/Exporter/Exporter_list_query', 'Exporter_list_query', true);
-        
+
         //GET SUBCATEGORY
         if (@$category && empty($start) && empty($page)) {
             $subcategory = $this->Exporter_subcategory_query->subcategory_list();
@@ -260,7 +260,7 @@ class WEB extends CI_Controller
         }
         $auth_code = $this->session->user_logged['auth_code'];
         $get_auth_code = $this->Auth->cek_auth($auth_code);
-        
+
         if (empty($category) && empty($start) && empty($page)) {
             $data=array();
         // if($get_auth_code){
@@ -278,7 +278,7 @@ class WEB extends CI_Controller
     }
     public function web_index_exporter_detail($id)
     {
-    
+
      // pr($order);exit;
       $idnya = $id;
       $this->load->model('Web/Exporter/Exporter_list_query','Exporter_list_query', true);
@@ -302,7 +302,7 @@ class WEB extends CI_Controller
       $exporterName = $this->input->get('name');
       $this->load->model('Web/Exporter/Exporter_list_query','Exporter_list_query', true);
       $data['exporter']=$this->Exporter_list_query->search($exporterName, $category,$order,$subcategoryId);
-      
+
       $data['category'] = "All";
       if(!empty($data["exporter"]["data"])){
       $data['category'] = $data["exporter"]["category"]["category_title"];
@@ -373,7 +373,7 @@ class WEB extends CI_Controller
         } else {
             $lang='en';
         }
-        
+
         return $lang;
     }
 
@@ -387,7 +387,7 @@ class WEB extends CI_Controller
         $this->load->model('API/User/User_query', 'User_query', true);
         $this->form_validation->set_rules('email', 'email', 'trim|required|valid_email');
         $this->form_validation->set_rules('password', 'password', 'trim|required|min_length[6]');
-      
+
         if ($this->form_validation->run() == true) {
             $email = $this->input->post('email');
             $password = $this->input->post('password');
@@ -468,7 +468,7 @@ class WEB extends CI_Controller
             $login['message'] = validation_errors();
         }
 
-      
+
         if ($login['status'] == 1) {
             $this->session->set_userdata(['user_logged' =>  $login['data']]);
             redirect($this->redirection("web_exporter_account"));
@@ -661,11 +661,11 @@ class WEB extends CI_Controller
         $this->render();
     }
 
-  
+
     public function store_detail_exporter()
     {
         $date = date_create();
-                
+
         if (!empty($_FILES['exporter_logo']['name'])) {
             $upload_config['upload_path'] = './assets/website/exporter/';
             //pr($upload_config['upload_path'] );exit;
@@ -674,10 +674,10 @@ class WEB extends CI_Controller
             $upload_config['max_height']           = 768;
             $upload_config['file_name'] = "exporter_logo"."-".date_timestamp_get($date);
             $upload_config['max_size'] = 2000;
-            
+
             $this->load->library('upload', $upload_config);
             $this->upload->initialize($upload_config);
-            
+
             $data=array();
             if (!$this->upload->do_upload('exporter_logo')) {
                 $data = array('error' => $this->upload->display_errors());
@@ -686,7 +686,7 @@ class WEB extends CI_Controller
             }
         }
         // pr('ss');exit;
-            
+
         $this->load->model('API/User/User_query', 'User_query', true);
         $this->load->model('WEB/Exporter/Exporter_list_query', 'Exporter__query', true);
         $this->form_validation->set_rules('id', 'id', 'trim|required|numeric');
@@ -697,7 +697,7 @@ class WEB extends CI_Controller
         $this->form_validation->set_rules('fax', 'fax', 'trim');
         $this->form_validation->set_rules('email', 'email', 'trim|required|valid_email');
         $this->form_validation->set_rules('link', 'link', 'trim');
-              
+
         if ($this->form_validation->run() == true) {
             $save_status = true;
 
@@ -708,7 +708,7 @@ class WEB extends CI_Controller
             $exporter_office_phone = $this->input->post('office_phone');
             $exporter_phone = $this->input->post('phone');
             $exporter_logo = $upload_config['file_name'];
-                        
+
 
             if ($exporter_office_phone == null || $exporter_office_phone == "") {
                 $exporter_office_phone = null;
@@ -728,7 +728,7 @@ class WEB extends CI_Controller
 
             $date = date_create();
 
-            
+
             if (empty($exporter_logo)) {
                 $image_defalut = rand(1, 3);
                 $exporter_logo = "dummy-".$image_defalut.".png";
@@ -794,7 +794,7 @@ class WEB extends CI_Controller
             $update_exporter['status'] = false;
             $update_exporter['message'] = validation_errors();
         }
-                  
+
         //pr($update_exporter);exit;
         redirect($this->redirection('web_exporter_account'));
     }
@@ -827,7 +827,7 @@ class WEB extends CI_Controller
 
         $auth_code = $this->session->user_logged['auth_code'];
         $get_auth_code = $this->Auth->cek_auth($auth_code);
-    
+
         $category_exporter=array();
         if ($get_auth_code) {
             $category_exporter['data']['id_ex']  = $this->User_query->detail_exporter($this->session->user_logged['user_id'])['exporter_detail'][0]['id'];
@@ -835,7 +835,7 @@ class WEB extends CI_Controller
             $category_exporter['data']['subcategory'] = $this->Exporter_subcategory_query->subcategory_list();
             $category_exporter['data']['curr_category'] = $this->Exporter_category_query->category_curr_list($this->session->user_logged['user_id']);
         }
-      
+
         //pr($category_exporter);exit;
         $this->master["content"] = $this->load->view("web/dashboard/add_category.php", $category_exporter, true);
         $this->render();
@@ -918,16 +918,16 @@ class WEB extends CI_Controller
                     ];
             }
 
-                        
+
             $add_category['data'] = $this->User_query->Submit_category($category);
-                        
+
 
             if ($add_category['data']) {
                 $update = [
                                           'exporter_id' => $id,
                                           'exporter_home' => 2
                                         ];
-                             
+
                 $update_exporter['data'] = $this->User_query->Exporter_data_update($update);
                 $add_category['status'] = true;
                 $add_category['message'] = "Data saved successfully";
@@ -971,7 +971,7 @@ class WEB extends CI_Controller
         }
         $this->load->model('API/User/User_query', 'User_query', true);
         $this->form_validation->set_rules('exporter_id', 'exporter_id', 'trim|required|numeric');
-     
+
         if ($this->form_validation->run() == true) {
             // pr('ss');exit;
             $images = array();
@@ -1019,8 +1019,8 @@ class WEB extends CI_Controller
         $auth_code = $this->session->user_logged['auth_code'];
         $get_auth_code = $this->Auth->cek_auth($auth_code);
 
-     
-    
+
+
         $category_exporter=array();
         if ($get_auth_code) {
             $category_exporter['data']['id_ex']  = $this->User_query->detail_exporter($this->session->user_logged['user_id'])['exporter_detail'][0]['id'];
@@ -1029,10 +1029,10 @@ class WEB extends CI_Controller
             $category_exporter['data']['curr_category'] = $this->Exporter_category_query->category_curr_list($this->session->user_logged['user_id']);
         }
         // pr($category_exporter);exit;
-      
+
         $_SESSION['token'] = bin2hex(random_bytes(32));
         $category_exporter['token'] = $_SESSION['token'];
-      
+
         $this->master["content"] = $this->load->view("web/dashboard/add_inquiry.php", $category_exporter, true);
         $this->render();
     }
@@ -1043,7 +1043,7 @@ class WEB extends CI_Controller
             $this->session->set_flashdata('flsh_msg', 'failed to register user data, please contact the admin');
             redirect($this->redirection('web_register'));
         }
-      
+
         $this->load->model('API/Inquiry/Inquiry_query', 'Inquiry_query', true);
         $this->form_validation->set_rules('exporter_id', 'exporter_id', 'trim|required|integer');
         $this->form_validation->set_rules('inquiry_title', 'inquiry_title', 'trim|required|min_length[3]');
@@ -1075,7 +1075,7 @@ class WEB extends CI_Controller
             $approved = "waiting";
 
             $post_date = date("Y-m-d H:i:s");
-                              
+
             $inquiry_data[] = [
                          'inquiry_id' => null,
                          'exporter_id' => (int) $exporter_id,
@@ -1162,7 +1162,7 @@ class WEB extends CI_Controller
         $this->load->model('API/User/User_query', 'User_query', true);
         $this->form_validation->set_rules('exporter_id', 'exporter_id', 'trim|required|integer');
 
-      
+
         $auth_code = $this->session->user_logged['auth_code'];
         $exporter_id =  $this->User_query->detail_exporter($this->session->user_logged['user_id'])['exporter_detail'][0]['id'];
         $get_auth_code = $this->Auth->cek_auth($auth_code);
@@ -1191,8 +1191,8 @@ class WEB extends CI_Controller
             $list_inquiry['status'] = false;
             $list_inquiry['message'] = "Wrong auth code please re-login";
         }
-      
-          
+
+
         $auth_code = $this->input->get_request_header('auth_code');
         $user_id = $this->session->user_logged['user_id'];
         $list_inquiry['user_id'] = $user_id;
@@ -1209,7 +1209,7 @@ class WEB extends CI_Controller
         $this->load->model('API/User/User_query', 'User_query', true);
         $this->form_validation->set_rules('exporter_id', 'exporter_id', 'trim|required|integer');
 
-            
+
         $auth_code = $this->session->user_logged['auth_code'];
         $exporter_id =  $this->User_query->detail_exporter($this->session->user_logged['user_id'])['exporter_detail'][0]['id'];
         $get_auth_code = $this->Auth->cek_auth($auth_code);
@@ -1238,8 +1238,8 @@ class WEB extends CI_Controller
             $list_inquiry['status'] = false;
             $list_inquiry['message'] = "Wrong auth code please re-login";
         }
-            
-            
+
+
         $auth_code = $this->input->get_request_header('auth_code');
         $user_id = $this->session->user_logged['user_id'];
         $list_inquiry['user_id'] = $user_id;
@@ -1257,10 +1257,10 @@ class WEB extends CI_Controller
         $this->form_validation->set_rules('inquiry_id', 'inquiry_id', 'trim|integer');
 
 
-      
+
         $auth_code = $this->session->user_logged['auth_code'];
-           
-          
+
+
         $get_auth_code = $this->Auth->cek_auth($auth_code);
 
         if ($get_auth_code) {
@@ -1293,7 +1293,7 @@ class WEB extends CI_Controller
             $inbox['status'] = false;
             $inbox['message'] = "Wrong auth code please re-login";
         }
-      
+
         // pr($inbox);exit;
         $inbox['data']['auth_code']=$auth_code;
         $inbox['data']['exporter_id']=$auth_code;
