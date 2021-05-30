@@ -80,12 +80,23 @@
 	  <div class="close_menu"><img src="<?php echo $this->config->item('frontend'); ?>images/close.png"></div>
 	  <div class="main_mobile_menu">
 	    <ul>
-			<li><a href="<?php echo base_url();?>" class="<?=$home; ?>"><?php echo $language['home']; ?></a></li>
-			<li><a href="#"><?php echo $language['aboutus']; ?></a></li>
-			<li><a href="#"><?php echo $language['trade']; ?></a></li>
-			<li><a href="#"><?php echo $language['news']; ?></a></li>
-			<li><a href="#"><?php echo $language['contactus']; ?></a></li>
-			<li><a href="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en' : $this->uri->segment(1)."/web_itpc_login") ?>"><?php echo $language['login']; ?></a></li>
+			<li><a href="<?php echo base_url();?>" class="active"><?php echo $language['home']; ?></a></li>
+			<li><a href="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en'."/web_about_us" : $this->uri->segment(1)."/web_about_us") ?>"><?php echo $language['aboutus']; ?></a></li>
+			<li class="haveDropdown dropdownMobile">
+				<a href="#"><?php echo $language['trade']; ?> <i class="fa fa-caret-down" aria-hidden="true"></i></a>
+				<ul class="dropdownMenu">
+					<li><a href="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en'."/web_index_exporter" : $this->uri->segment(1)."/web_index_exporter") ?>">Indonesian Exporter Lists</a></li>
+					<li><a href="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en'."/web_indonesian_product" : $this->uri->segment(1)."/web_indonesian_product") ?>">Indonesian Product</a></li>
+			
+				</ul>
+			</li>
+			<li><a href="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en'."/web_news" : $this->uri->segment(1)."/web_news") ?>"><?php echo $language['news']; ?></a></li>
+			<li><a href="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en'."/web_contact_us" : $this->uri->segment(1)."/web_contact_us") ?>"><?php echo $language['contactus']; ?></a></li>
+			<?php  if(!$this->session->user_logged) { ?><li><a href="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en'."/web_itpc_login" : $this->uri->segment(1)."/web_itpc_login") ?>"><?php echo $language['login']; ?></a></li><?php } else { ?>
+			<li><a href="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en'."/web_exporter_account" : $this->uri->segment(1)."/web_exporter_account") ?>"><?php echo $language['exporter_dashboard']; ?></a></li> 
+			<li><a href="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en'."/web_itpc_logout" : $this->uri->segment(1)."/web_itpc_logout") ?>"><?php echo $language['logout']; ?></a></li>
+			<?php } ?>
+
 	    </ul>
 	  </div>
 	  <div class="select_lang select_lang_mobile">
@@ -130,6 +141,10 @@
 </div>
 <!-- end of header -->
 <script type="text/javascript">
+	$(".dropdownMobile").click(function(){
+		$(this).find(".dropdownMenu").toggleClass("actived");
+	});
+
 	$(".btn_lang").click(function(){
 		$(".dropdown-lang").toggle();
 	});

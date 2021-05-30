@@ -365,6 +365,12 @@ section {
 .main_mobile_menu ul li {
     padding: 10px;
 }
+.main_mobile_menu ul li.haveDropdown .dropdownMenu{
+	display: none;
+}
+.main_mobile_menu ul li.haveDropdown .dropdownMenu.actived{
+	display: block;
+}
 .main_mobile_menu ul li {
     display: block;
     text-align: left;

@@ -131,10 +131,45 @@ Built       : Desember 2016
         width: 100%;
         max-width: 100%;
     }
+    .doodle_left_dots{
+        max-width: 200px;
+    }
+    .doodle_right_dots{
+        max-width: 200px;
+    }
 	/* middle contentpage
 
     ================================================================================================================= */
-   
+    .title_top_exporter h3{
+        font-size: 42px;
+        margin: 0 0 5px 0;
+    }
+    .title_top_exporter p{
+        font-size: 15px;
+    }
+    .input_big_text,.input_small_text,.orange_big,.left_content_exporter,.right_content_exporter,.thumb_list_exporter{
+        width: 100%;
+        margin-bottom: 15px;
+    }
+    .item_list_exporternya{
+        padding-left: 0;
+    }
+    .top-white-box,.inner_exporter_list{
+        padding: 0;
+    }
+    .top-white-box .cols3{
+        width: 100%;
+    }
+    .caption_list_exporter{
+        width: 100%;
+        padding-left: 0;
+    }
+    .icon_howto{
+        vertical-align: top;
+    }
+    .list_indonesian_product .cols4{
+        width: 100%;
+    }
     /* footer
 
     ================================================================================================================= */
@@ -149,7 +184,7 @@ Built       : Desember 2016
         text-align: center;
     }
     .menu_footer a{
-        font-size: 18px;
+        font-size: 15px;
         margin-bottom: 10px;
     }
 	
