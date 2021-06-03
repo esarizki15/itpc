@@ -119,9 +119,11 @@
               type: "POST",
               data: "category="+param,
               success: function (response) {
+                
                 var myArr = JSON.parse(response);
                 var Str = "";
-               
+                //console.log(myArr['news'].length,'ooo');
+               if(myArr['news'].length > 0){
                 $(myArr['news']).each(function( index ) {
                   Str=Str+"<div class='cols2'>";
                   Str=Str+'<div class="item_news">';
@@ -140,6 +142,11 @@
                   Str=Str+'</div>';
                   Str=Str+'</div>';
                 });
+              }else{
+                Str=Str+"<div class='cols12'>";
+                Str=Str+"<center>Berita tidak tersedia</center>";
+                Str=Str+"</div>";
+              }
            
                 $('#posts-infinite').html(Str);
                 winscroll(1,param);
