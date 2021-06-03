@@ -14,9 +14,9 @@
               <img src="<?= $this->config->item('website_assets') . "slider/" . $data["file_patch"]; ?>">
             </div>
             <div class="caption_banner">
-              <h3>WELCOME TO ITPC BARCELONA</h3>
-              <p>Lorem Ipsum Dolor Sit Amet</p>
-              <a target="_blank" href="<?= $data["link"] ?>" class="bt_banner">Learn More</a>
+              <h3><?=$data['short'];?></h3>
+              <p><?=$data['long'];?></p>
+              <a target="_blank" href="http://<?=$data["link"];?>" class="bt_banner">Learn More</a>
             </div>
           </div>
         <?php endforeach;?>
@@ -132,8 +132,6 @@
 $(document).ready(function() {
 
   $('.owl-carousel_banner').owlCarousel({
-    center: true,
-    loop:true,
     autoplay:false,
     autoplayTimeout:5000,
     nav:false,

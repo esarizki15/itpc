@@ -190,13 +190,28 @@ class Home_data_query extends CI_Model{
 
     }
     public function getSlider(){
+      $short='st.english AS short';
+      $long='lt.english AS long';
+      if($lang=='id') { 
+        $short="st.bahasa AS short";
+        $long='lt.bahasa AS long';
+      }else if($lang=='es'){
+        $short='st.spanyol AS short';
+        $long='lt.spanyol AS long';
+      }else if($lang=='en'){
+        $short='st.english AS short';
+        $long='lt.english AS long';
+      }
       $this->db->select([
-        '*'
+        '*',$short,$long,
       ]);
       $this->db->where('status', 1);
+      $this->db->join('long_translations lt','it.trans_key = lt.trans_key', 'left');
+      $this->db->join('short_translations st','it.trans_key = st.trans_key', 'left');
       $this->db->where('delete_date', null);
-      $query = $this->db->get('itpc_slider');
+      $query = $this->db->get('itpc_slider it');
       $data = $query->result_array();
+      //pr($data);exit;
       return $data;
     }
   
