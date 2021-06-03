@@ -4,15 +4,8 @@
 		<div class="page-title-box">
 			<div class="row align-items-center">
 				<div class="col-md-8">
-					<h4 class="page-title m-0">Useful link</h4>
-					<span>Other Fiture / Useful link Managment</span>
-				</div>
-				<div class="col-md-4">
-					<div class="float-right d-none d-md-block">
-						<a href="<?php echo base_url(); ?>Admin/Expoter_management" class="btn btn-primary text-white">
-							<i class="dripicons-arrow-thin-left"></i> Back
-						</a>
-					</div>
+					<h4 class="page-title m-0">Slider Management</h4>
+					<span>Other Fiture / Slider managment</span>
 				</div>
 
 			</div>
@@ -26,8 +19,8 @@
 		<div class="card m-b-30">
 			<div class="card-body">
 				<div class="card-body">
-					<h4 class="mt-0 header-title">Form Useful link</h4>
-					<form action="<?php echo base_url(); ?>Admin/Submit_useful" method="post" enctype="multipart/form-data">
+					<h4 class="mt-0 header-title">Form Slider managment</h4>
+					<form action="<?php echo base_url(); ?>Admin/Submit_slider" method="post" enctype="multipart/form-data">
 						<div class="card mb-0">
 							<div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
 								<div class="card-body">
@@ -39,20 +32,33 @@
 													<img class="m-t-30" id="blah" name="thumbnail" src="#" alt="your image" style="max-width:200px;max-height:200px;" />
 												</div>
 												<div class="form-group">
-													<label class="col-form-label">Logo Exporter( max 500 x 500px )</label>
+													<label class="col-form-label">Logo Exporter( max 1268 x 671px )</label>
 													<div class="field" align="center">
-														<input type="file" id="imgInp" name="logo" />
+														<input type="file" id="imgInp" name="file_patch" />
 													</div>
 												</div>
 											</center>
 										</div>
-										<div class="col-md-4">
+										<?php
+										 foreach ($data['language_list'] as $key_language => $item_language) {
+									 ?>
+										<div class="col-md-12">
 											<div class="form-group">
-												<label>Name</label>
-												<input type="text" name="userful_title" class="form-control"  required placeholder="Type something" />
+												<label>Title <?php echo $item_language['language_title']; ?></label>
+												<input type="text" name="title[<?php echo $item_language['language_title']; ?>]"  class="form-control"  required placeholder="Type something" />
 											</div>
+											<div class="form-group">
+											<div class="m-t-20">
+                        <label class="text-muted">Description (<?php echo $item_language['language_title']; ?>)</label>
+                        <textarea id="textarea" name="description[<?php echo $item_language['language_title']; ?>]" class="form-control" maxlength="225" rows="3" placeholder="This textarea has a limit of 225 chars."></textarea>
+                    	</div>
 										</div>
-										<div class="col-md-8">
+										<hr>
+										</div>
+										<?php
+											}
+										?>
+										<div class="col-md-12">
 											<div class="form-group">
 												<label>Link<span style="color:red">*</span></label>
 												<input type="text" name="useful_link" class="form-control" required placeholder="Type something" />
@@ -89,8 +95,8 @@
                   <thead>
                       <tr>
                           <th>No</th>
-                          <th>Name</th>
-                          <th>Logo</th>
+                          <th>Title</th>
+                          <th>Image</th>
 													<th>Link</th>
                           <th>Post date</th>
                           <th>Status</th>
@@ -101,13 +107,22 @@
 
 										<?php
 										$no = 1;
-										 foreach ($data as $key_useful => $item_useful) {
+										 foreach ($data['slider'] as $key_useful => $item_useful) {
 									 ?>
 									  <tr>
 									 	<td><?php echo $no; ?></td>
-										<td><?php echo $item_useful['userful_title']; ?></td>
-										<td><img src="<?php echo $item_useful['useful_logo'];?>" style="width:50px;"></td>
-										<td><a href="<?php echo $item_useful['useful_link']; ?>" target="_blank"><?php echo $item_useful['useful_link']; ?></a></td>
+										<td><?php echo $item_useful['title_bahasa']; ?></td>
+										<td><img src="<?php echo $item_useful['file_patch'];?>" style="width:50px;"></td>
+										<?php if($item_useful['link'] == false){
+										?>
+										<td>link not available</td>
+										<?php
+											}else{
+										?>
+										<td><a href="<?php echo $item_useful['link']; ?>" target="_blank"><?php echo $item_useful['link']; ?></a></td>
+										<?php
+											}
+										?>
 										<td><?php echo $item_useful['post_date']; ?></td>
 									 	<td><?php echo $item_useful['status']; ?></td>
 										<td>
@@ -120,7 +135,7 @@
 														$status = "btn-danger";
 													}
 												?>
-												<a href="" class="btn <?php echo $status; ?> waves-effect waves-light"><i class="fas fa-check"></i></a>
+												<a href="<?php echo base_url();?>Admin/slider_status_update/<?php echo $item_useful['slider_id']; ?>" class="btn <?php echo $status; ?> waves-effect waves-light"><i class="fas fa-check"></i></a>
 												<a href="" class="btn btn-danger waves-effect waves-light"><i class="fas fa-trash-alt"></i></a>
 										</td>
 								 	 </tr>

@@ -1406,6 +1406,174 @@ class Admin extends CI_Controller {
 
 	}
 
+	public function Slider_managment(){
+		if($_SESSION['admin_id'] == null || $_SESSION['admin_id'] == ""){
+			redirect("Admin/Logout");
+			}else{
+
+			$this->load->model('Admin/Langguage/langguage_query','langguage_query', true);
+			$this->load->model('Admin/Slider/Slider_query','Slider_query', true);
+			$this->data['data']['language_list'] = $this->langguage_query->language_list();
+			$this->data['data']['slider'] = $this->Slider_query->Slider_list();
+
+			$this->master["custume_css"] = $this->load->view('admin/slider_management/custume_css.php', [], TRUE);
+			$this->master["custume_js"] = $this->load->view('admin/slider_management/custume_js.php',$this->data, TRUE);
+			$this->master["content"] = $this->load->view("admin/slider_management/content.php",$this->data, TRUE);
+			$this->render();
+			}
+	}
+
+	public function Submit_slider(){
+		if($_SESSION['admin_id'] == null || $_SESSION['admin_id'] == ""){
+			redirect("Admin/Logout");
+			}else{
+					$is_save = true;
+					$this->load->model('Admin/Slider/Slider_query','Slider_query', true);
+					$this->load->model('Admin/Langguage/langguage_query','langguage_query', true);
+
+					$this->form_validation->set_rules('title[english]', 'title', 'trim|required|min_length[3]');
+					$this->form_validation->set_rules('description[english]', 'description', 'trim');
+					$this->form_validation->set_rules('is_draft', 'is_draft', 'trim');
+
+					if($this->form_validation->run() == TRUE)
+					{
+
+					$date = date_create();
+					$update_date = date("Y-m-d H:i:s");
+					$created_date = date("Y-m-d H:i:s");
+					$trans_key = "slider_key"."-".date_timestamp_get($date);
+
+					if($is_save == true){
+						if($_FILES['file_patch']['error'] === 0) {
+							$upload_config['upload_path'] = 'assets/' . $this->config->item('slider');
+							$upload_config['allowed_types'] = 'jpg|jpeg|png|svg';
+							$upload_config['max_height'] = 671;
+							$upload_config['max_width'] = 1268;
+							$upload_config['file_name'] = "slider"."-".date_timestamp_get($date);
+							$this->upload->initialize($upload_config);
+							if($this->upload->do_upload('file_patch')) {
+								$file_patch = $this->upload->data('file_name');
+								$is_save = true;
+								//die();
+							} else {
+								$this->session->set_flashdata('error', 'File header: ' . $this->upload->display_errors('', ''));
+								$is_save = false;
+
+							}
+						}else{
+								$this->session->set_flashdata('error', 'File header: ' . $this->upload->display_errors('', ''));
+								$is_save = false;
+						}
+					}
+
+					if($is_save == true){
+
+						$data['title'] = $this->input->post('title');
+						$data['description'] = $this->input->post('description');
+						$data['link'] = $this->input->post('link');
+						if(empty($data['link'])){
+							$data['link'] = null;
+						}
+						$data['status'] = $this->input->post('is_draft');
+						if(!empty($data['status'])){
+								$data['status'] = 0;
+						}else{
+								$data['status'] = 1;
+						}
+
+						$slider[] = [
+									"slider_id" => null,
+									"file_patch" => $file_patch,
+									"trans_key" => $trans_key,
+									"link" => $data['link'],
+									"post_date" => 	$created_date ,
+									"post_by" => $_SESSION['admin_id'],
+									"update_date" => 	$created_date ,
+									"update_by" => $_SESSION['admin_id'],
+									"delete_date" => null,
+									"delete_by" => null,
+									"status" => $data['status']
+						];
+
+						$short_translations[] = [
+							"id" => null,
+							"trans_key" => $trans_key,
+							"english" => $data['title']['english'],
+							"bahasa" => $data['title']['bahasa'],
+							"spanyol" => $data['title']['spanyol'],
+							"deleted_by" => null,
+							"deleted_at" => null,
+							"updated_by" => $_SESSION['admin_id'],
+							"updated_at" => $update_date,
+							"created_by" => $_SESSION['admin_id'],
+							"created_at" => $created_date
+
+						];
+
+						$long_translations[] = [
+							"id" => null,
+							"trans_key" => $trans_key,
+							"english" => $data['description']['english'],
+							"bahasa" => $data['description']['bahasa'],
+							"spanyol" => $data['description']['spanyol'],
+							"deleted_by" => null,
+							"deleted_at" => null,
+							"updated_by" => $_SESSION['admin_id'],
+							"updated_at" => $update_date,
+							"created_by" => $_SESSION['admin_id'],
+							"created_at" => $created_date
+						];
+
+						$submit_slider = $this->Slider_query->submit($slider);
+						$submit_short_translations = $this->langguage_query->add_short_translations($short_translations);
+						$submit_long_translations = $this->langguage_query->add_long_translations($long_translations);
+
+						if($submit_slider && $submit_short_translations && $submit_long_translations){
+								$this->session->set_flashdata('success', "slider submit success");
+						}else{
+								$this->session->set_flashdata('error', "slider submit failed");
+						}
+					}
+				}else{
+					$is_save = false;
+					$this->session->set_flashdata('error', "make sure the form is filled in correctly");
+				}
+					redirect("Admin/Slider_managment/");
+			}
+	}
+
+	public function slider_status_update($slider_id){
+
+		$this->load->model('Admin/Slider/Slider_query','Slider_query', true);
+
+		$update_date = date("Y-m-d H:i:s");
+		$update_by = $_SESSION['admin_id'];
+
+		$status = $this->Slider_query->cek_status($slider_id);
+
+		if($status == 1){
+			$status = 0;
+		}else{
+			$status = 1;
+		}
+
+		$update = [
+					"update_date" => $delete_date,
+					"update_by" => $delete_by,
+					"status" => $status
+		];
+		$slider_status = $this->Slider_query->exporter_delete($update,$slider_id);
+
+		if($exporter_category_delete){
+				$this->session->set_flashdata('success', "exporter category data has been delete");
+		}else{
+				$this->session->set_flashdata('error', "exporter category failed delete");
+		}
+
+		redirect("Admin/Expoter_management");
+
+	}
+
 
 
 

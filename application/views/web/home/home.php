@@ -24,7 +24,7 @@
       </div>
       <div class="client_list">
         <div class="row-list">
-        
+
         <?php foreach($useful_link as $useful) { ?>
           <div class="cols6">
             <div class="item_client">
@@ -34,7 +34,7 @@
             </div>
           </div><!--end.cols6-->
           <?php } ?>
-         
+
         </div>
       </div>
     </div>
@@ -46,7 +46,7 @@
     </div>
 
       <div class="product_carousel owl-carousel owl-theme">
-       
+
        <?php foreach($indonesia_product as $item) { ?>
         <div class="item">
           <div class="item_product">
@@ -61,10 +61,10 @@
           </div>
         </div><!--end.item-->
       <?php } ?>
-       
+
 
         </div>
-        
+
   </section>
 
 
@@ -75,7 +75,7 @@
           <a href="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en'."/web_index_exporter": $this->uri->segment(1)."/web_index_exporter") ?>" class="viewAll">View All</a>
         </div>
       </div>
-      
+
       <div class="exporter_carousel owl-carousel owl-theme">
       <?php foreach($exporter_home as $item) { ?>
         <div class="item">
@@ -86,7 +86,7 @@
           </div>
         </div>
       <?php } ?>
-     
+
       </div>
 
   </section>
@@ -117,7 +117,7 @@
             </div><!--end.cols2-->
 
             <?php } ?>
-            
+
           </div>
         </div>
       </div>
