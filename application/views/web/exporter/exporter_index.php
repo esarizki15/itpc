@@ -154,7 +154,7 @@
                       <span><?=$item['exporter_link']; ?></span>
                     </div>
                   </div>
-                  <a href="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en'."/web_index_exporter_detail/".$item['exporter_id']: $this->uri->segment(1)."/web_index_exporter_detail/".$item['exporter_id']) ?>" class="see_detail">DETAILS ></a>
+                  <a href="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en'."/web_index_exporter_detail/".$item['exporter_slug']: $this->uri->segment(1)."/web_index_exporter_detail/".$item['exporter_slug']) ?>" class="see_detail">DETAILS ></a>
                 </div><!--end.bottom_row_list_exporter-->
         
               <?php } ?>
@@ -275,7 +275,7 @@ function loadData(page,category) {
                     Str=Str+'<span>'+myArr[index]["exporter_link"]+'</span> ';
                     Str=Str+'</div> ';
                     Str=Str+'</div> ';
-                    Str=Str+'<a href="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en'."/web_index_exporter_detail/" : $this->uri->segment(1)."/web_index_exporter_detail/") ?>'+myArr[index]["exporter_name"]+'" class="see_detail">DETAILS ></a> ';
+                    Str=Str+'<a href="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en'."/web_index_exporter_detail/" : $this->uri->segment(1)."/web_index_exporter_detail/") ?>'+myArr[index]["exporter_slug"]+'" class="see_detail">DETAILS ></a> ';
                     Str=Str+'</div> ';
                 }
                });
@@ -327,7 +327,7 @@ function search(){
                     Str=Str+'<span>'+myArr[index]["exporter_link"]+'</span> ';
                     Str=Str+'</div> ';
                     Str=Str+'</div> ';
-                    Str=Str+'<a href="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en'."/web_index_exporter_detail/" : $this->uri->segment(1)."/web_index_exporter_detail/") ?>'+myArr[index]["exporter_name"]+'" class="see_detail">DETAILS ></a> ';
+                    Str=Str+'<a href="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en'."/web_index_exporter_detail/" : $this->uri->segment(1)."/web_index_exporter_detail/") ?>'+myArr[index]["exporter_slug"]+'" class="see_detail">DETAILS ></a> ';
                     Str=Str+'</div> ';
                 }
                });
@@ -386,7 +386,7 @@ function sortcategory(){
                     Str=Str+'<span>'+myArr[index]["exporter_link"]+'</span> ';
                     Str=Str+'</div> ';
                     Str=Str+'</div> ';
-                    Str=Str+'<a href="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en'."/web_index_exporter_detail" : $this->uri->segment(1)."/web_index_exporter_detail") ?>'+myArr[index]["exporter_name"]+'" class="see_detail">DETAILS ></a> ';
+                    Str=Str+'<a href="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en'."/web_index_exporter_detail" : $this->uri->segment(1)."/web_index_exporter_detail") ?>'+myArr[index]["exporter_slug"]+'" class="see_detail">DETAILS ></a> ';
                     Str=Str+'</div> ';
                 }
                });
@@ -446,7 +446,7 @@ function filtersubcategory(){
                     Str=Str+'<span>'+myArr[index]["exporter_link"]+'</span> ';
                     Str=Str+'</div> ';
                     Str=Str+'</div> ';
-                    Str=Str+'<a href="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en'."/web_index_exporter_detail" : $this->uri->segment(1)."/web_index_exporter_detail") ?>'+myArr[index]["exporter_name"]+'" class="see_detail">DETAILS ></a> ';
+                    Str=Str+'<a href="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en'."/web_index_exporter_detail" : $this->uri->segment(1)."/web_index_exporter_detail") ?>'+myArr[index]["exporter_slug"]+'" class="see_detail">DETAILS ></a> ';
                     Str=Str+'</div> ';
                 }
                });
@@ -508,7 +508,7 @@ function SortOrder(){
                     Str=Str+'<span>'+myArr[index]["exporter_link"]+'</span> ';
                     Str=Str+'</div> ';
                     Str=Str+'</div> ';
-                    Str=Str+'<a href="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en'."/web_index_exporter_detail" : $this->uri->segment(1)."/web_index_exporter_detail") ?>'+myArr[index]["exporter_name"]+'" class="see_detail">DETAILS ></a> ';
+                    Str=Str+'<a href="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en'."/web_index_exporter_detail" : $this->uri->segment(1)."/web_index_exporter_detail") ?>'+myArr[index]["exporter_slug"]+'" class="see_detail">DETAILS ></a> ';
                     Str=Str+'</div> ';
                 }
                });

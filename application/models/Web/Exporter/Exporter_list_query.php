@@ -63,7 +63,7 @@ class Exporter_list_query extends CI_Model
     'it_ex.*'
   ]);
     $this->db->where('it_ex.status', 1);
-    $this->db->where('it_ex.exporter_id', $id);
+    $this->db->where('it_ex.exporter_slug', $id);
     
     $query = $this->db->get('itpc_exporter it_ex');
    
@@ -176,7 +176,7 @@ class Exporter_list_query extends CI_Model
     public function dataproduct($id){
       $this->db->select('d.*');
       $this->db->join('itpc_exporter_product d', 'd.exporter_id = a.exporter_id');
-      $this->db->where('a.exporter_id', $id);
+      $this->db->where('a.exporter_slug', $id);
       $product = $this->db->get('itpc_exporter a')->result_array();
       return $product;
 

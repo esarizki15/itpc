@@ -272,6 +272,7 @@ class WEB extends CI_Controller
             $data['exporter']=$this->Exporter_list_query->exporter_list($limit, $start);
             $data["start"] = !empty($start) ? (int) $start : (int) count($data["exporter"]["it_ex"]);
             $data["page"] = !empty($page) ? (int) $page : (int) 1;
+            //pr($data);exit;
             $this->master["content"] = $this->load->view("web/exporter/exporter_index.php", $data, true);
             $this->render();
         }
