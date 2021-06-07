@@ -16,31 +16,41 @@ class Exporter_list_query extends CI_Model
             $this->db->select([
                 'b.category_id','c.category_title'
               ]);
-    
+
             $this->db->join('itpc_exporter_category b', 'b.exporter_id = a.exporter_id');
             $this->db->join('itpc_category c', 'c.category_id = b.category_id');
             $this->db->where('a.exporter_id', $val['exporter_id']);
             $this->db->group_by("b.category_id");
             $cat = $this->db->get('itpc_exporter a')->result_array();
-           
+
             foreach ($cat as $catfish) {
                 if ($catfish['category_id']==$val['exporter_id']) {
                     $it_ex[$x]['category']=$catfish;
                 }
             }
-           
+
+           /*
             $this->db->select_max('d.ex_pro_image');
             $this->db->join('itpc_exporter_product d', 'd.exporter_id = a.exporter_id');
             $this->db->where('a.exporter_id', $val['exporter_id']);
             $this->db->limit(1);
             $imagenya = $this->db->get('itpc_exporter a')->result_array();
-         
-            $it_ex[$x]['imagenya']=$imagenya[0]['ex_pro_image'];
 
-            
-          
+            $it_ex[$x]['imagenya']=$imagenya[0]['ex_pro_image'];*/
+
+
+            $this->db->select_max('a.exporter_logo');
+            //$this->db->join('itpc_exporter_product d', 'd.exporter_id = a.exporter_id');
+            $this->db->where('a.exporter_id', $val['exporter_id']);
+            $this->db->limit(1);
+            $imagenya = $this->db->get('itpc_exporter a')->result_array();
+
+            $it_ex[$x]['imagenya']=$imagenya[0]['exporter_logo'];
+
+
+
         }
-   
+
         return [
               'it_ex' => $it_ex
             ];
@@ -64,18 +74,18 @@ class Exporter_list_query extends CI_Model
   ]);
     $this->db->where('it_ex.status', 1);
     $this->db->where('it_ex.exporter_slug', $id);
-    
+
     $query = $this->db->get('itpc_exporter it_ex');
-   
+
     $it_ex = $query->result_array();
-   
+
     $arrRes=array();
     foreach ($it_ex as $x => $val) {
         //find category
         $this->db->select([
           'b.category_id','c.category_title'
         ]);
-       
+
         $this->db->join('itpc_exporter_category b', 'b.exporter_id = a.exporter_id');
         $this->db->join('itpc_category c', 'c.category_id = b.category_id');
         $this->db->where('a.exporter_id', $val['exporter_id']);
@@ -85,7 +95,7 @@ class Exporter_list_query extends CI_Model
         }
         $this->db->group_by("b.category_id");
         $cat = $this->db->get('itpc_exporter a')->result_array();
-      
+
         $it_ex[$x]['category']="";
         foreach ($cat as $catfish) {
             if ($catfish['category_id']==$val['exporter_id']) {
@@ -97,13 +107,13 @@ class Exporter_list_query extends CI_Model
         $this->db->where('a.exporter_id', $val['exporter_id']);
         $this->db->limit(1);
         $imagenya = $this->db->get('itpc_exporter a')->result_array();
-      
+
         $it_ex[$x]['imagenya']=$imagenya[0]['ex_pro_image'];
         if ($it_ex[$x]['category'] === "") {
             $it_ex[$x] = null;
         }
     }
-    
+
     //pr($it_ex);exit;
     return [
       'data' => $it_ex,
@@ -112,7 +122,7 @@ class Exporter_list_query extends CI_Model
  }
     public function search($name, $categoryId,$order,$subcategoryId, $limit=2, $start=0)
     {
-     
+
         $this->db->select([
         'it_ex.*'
       ]);
@@ -120,7 +130,7 @@ class Exporter_list_query extends CI_Model
         // $this->db->where('it_ex.exporter_id', $id);
         $this->db->like('it_ex.exporter_name', $name, 'both');
        // pr($order);exit;
-        if ($order == "newor") {   
+        if ($order == "newor") {
           $this->db->order_by('it_ex.post_date', 'desc');
         } elseif ($order === "oldor") {
           $this->db->order_by("it_ex.post_date", "asc");
@@ -129,7 +139,7 @@ class Exporter_list_query extends CI_Model
         }
         $this->db->limit($limit, $start);
         $query = $this->db->get('itpc_exporter it_ex');
-       
+
         $it_ex = $query->result_array();
         $arrRes=array();
         foreach ($it_ex as $x => $val) {
@@ -137,7 +147,7 @@ class Exporter_list_query extends CI_Model
             $this->db->select([
               'b.category_id','c.category_title'
             ]);
-           
+
             $this->db->join('itpc_exporter_category b', 'b.exporter_id = a.exporter_id');
             $this->db->join('itpc_category c', 'c.category_id = b.category_id');
             $this->db->where('a.exporter_id', $val['exporter_id']);
@@ -159,13 +169,13 @@ class Exporter_list_query extends CI_Model
             $this->db->where('a.exporter_id', $val['exporter_id']);
             $this->db->limit(1);
             $imagenya = $this->db->get('itpc_exporter a')->result_array();
-          
+
             $it_ex[$x]['imagenya']=$imagenya[0]['ex_pro_image'];
             if ($it_ex[$x]['category'] === "") {
                 $it_ex[$x] = null;
             }
         }
-        
+
         //pr($it_ex);exit;
         return [
           'data' => $it_ex,
@@ -188,7 +198,7 @@ class Exporter_list_query extends CI_Model
           'a.*'
         ]);
         $category = null;
-      
+
 
         $this->db->like('a.exporter_name', $name, 'both');
         $query = $this->db->get('itpc_exporter a');

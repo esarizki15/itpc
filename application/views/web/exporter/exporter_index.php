@@ -129,7 +129,7 @@
                 <?php foreach($exporter['it_ex'] as $item) {  ?>
                 <div class="top_row_list_exporter">
                   <div class="thumb_list_exporter">
-                    <img src="<?php echo $this->config->item('website_assets').'exporter_product/'.$item['imagenya']; ?>">
+                    <img src="<?php echo $this->config->item('website_assets').'exporter/'.$item['imagenya']; ?>">
                   </div><!--en.dthumb_list_exporter-->
                   <div class="caption_list_exporter">
                     <h3><?=$item['exporter_name']; ?></h3>
@@ -253,7 +253,7 @@ function loadData(page,category) {
                 if(myArr[index] !== null){
                     Str=Str+'<div class="top_row_list_exporter">';
                     Str=Str+'<div class="thumb_list_exporter">';
-                    Str=Str+'<img src="<?php echo $this->config->item('website_assets')."exporter_product/"; ?>'+myArr[index]["imagenya"]+'">';
+                    Str=Str+'<img src="<?php echo $this->config->item('website_assets')."exporter/"; ?>'+myArr[index]["imagenya"]+'">';
                     Str=Str+'</div>';
                     Str=Str+'<div class="caption_list_exporter">';
                     Str=Str+'<h3>'+myArr[index]["exporter_name"]+'</h3>';
@@ -305,7 +305,7 @@ function search(){
                 if(myArr[index] !== null){
                     Str=Str+'<div class="top_row_list_exporter">';
                     Str=Str+'<div class="thumb_list_exporter">';
-                    Str=Str+'<img src="<?php echo $this->config->item('website_assets')."exporter_product/"; ?>'+myArr[index]["imagenya"]+'">';
+                    Str=Str+'<img src="<?php echo $this->config->item('website_assets')."exporter/"; ?>'+myArr[index]["imagenya"]+'">';
                     Str=Str+'</div>';
                     Str=Str+'<div class="caption_list_exporter">';
                     Str=Str+'<h3>'+myArr[index]["exporter_name"]+'</h3>';
@@ -364,7 +364,7 @@ function sortcategory(){
                 if(myArr[index] !== null){
                     Str=Str+'<div class="top_row_list_exporter">';
                     Str=Str+'<div class="thumb_list_exporter">';
-                    Str=Str+'<img src="<?php echo $this->config->item('website_assets')."exporter_product/"; ?>'+myArr[index]["imagenya"]+'">';
+                    Str=Str+'<img src="<?php echo $this->config->item('website_assets')."exporter/"; ?>'+myArr[index]["imagenya"]+'">';
                     Str=Str+'</div>';
                     Str=Str+'<div class="caption_list_exporter">';
                     Str=Str+'<h3>'+myArr[index]["exporter_name"]+'</h3>';
@@ -424,7 +424,7 @@ function filtersubcategory(){
                 if(myArr[index] !== null){
                     Str=Str+'<div class="top_row_list_exporter">';
                     Str=Str+'<div class="thumb_list_exporter">';
-                    Str=Str+'<img src="<?php echo $this->config->item('website_assets')."exporter_product/"; ?>'+myArr[index]["imagenya"]+'">';
+                    Str=Str+'<img src="<?php echo $this->config->item('website_assets')."exporter/"; ?>'+myArr[index]["imagenya"]+'">';
                     Str=Str+'</div>';
                     Str=Str+'<div class="caption_list_exporter">';
                     Str=Str+'<h3>'+myArr[index]["exporter_name"]+'</h3>';
@@ -486,7 +486,7 @@ function SortOrder(){
                 if(myArr[index] !== null){
                     Str=Str+'<div class="top_row_list_exporter">';
                     Str=Str+'<div class="thumb_list_exporter">';
-                    Str=Str+'<img src="<?php echo $this->config->item('website_assets')."exporter_product/"; ?>'+myArr[index]["imagenya"]+'">';
+                    Str=Str+'<img src="<?php echo $this->config->item('website_assets')."exporter/"; ?>'+myArr[index]["imagenya"]+'">';
                     Str=Str+'</div>';
                     Str=Str+'<div class="caption_list_exporter">';
                     Str=Str+'<h3>'+myArr[index]["exporter_name"]+'</h3>';
