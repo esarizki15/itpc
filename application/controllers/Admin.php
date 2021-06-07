@@ -1574,6 +1574,127 @@ class Admin extends CI_Controller {
 
 	}
 
+	public function Importer_add(){
+		if($_SESSION['admin_id'] == null || $_SESSION['admin_id'] == ""){
+		 	redirect("Admin/Logout");
+			}else{
+			$this->load->model('Admin/Importer/Importer_query','Importer_query', true);
+			$this->data['data']['coutry'] = $this->Importer_query->coutry_list();
+			//$this->load->model('admin/invoice/Invoice_admin','Invoice_admin', true);
+			//$this->data['data'] = $this->Invoice_admin->list_invoice();
+			//$this->data
+			$this->master["custume_css"] = $this->load->view('admin/importer_add/custume_css.php', [], TRUE);
+			$this->master["custume_js"] = $this->load->view('admin/importer_add/custume_js.php',$this->data, TRUE);
+			$this->master["content"] = $this->load->view("admin/importer_add/content.php",[], TRUE);
+			$this->render();
+			}
+	}
+
+	public function Submit_importer(){
+		$is_save = true;
+		if($_SESSION['admin_id'] == null || $_SESSION['admin_id'] == ""){
+		 	redirect("Admin/Logout");
+		}else{
+			$this->load->model('Admin/Importer/Importer_query','Importer_query', true);
+			$this->form_validation->set_rules('importer_name', 'importer_name', 'trim|required|min_length[3]');
+			$this->form_validation->set_rules('importer_detail', 'importer_detail', 'trim|min_length[3]');
+			$this->form_validation->set_rules('importer_address', 'importer_address', 'trim|required|min_length[3]');
+			$this->form_validation->set_rules('importer_city', 'importer_city', 'trim|required|min_length[3]');
+			$this->form_validation->set_rules('importer_provience', 'importer_provience', 'trim|required|min_length[3]');
+			$this->form_validation->set_rules('importer_postal', 'importer_postal', 'trim|is_natural|min_length[3]');
+
+			$this->form_validation->set_rules('coutry_id', 'coutry_id', 'trim|required|is_natural');
+
+			$this->form_validation->set_rules('contact_name', 'contact_name', 'trim|min_length[3]');
+			$this->form_validation->set_rules('office_phone', 'office_phone', 'trim|required|is_natural');
+			$this->form_validation->set_rules('contact_phone', 'contact_phone', 'trim|is_natural');
+			$this->form_validation->set_rules('contact_fax', 'contact_fax', 'trim|is_natural');
+			$this->form_validation->set_rules('contact_email', 'contact_email', 'trim|required|valid_email');
+			$this->form_validation->set_rules('contact_website', 'contact_website', 'trim|valid_url');
+
+			$this->form_validation->set_rules('social_twitter', 'social_twitter', 'trim');
+			$this->form_validation->set_rules('social_facebook', 'social_facebook', 'trim');
+			$this->form_validation->set_rules('social_google', 'social_google', 'trim');
+
+			$this->form_validation->set_rules('is_draft', 'is_draft', 'trim');
+
+			if($this->form_validation->run() == TRUE)
+			{
+				$date = date_create();
+				$update_date = date("Y-m-d H:i:s");
+				$created_date = date("Y-m-d H:i:s");
+
+				$importer_name = $this->input->post('importer_name');
+				$importer_detail = $this->input->post('importer_detail');
+				$importer_address = $this->input->post('importer_address');
+				$importer_city = $this->input->post('importer_city');
+				$importer_provience = $this->input->post('importer_provience');
+				$importer_postal = $this->input->post('importer_postal');
+				$coutry_id = $this->input->post('coutry_id');
+				$contact_name = $this->input->post('contact_name');
+				$office_phone = $this->input->post('office_phone');
+				$contact_phone = $this->input->post('contact_phone');
+				$contact_fax = $this->input->post('contact_fax');
+				$contact_website = $this->input->post('contact_website');
+				$social_twitter = $this->input->post('social_twitter');
+				$social_facebook = $this->input->post('social_facebook');
+				$social_google = $this->input->post('social_google');
+				$status = $this->input->post('is_draft');
+
+				if($data['status'] == 1){
+							$data['status'] == 0;
+				}else{
+						$data['status'] == 1;
+				}
+
+				$importer[] = [
+							"importer_id" => null,
+							"importer_name" => $importer_name,
+							"importer_detail" => $importer_detail,
+							"importer_address" => $importer_address,
+							"importer_city" => $importer_city,
+							"importer_provience" => $importer_provience,
+							"importer_postal" => $importer_postal,
+							"coutry_id" => $coutry_id,
+							"contact_name" => $contact_name,
+							"office_phone" => $office_phone,
+							"contact_fax" => $contact_fax,
+							"contact_website" => $contact_website,
+							"social_twitter" => $social_twitter,
+							"social_google" => $social_google,
+							"goog" => $social_facebook,
+							"post_date" => 	$created_date ,
+							"post_by" => $_SESSION['admin_id'],
+							"update_date" => 	$created_date ,
+							"update_by" => $_SESSION['admin_id'],
+							"delete_date" => null,
+							"delete_by" => null,
+							"status" => $status
+				];
+
+				$importer_submit = $this->Importer_query->importer_submit($importer);
+
+				if($importer_submit){
+					$is_save = true;
+					$this->session->set_flashdata('success', "importer submit success");
+				}else{
+					$is_save = false;
+					$this->session->set_flashdata('success', "importer submit success");
+				}
+
+			}else{
+				$is_save = false;
+				$this->session->set_flashdata('error', "make sure the form is filled in correctly");
+			}
+
+
+			if($is_save){
+				
+			}
+
+		}
+	}
+
 
 
 

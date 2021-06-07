@@ -20,9 +20,9 @@
               <div class="custom_select field">
                 <select name="categoryId" id="category_atas" required>
                   <option selected disabled value="0">-- Pilih Category --</option>
-                  <?php foreach($category as $itemcat){ ?> 
+                  <?php foreach($category as $itemcat){ ?>
                           <option value="<?=$itemcat['id']?>" catTitle="<?=$itemcat['title']?>"><?=$itemcat['title']?></option>
-                        <?php } ?> 
+                        <?php } ?>
                 </select>
               </div>
             </div>
@@ -88,12 +88,12 @@
                 <div class="custom_select field">
                     <select name="category" id="category" class="catbawah">
                       <option selected disabled value="0">Category</option>
-                      <?php foreach($category as $itemcat){ ?> 
+                      <?php foreach($category as $itemcat){ ?>
                         <option value="<?=$itemcat['id']?>" catTitle="<?=$itemcat['title']?>"><?=$itemcat['title']?></option>
-                      <?php } ?> 
+                      <?php } ?>
                     </select>
                 </div>
-              </div><!--end.row_filter--> 
+              </div><!--end.row_filter-->
               <div class="row_filter">
                 <label class="title_row">Select Sub Category</label>
                 <div class="custom_select field">
@@ -136,7 +136,7 @@
                     <p><?=$item['exporter_address']; ?></p>
                     <div class="label_link">
                       <i class="fa fa-tags" aria-hidden="true"></i>
-                      <span> 
+                      <span>
                       <?php
                         echo $item['category']['category_title'];
                         ?></span>
@@ -156,11 +156,11 @@
                   </div>
                   <a href="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en'."/web_index_exporter_detail/".$item['exporter_slug']: $this->uri->segment(1)."/web_index_exporter_detail/".$item['exporter_slug']) ?>" class="see_detail">DETAILS ></a>
                 </div><!--end.bottom_row_list_exporter-->
-        
+
               <?php } ?>
 
               </div><!--end.row_list_exporternya-->
-              
+
 
             </div><!--end.item_list_exporternya-->
 
@@ -184,7 +184,7 @@ function TreeCat(){
     $('#category').on("change",function () {
         var categoryId = $(this).find('option:selected').val();
         var basedomain= '<?=base_url()?>';
-       
+
         $.ajax({
             url: basedomain+"en/web_add_category",
             type: "POST",
@@ -203,7 +203,7 @@ function TreeCat(){
 
             },
         });
-    }); 
+    });
 }
 function winscroll(start,category){
   $(window).scroll(function() {
@@ -301,7 +301,7 @@ function search(){
               myArr=myArr['exporter']['data'];
               var Str = "";
               $(myArr).each(function( index ) {
-      
+
                 if(myArr[index] !== null){
                     Str=Str+'<div class="top_row_list_exporter">';
                     Str=Str+'<div class="thumb_list_exporter">';
@@ -348,9 +348,9 @@ function sortcategory(){
         if($('.catbawah').find('option:selected').val() !== 0){
             var categoryId = $('.catbawah').find('option:selected').val();
         }
-   
+
         var basedomain= '<?=base_url()?>';
-      
+
         $.ajax({
             url: basedomain+"en/web_exporter_search_result",
             type: "GET",
@@ -360,7 +360,7 @@ function sortcategory(){
               myArr=myArr['exporter']['data'];
               var Str = "";
               $(myArr).each(function( index ) {
-    
+
                 if(myArr[index] !== null){
                     Str=Str+'<div class="top_row_list_exporter">';
                     Str=Str+'<div class="thumb_list_exporter">';
@@ -398,7 +398,7 @@ function sortcategory(){
             }
           })
   });
- 
+
 }
 
 function filtersubcategory(){
@@ -408,9 +408,9 @@ function filtersubcategory(){
             var categoryId = $('.catbawah').find('option:selected').val();
         }
         var subcategory=$(this).find('option:selected').val();
-   
+
         var basedomain= '<?=base_url()?>';
-      
+
         $.ajax({
             url: basedomain+"en/web_exporter_search_result",
             type: "GET",
@@ -420,7 +420,7 @@ function filtersubcategory(){
               myArr=myArr['exporter']['data'];
               var Str = "";
               $(myArr).each(function( index ) {
-    
+
                 if(myArr[index] !== null){
                     Str=Str+'<div class="top_row_list_exporter">';
                     Str=Str+'<div class="thumb_list_exporter">';
@@ -459,12 +459,12 @@ function filtersubcategory(){
             }
           })
   });
- 
+
 }
 
 
 function SortOrder(){
-  
+
   $('.pilihan').on("change",function () {
         var categoryId = "";
         if($('.catbawah').find('option:selected').val() !== 0){
@@ -472,7 +472,7 @@ function SortOrder(){
         }
         var order =$(this).val();
         var basedomain= '<?=base_url()?>';
-      
+
         $.ajax({
             url: basedomain+"en/web_exporter_search_result",
             type: "GET",
@@ -482,7 +482,7 @@ function SortOrder(){
               myArr=myArr['exporter']['data'];
               var Str = "";
               $(myArr).each(function( index ) {
-        
+
                 if(myArr[index] !== null){
                     Str=Str+'<div class="top_row_list_exporter">';
                     Str=Str+'<div class="thumb_list_exporter">';
@@ -517,9 +517,9 @@ function SortOrder(){
             }
           })
   });
- 
+
 
 }
 
 
-</script> 
+</script>

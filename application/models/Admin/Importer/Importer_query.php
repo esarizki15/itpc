@@ -164,6 +164,20 @@ class Importer_query extends CI_Model {
 	}
 }
 
+public function coutry_list(){
+	$this->db->select([
+		'a.id as id',
+		'a.name as name'
+	]);
+	$this->db->order_by('a.name','ASC');
+	$query = $this->db->get('itpc_country a');
+	if($query){
+			return $query->result_array();
+	}else{
+		return false;
+	}
+}
+
 
 
 

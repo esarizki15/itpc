@@ -4,7 +4,7 @@
         <div class="page-title-box">
             <div class="row align-items-center">
                 <div class="col-md-12">
-                    <a href="<?php echo base_url();?>Admin/Exporter_add" class="float-right btn btn-info text-white"> Add Importer</a>
+                    <a href="<?php echo base_url();?>Admin/Importer_add" class="float-right btn btn-info text-white"> Add Importer</a>
                     <h4 class="page-title m-0">Importer List</h4>
                 </div>
             </div>

@@ -808,7 +808,7 @@ class WEB extends CI_Controller
         $this->load->model('API/Exporter/Exporter_subcategory_query', 'Exporter_subcategory_query', true);
         $this->load->model('API/Authentication/Auth', 'Auth', true);
         $this->load->model('API/User/User_query', 'User_query', true);
-        $this->load->model('WEB/Exporter/Exporter_list_query', 'Ex_cek', true);
+        //$this->load->model('WEB/Exporter/Exporter_list_query', 'Ex_cek', true);
 
         //GET SUBCATEGORY
         if (@$this->input->post('categoryId')) {
