@@ -1382,12 +1382,14 @@ class Admin extends CI_Controller {
 		if($_SESSION['admin_id'] == null || $_SESSION['admin_id'] == ""){
 		 	redirect("Admin/Logout");
 			}else{
+			$this->load->model('Admin/Importer/Importer_query','Importer_query', true);
+			$this->data['data'] = $this->Importer_query->Importer_product_list();
 			//$this->load->model('admin/invoice/Invoice_admin','Invoice_admin', true);
 			//$this->data['data'] = $this->Invoice_admin->list_invoice();
 			//$this->data
 			$this->master["custume_css"] = $this->load->view('admin/importer_managment/custume_css.php', [], TRUE);
 			$this->master["custume_js"] = $this->load->view('admin/importer_managment/custume_js.php', [], TRUE);
-			$this->master["content"] = $this->load->view("admin/importer_managment/content.php",[], TRUE);
+			$this->master["content"] = $this->load->view("admin/importer_managment/content.php",$this->data, TRUE);
 			$this->render();
 			}
 	}
@@ -1404,6 +1406,14 @@ class Admin extends CI_Controller {
 
 			echo json_encode($importer_list);
 
+	}
+
+	public function importer_category_filter_data(){
+		$this->load->model('Admin/Importer/Importer_query','Importer_query', true);
+
+		$postData = $this->input->get();
+		$importer_filter = $this->Importer_query->getImporter_filter($postData);
+		echo json_encode($importer_filter);
 	}
 
 	public function Slider_managment(){
@@ -1679,7 +1689,7 @@ class Admin extends CI_Controller {
 					$this->session->set_flashdata('success', "importer submit success");
 				}else{
 					$is_save = false;
-					$this->session->set_flashdata('success', "importer submit success");
+					$this->session->set_flashdata('error', "importer submit error");
 				}
 
 			}else{
@@ -1689,10 +1699,29 @@ class Admin extends CI_Controller {
 
 
 			if($is_save){
-				
+						//redirect("Admin/Detail_importer/".$importer_submit);
+						echo $importer_submit;
+			}else{
+						redirect("Admin/Importer_add/");
 			}
 
 		}
+	}
+
+	public function importer_detail($id){
+		if($_SESSION['admin_id'] == null || $_SESSION['admin_id'] == ""){
+			redirect("Admin/Logout");
+			}else{
+			$this->load->model('Admin/Importer/Importer_query','Importer_query', true);
+			$this->data['data']['coutry'] = $this->Importer_query->coutry_list();
+			$this->data['data']['detail'] = $this->Importer_query->importer_detail($id);
+			$this->data['data']['product'] = $this->Importer_query->Importer_product_list();
+
+			$this->master["custume_css"] = $this->load->view('admin/importer_detail/custume_css.php', [], TRUE);
+			$this->master["custume_js"] = $this->load->view('admin/importer_detail/custume_js.php',$this->data, TRUE);
+			$this->master["content"] = $this->load->view("admin/importer_detail/content.php",[], TRUE);
+			$this->render();
+			}
 	}
 
 

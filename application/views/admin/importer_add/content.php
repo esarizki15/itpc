@@ -63,7 +63,7 @@
 											<div class="form-group">
 												<label>Importer Coutry<span style="color:red">*</span></label>
                          <select class="js-states form-control" name="coutry_id" id="coutry_id" data-live-search="true">
-													 	<option value="0">Select a category</option>
+													 	<option value="0">Select a coutry</option>
 														 <?php
 																foreach ($data['coutry'] as $key_coutry => $item_coutry) {
 															?>
