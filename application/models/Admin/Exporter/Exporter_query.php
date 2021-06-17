@@ -538,6 +538,38 @@ function getSubcategory($postData=null){
 		}
 	}
 
+	public function get_email_account(){
+		$this->db->select([
+			'a.user_id as user_id',
+			'a.username as username',
+			'password_text as password_text',
+			'a.email as email',
+			'a.status as status'
+		]);
+		$this->db->where('a.send_email', 0);
+		$this->db->where('a.delete_date', NULL);
+		$this->db->where('a.status !=', 0);
+		$this->db->limit(1);
+		$query = $this->db->get('itpc_user a');
+		if($query){
+				return $query->result_array();
+		}else{
+			return false;
+		}
+
+
+	}
+
+	public function send_email_update($update,$user_id){
+		$this->db->where('user_id',$user_id);
+		$result = $this->db->update('itpc_user',$update);
+		if($result){
+			return true;
+		}else{
+			return false;
+		}
+	}
+
 
 
 

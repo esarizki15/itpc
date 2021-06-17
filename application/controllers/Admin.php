@@ -1724,6 +1724,117 @@ class Admin extends CI_Controller {
 			}
 	}
 
+	public function submit_importer_product_category(){
+		$this->load->model('Admin/Importer/Importer_query','Importer_query', true);
+		$importer_id = $this->input->get('importer_id');
+		$category_id = $this->input->get('category_id');
+		$post_date = date("Y-m-d H:i:s");
+		$post_by = $_SESSION['admin_id'];
+
+
+
+			$importer_product []= [
+						"product_id " => null,
+						"importer_id" => $importer_id,
+						"category_id" => $category_id,
+						"post_date" => $post_date,
+						"post_by" => $post_by,
+						"update_date" => $post_date,
+						"updated_by" => $post_by,
+						"delete_date" => null,
+						"delete_by" => null,
+						"status" => 1
+			];
+
+			$importer_product_submit = $this->Importer_query->importer_product_save($importer_product);
+			echo json_encode($importer_product_submit);
+
+	}
+
+	public function get_list_importer_product_category(){
+		$this->load->model('Admin/Importer/Importer_query','Importer_query', true);
+		//$category_id = $this->input->get('category_id');
+		$importer_id = $this->input->get();
+
+		$importer_product_categories = $this->Importer_query->list_importer_product_categories($importer_id);
+
+		echo json_encode($importer_product_categories);
+	}
+
+	public function delete_importer_product_category($product_id,$importer_id){
+		$this->load->model('Admin/Importer/Importer_query','Importer_query', true);
+		$product_id = $product_id;
+		$importer_id = $importer_id;
+		$delete_date = date("Y-m-d H:i:s");
+		$delete_by = $_SESSION['admin_id'];
+
+		$delete = [
+			"product_id " => $product_id,
+			"delete_date" => $delete_date,
+			"delete_by" => $delete_by,
+			"status" => 2
+		];
+
+		$importer_product_delete = $this->Importer_query->importer_product_delete($delete,$product_id);
+
+		if($importer_product_delete){
+			$this->session->set_flashdata('success', "importer category has been delete");
+		}else{
+			$this->session->set_flashdata('error', "importer category failed delete");
+		}
+			redirect("Admin/importer_detail/".$importer_id);
+	}
+
+	public function send_account_expoter(){
+
+			$this->load->model('Admin/Exporter/Exporter_query','Exporter_query', true);
+			$acount = $this->Exporter_query->get_email_account();
+
+			$this->load->library('email');
+			$actived_link = base_url()."/web_itpc_login";
+
+			foreach ($acount as $key_account => $value_account) {
+				$user_id= $value_account['user_id'];
+				$this->data['data']['username'] = $value_account['username'];
+				$this->data['data']['email'] = $value_account['email'];
+				$this->data['data']['password'] = $value_account['password_text'];
+				$this->data['data']['link'] = $actived_link;
+				echo $send_to = $value_account['email'];
+
+
+				$message = $this->load->view('email/account_email.php',$this->data,TRUE);
+				$this->email->from('itpcmaster2020@gmail.com', 'ITPC system');
+				$this->email->to($send_to);
+				$this->email->cc('itpcmaster2020@gmail.com');
+				$this->email->reply_to('itpcmaster2020@gmail.com');
+				$this->email->subject('ITPC Actived account');
+				$this->email->message($message);
+				//$this->email->attach(base_url().'assets/confirm/'.$name_file);
+				$this->email->send();
+
+				if($this->email->send(FALSE)){
+					$register['data'] = null;
+					$register['status'] = true;
+					$register['message'] = "Sorry, your message not send to ".$email.",please contact administrator ";
+				}else{
+					
+					$update = [
+						"send_email" => 1
+					];
+
+					$update = $this->Exporter_query->send_email_update($update,$user_id);
+					$register['data'] = null;
+					$register['status'] = true;
+					$register['message'] = "Congratulations, you have successfully registered, please check your email (".$send_to.") for account activation";
+				}
+				//echo json_encode($this->data['data']);
+			}
+
+
+			echo json_encode($register);
+
+	}
+
 
 
 

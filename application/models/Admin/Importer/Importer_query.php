@@ -373,6 +373,48 @@ public function importer_submit($importer){
 	return $insert_id;
 }
 
+public function importer_product_save($importer_product){
+	$result =	$this->db->insert_batch('itpc_importer_product',$importer_product);
+	if($result){
+		 return true;
+	}else{
+		 return false;
+	}
+}
+
+public function list_importer_product_categories($postData=null){
+	$importer_id= $postData['importer_id'];
+	$this->db->select([
+		'a.product_id as product_id',
+		'a.importer_id as importer_id',
+		'a.category_id as category_id',
+		'b.category_title as category_title'
+	]);
+
+	$this->db->where('a.importer_id', $importer_id);
+	$this->db->where('a.delete_date', NULL);
+	$this->db->where('a.status', 1);
+	$this->db->order_by('a.product_id','DESC');
+	$this->db->join('itpc_importer_category b','a.category_id = b.category_id','LEFT');
+	$query = $this->db->get('itpc_importer_product a');
+	if($query){
+			return $query->result_array();
+	}else{
+		return false;
+	}
+}
+
+
+public function importer_product_delete($delete,$product_id){
+	$this->db->where('product_id',$product_id);
+	$result = $this->db->update('itpc_importer_product',$delete);
+	if($result){
+		return true;
+	}else{
+		return false;
+	}
+}
+
 
 
 

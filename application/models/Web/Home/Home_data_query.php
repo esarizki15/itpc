@@ -10,7 +10,7 @@ class Home_data_query extends CI_Model{
 
         $short='st.english AS short';
         $long='lt.english AS long';
-        if($lang=='id') { 
+        if($lang=='id') {
           $short="st.bahasa AS short";
           $long='lt.bahasa AS long';
         }else if($lang=='es'){
@@ -20,7 +20,7 @@ class Home_data_query extends CI_Model{
           $short='st.english AS short';
           $long='lt.english AS long';
         }
-        
+
         $this->db->select([
     			'inews.news_id as id',
     			'inews.news_title as title',
@@ -31,7 +31,7 @@ class Home_data_query extends CI_Model{
           'inews.post_date as date'
     		]);
 
-      
+
 
     		$this->db->where('status', 1);
     		$this->db->where('delete_date', null);
@@ -47,7 +47,7 @@ class Home_data_query extends CI_Model{
 
         //pr($news_latest);exit;
 
-      
+
     		$query->free_result();
     		$this->db->reset_query();
 
@@ -147,7 +147,7 @@ class Home_data_query extends CI_Model{
 
       $short='st.english AS short';
       $long='lt.english AS long';
-      if($lang=='id') { 
+      if($lang=='id') {
         $short="st.bahasa AS short";
         $long='lt.bahasa AS long';
       }else if($lang=='es'){
@@ -192,7 +192,7 @@ class Home_data_query extends CI_Model{
     public function getSlider(){
       $short='st.english AS short';
       $long='lt.english AS long';
-      if($lang=='id') { 
+      if($lang=='id') {
         $short="st.bahasa AS short";
         $long='lt.bahasa AS long';
       }else if($lang=='es'){
@@ -209,12 +209,13 @@ class Home_data_query extends CI_Model{
       $this->db->join('long_translations lt','it.trans_key = lt.trans_key', 'left');
       $this->db->join('short_translations st','it.trans_key = st.trans_key', 'left');
       $this->db->where('delete_date', null);
+      $this->db->order_by('slider_id', DESC);
       $query = $this->db->get('itpc_slider it');
       $data = $query->result_array();
       //pr($data);exit;
       return $data;
     }
-  
+
 
     public function news_all($lang= null,$limit = null, $start = null,$category) {
     // pr($start);exit;
@@ -227,7 +228,7 @@ class Home_data_query extends CI_Model{
 
       $short='st.english AS short';
       $long='lt.english AS long';
-      if($lang=='id') { 
+      if($lang=='id') {
         $short="st.bahasa AS short";
         $long='lt.bahasa AS long';
       }else if($lang=='es'){
@@ -237,7 +238,7 @@ class Home_data_query extends CI_Model{
         $short='st.english AS short';
         $long='lt.english AS long';
       }
-     
+
       $this->db->select([
         'inews.news_id as id',
         'inews.news_title as title',
@@ -269,10 +270,10 @@ class Home_data_query extends CI_Model{
       return [
         'news' => $news_latest
       ];
-   
+
     }
     public function news_total($lang= null,$limit = null, $start = null,$category) {
-    
+
       require_once('News_latest.php');
       require_once('Exporter_home.php');
       require_once('Indonesia_product.php');
@@ -282,7 +283,7 @@ class Home_data_query extends CI_Model{
 
       $short='st.english AS short';
       $long='lt.english AS long';
-      if($lang=='id') { 
+      if($lang=='id') {
         $short="st.bahasa AS short";
         $long='lt.bahasa AS long';
       }else if($lang=='es'){
@@ -292,7 +293,7 @@ class Home_data_query extends CI_Model{
         $short='st.english AS short';
         $long='lt.english AS long';
       }
-     
+
       $this->db->select([
         'inews.news_id as id',
         'inews.news_title as title',
@@ -323,9 +324,9 @@ class Home_data_query extends CI_Model{
       return [
         'news' => $news_latest
       ];
-   
+
     }
-    
+
 
     public function tag_category($id){
 
@@ -340,7 +341,7 @@ class Home_data_query extends CI_Model{
 
       $email = $query->result_array();
       return $email;
-   
+
     }
 
 
@@ -355,7 +356,7 @@ class Home_data_query extends CI_Model{
 
       $short='st.english AS short';
       $long='lt.english AS long';
-      if($lang=='id') { 
+      if($lang=='id') {
         $short="st.bahasa AS short";
         $long='lt.bahasa AS long';
       }else if($lang=='es'){
@@ -365,17 +366,17 @@ class Home_data_query extends CI_Model{
         $short='st.english AS short';
         $long='lt.english AS long';
       }
-      
+
       $this->db->select([
         'about.*',
-       
+
         $short,$long,
-      
+
       ]);
 
-    
 
- 
+
+
       $this->db->join('long_translations lt','about.trans_key = lt.trans_key', 'left');
       $this->db->join('short_translations st','about.trans_key = st.trans_key', 'left');
       $this->db->limit(1);
@@ -387,7 +388,7 @@ class Home_data_query extends CI_Model{
       return [
         'about' => $about_us
       ];
-   
+
     }
 
    public function save_contact_us($param){
@@ -405,7 +406,7 @@ class Home_data_query extends CI_Model{
     $query = $this->db->get('itpc_email_cc');
     $email = $query->result_array();
     return $email;
- 
+
   }
 
   public function download_apps(){
@@ -415,9 +416,9 @@ class Home_data_query extends CI_Model{
     $query = $this->db->get('itpc_download');
     $email = $query->result_array();
     return $email;
- 
+
   }
-   
+
 
     public function contact_us($lang) {
       require_once('News_latest.php');
@@ -429,7 +430,7 @@ class Home_data_query extends CI_Model{
 
       $short='st.english AS short';
       $long='lt.english AS long';
-      if($lang=='id') { 
+      if($lang=='id') {
         $short="st.bahasa AS short";
         $long='lt.bahasa AS long';
       }else if($lang=='es'){
@@ -439,11 +440,11 @@ class Home_data_query extends CI_Model{
         $short='st.english AS short';
         $long='lt.english AS long';
       }
-      
+
       $this->db->select([
         'contact.*',
          $short,$long,
-      
+
       ]);
 
       $this->db->join('long_translations lt','contact.trans_key = lt.trans_key', 'left');
@@ -457,10 +458,6 @@ class Home_data_query extends CI_Model{
       return [
         'about' => $about_us
       ];
-   
+
     }
   }
-
-    
-
-

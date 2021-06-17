@@ -25,7 +25,7 @@
 			<div class="card-body">
 				<div class="card-body">
 					<h4 class="mt-0 header-title">Form Detail News</h4>
-					<form action="<?php echo base_url(); ?>Admin/Submit_news" method="post" enctype="multipart/form-data">
+					<form action="<?php echo base_url(); ?>Admin/Update_news" method="post" enctype="multipart/form-data">
 						<?php
 						 foreach ($data['detail_news'] as $key_news => $item_news) {
 					 ?>

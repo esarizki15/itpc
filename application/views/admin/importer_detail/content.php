@@ -37,6 +37,7 @@
 									<div class="row">
 										<input type="hidden" name="<?php echo $this->security->get_csrf_token_name(); ?>" value="<?php echo $this->security->get_csrf_hash(); ?>">
 										<div class="col-md-6">
+											<input type="text" name="importer_id" id="importer_id" class="form-control" required placeholder="Type something" value="<?php echo $item_detail['importer_id'];?>"/>
 											<div class="form-group">
 												<label>Importer Name<span style="color:red">*</span></label>
 												<input type="text" name="importer_name" class="form-control" required placeholder="Type something" value="<?php echo $item_detail['importer_name'];?>"/>
@@ -153,28 +154,50 @@
 	<div class="col-12">
 		<div class="card m-b-30">
 			<div class="card-body">
-				<div class="row">
-					<form action="<?php echo base_url(); ?>Admin/submit_importir_product" method="post" enctype="multipart/form-data">
-						<div class="col-md-8 m-b-20">
-							<label>Product Category</label>
-							 <select class="js-states form-control" name="categoryId" id="categoryId" data-live-search="true">
-									<option value="0">All</option>
-									 <?php
-											foreach ($data['product'] as $key_category => $item_category) {
-										?>
-										 <option value="<?php echo $item_category['category_id']; ?>"><?php echo $item_category['category_title']; ?></option>
-										 <?php
-											 }
-										 ?>
-							 </select>
-						 </div>
-						 <div class="col-md-4 m-t-30">
-							 <button type="submit" class="btn btn-success btn-lg btn-block waves-effect waves-light">Submit Data</button>
-						 </div>
+					<form id="category_form">
+						<input type="hidden" name="<?php echo $this->security->get_csrf_token_name(); ?>" value="<?php echo $this->security->get_csrf_hash(); ?>">
+						<div class="row">
+								<div class="col-md-8 m-b-20">
+									<label>Product Category</label>
+									 <select class="js-states form-control" name="categoryId" id="categoryId" data-live-search="true">
+											<option value="0">All</option>
+											 <?php
+													foreach ($data['product'] as $key_category => $item_category) {
+												?>
+												 <option value="<?php echo $item_category['category_id']; ?>"><?php echo $item_category['category_title']; ?></option>
+												 <?php
+													 }
+												 ?>
+									 </select>
+								 </div>
+								 <div class="col-md-4 m-t-30">
+									 <button type="submit" class="btn btn-success btn-lg btn-block waves-effect waves-light">Submit Data</button>
+								 </div>
+							 </div>
 					 </form>
-			 </div>
 			</div>
 	</div>
+
+	<div class="card m-b-30">
+		<div class="card-body">
+				<h4 class="mt-0 header-title">Importer Categories List</h4>
+				<div class="table-responsive">
+						<table class="table mb-0">
+								<thead>
+										<tr>
+												<th>#</th>
+												<th>Category</th>
+												<th>Delete</th>
+										</tr>
+								</thead>
+								<tbody id="list_importer_categories">
+
+								</tbody>
+						</table>
+				</div>
+		</div>
+	</div>
+
 </div>
 </div>
 <!-- end page title end breadcrumb -->
