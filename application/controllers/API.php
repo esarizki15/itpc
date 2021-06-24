@@ -794,7 +794,6 @@ class API extends CI_Controller {
 					$category_exporter['data']['category'] = $this->Exporter_category_query->category_list();
 					$category_exporter['data']['subcategory'] = $this->Exporter_subcategory_query->subcategory_list();
 					$category_exporter['data']['curr_category'] = $this->Exporter_category_query->category_curr_list($expoter_id);
-
 					if($category_exporter['data']['category']  && $category_exporter['data']['subcategory'])
 					{
 						$category_exporter['status'] = true;
@@ -852,6 +851,13 @@ class API extends CI_Controller {
 
 
 				$add_category['data'] = $this->User_query->Submit_category($category);
+
+				$exporter_home = [
+					'exporter_id' => $id,
+					'exporter_home' => 2
+				];
+
+				$update_exporter_home = $this->User_query->Update_exporter_home($exporter_home);
 
 				if($add_category['data']){
 					$add_category['status'] = true;

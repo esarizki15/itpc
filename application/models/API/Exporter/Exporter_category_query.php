@@ -141,6 +141,7 @@ class Exporter_category_query extends CI_Model{
       }
     }
 
+    
 
     /*
     $this->db->limit($limit, $start);

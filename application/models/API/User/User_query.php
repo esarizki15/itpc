@@ -474,6 +474,14 @@ public function get_add_inquiry($exporter_id){
 }
 
 
+public function Update_exporter_home($exporter_home){
+  $this->db->where('exporter_id',$exporter_home['exporter_id']);
+  $result = $this->db->update('itpc_exporter', $exporter_home);
+  return true;
+}
+
+
+
 
 
 
