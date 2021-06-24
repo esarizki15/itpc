@@ -21,6 +21,7 @@ class WEB extends CI_Controller
         $this->load->library('form_validation');
         $this->load->helper('validation');
         $this->load->model('Web/Home/Home_data_query', 'Home_data_query', true);
+        $this->load->model('Web/Exporter/Exporter_list_query', 'Exporter_list_query', true);
 
         error_reporting(E_ALL ^ (E_NOTICE | E_WARNING));
     }
@@ -233,8 +234,7 @@ class WEB extends CI_Controller
         $this->load->model('API/Exporter/Exporter_subcategory_query', 'Exporter_subcategory_query', true);
         $this->load->model('API/Authentication/Auth', 'Auth', true);
         $this->load->model('API/User/User_query', 'User_query', true);
-        $this->load->model('Web/Exporter/Exporter_list_query', 'Exporter_list_query', true);
-
+  
         //GET SUBCATEGORY
         if (@$category && empty($start) && empty($page)) {
             $subcategory = $this->Exporter_subcategory_query->subcategory_list();
@@ -637,9 +637,10 @@ class WEB extends CI_Controller
         if (!$this->session->user_logged['user_id']) {
             redirect("/en/web_itpc_login");
         }
-        $this->load->model('WEB/Exporter/Exporter_list_query', 'User_query', true);
+       
         $user_id = $this->session->user_logged['user_id'];
-        $detail_user = $this->User_query->find_exporter($user_id);
+        $this->load->model('Web/Exporter/Exporter_list_query', 'Exporter_list_query', true);
+        $detail_user = $this->Exporter_list_query->find_exporter($user_id);
         //pr($detail_user);exit;
         $this->master["content"] = $this->load->view("web/dashboard/exporter_account.php", $detail_user, true);
         $this->render();

@@ -1,6 +1,6 @@
 <?php
-class Exporter_list_query extends CI_Model
-{
+class Exporter_list_query extends CI_Model{
+ 
     public function exporter_list($limit=2, $start=0)
     {
         $this->db->select([
