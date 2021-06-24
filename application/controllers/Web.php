@@ -22,7 +22,7 @@ class WEB extends CI_Controller
         $this->load->helper('validation');
         $this->load->model('Web/Home/Home_data_query', 'Home_data_query', true);
         $this->load->model('Web/Exporter/Exporter_list_query', 'Exporter_list_query', true);
-
+        $this->load->model('Web/User/User_query', 'User_query', true);
         error_reporting(E_ALL ^ (E_NOTICE | E_WARNING));
     }
 
@@ -690,7 +690,7 @@ class WEB extends CI_Controller
         // pr('ss');exit;
 
         $this->load->model('API/User/User_query', 'User_query', true);
-        $this->load->model('WEB/Exporter/Exporter_list_query', 'Exporter__query', true);
+        $this->load->model('Web/Exporter/Exporter_list_query', 'Exporter__query', true);
         $this->form_validation->set_rules('id', 'id', 'trim|required|numeric');
         $this->form_validation->set_rules('name', 'name', 'trim|required|min_length[3]');
         $this->form_validation->set_rules('address', 'address', 'trim|required|min_length[3]');
@@ -809,7 +809,7 @@ class WEB extends CI_Controller
         $this->load->model('API/Exporter/Exporter_subcategory_query', 'Exporter_subcategory_query', true);
         $this->load->model('API/Authentication/Auth', 'Auth', true);
         $this->load->model('API/User/User_query', 'User_query', true);
-        //$this->load->model('WEB/Exporter/Exporter_list_query', 'Ex_cek', true);
+        //$this->load->model('Web/Exporter/Exporter_list_query', 'Ex_cek', true);
 
         //GET SUBCATEGORY
         if (@$this->input->post('categoryId')) {
@@ -897,8 +897,8 @@ class WEB extends CI_Controller
     }
     public function w_add_category_exporter()
     {
-        $this->load->model('WEB/User/User_query', 'User_query', true);
-        $this->load->model('WEB/Exporter/Exporter_list_query', 'CekIDex', true);
+       
+        $this->load->model('Web/Exporter/Exporter_list_query', 'CekIDex', true);
         $this->form_validation->set_rules('expoter_id', 'expoter_id', 'trim|required|numeric');
         $this->form_validation->set_rules('category_id[]', 'category_id', 'trim|required|numeric');
         $this->form_validation->set_rules('subcategory_id[]', 'subcategory_id', 'trim|required|numeric');
