@@ -111,6 +111,7 @@ class Importer_query extends CI_Model {
 
 		$this->db->select([
 			'a.importer_inquiry_id as importer_inquiry_id',
+			'a.inquiry_id as inquiry_id',
 			'c.importer_name as importer_name',
 			'd.category_title as category_title'
 		]);

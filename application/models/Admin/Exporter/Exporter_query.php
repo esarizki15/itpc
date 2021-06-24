@@ -357,6 +357,15 @@ class Exporter_query extends CI_Model {
 		}
 	}
 
+	public function category_save($category){
+		$result =	$this->db->insert_batch('itpc_category',$category);
+		if($result){
+			 return true;
+		}else{
+			 return false;
+		}
+	}
+
 	public function get_last_order_subcategory(){
   $this->db->select([
     'a.category_order as category_order'
@@ -372,6 +381,23 @@ class Exporter_query extends CI_Model {
    }else{
      return false;
    }
+}
+
+public function get_last_order_category(){
+$this->db->select([
+	'a.category_order as category_order'
+ ]);
+ $this->db->where('a.delete_by', NULL);
+ $this->db->limit(1);
+ $this->db->order_by('a.category_order','DESC');
+ $query = $this->db->get('itpc_category a');
+ if($query){
+	 foreach($query->result() as $row){
+		 return $row->category_order+1;
+		}
+ }else{
+	 return false;
+ }
 }
 
 function getSubcategory($postData=null){
@@ -453,6 +479,106 @@ function getSubcategory($postData=null){
 
 		array_map(function($item) use(&$exporter_list){
 			$exporter_list[] = (new list_subcategory($item))->to_array();
+			//$category_list[0]['curr_category'] = "subcategory";
+		}, $records->result_array());
+		}
+
+		## Response
+
+		if($exporter_list){
+
+			$response = array(
+					"draw" => intval($draw),
+					"iTotalRecords" => $totalRecords,
+					"iTotalDisplayRecords" => $totalRecordwithFilter,
+					"aaData" => $exporter_list
+			);
+			return $response;
+		}else{
+			return FALSE;
+		}
+
+
+}
+
+
+function getCategory($postData=null){
+		require_once('list_category.php');
+		$response = array();
+
+		## Read value
+		$draw = $postData['draw'];
+		$start = $postData['start'];
+		$rowperpage = $postData['length']; // Rows display per page
+		$columnIndex = $postData['order'][0]['column']; // Column index
+		$columnName = $postData['columns'][$columnIndex]['data']; // Column name
+		$columnSortOrder = $postData['order'][0]['dir']; // asc or desc
+		$searchValue = $postData['search']['value']; // Search value
+
+		## Search
+		$searchQuery = "";
+		if($searchValue != ''){
+				$searchQuery = " (a.category_title like '%".$searchValue."%' or
+													a.post_date like '%".$searchValue."%')";
+		}
+
+		/*
+		if($searchValue != ''){
+				$searchQuery = " (exporter_name like '%".$searchValue."%' or
+							exporter_email like '%".$searchValue."%' or
+							post_date like'%".$searchValue."%' or
+							status like'%".$searchValue."%' ) ";
+		}
+		*/
+
+
+		## Total number of records without filtering
+		$this->db->select('count(*) as allcount');
+		$records = $this->db->get('itpc_category a')->result();
+		$totalRecords = $records[0]->allcount;
+
+		## Total number of record with filtering
+		$this->db->select('count(*) as allcount');
+		if($searchQuery != '')
+		$this->db->where($searchQuery);
+		$records = $this->db->get('itpc_category a')->result();
+		$totalRecordwithFilter = $records[0]->allcount;
+
+
+		## Fetch records
+		//$this->db->select('*');
+		$this->db->select([
+			'a.category_id as id',
+			'a.category_title as category_title',
+			'a.post_date as post_date',
+			'a.status as status'
+		]);
+		if($searchQuery != '')
+		$this->db->where($searchQuery);
+		$this->db->where('a.delete_date', null);
+		$this->db->order_by($columnName, $columnSortOrder);
+		$this->db->limit($rowperpage, $start);
+		//$records = $this->db->get('itpc_exporter')->result();
+		$records = $this->db->get('itpc_category a');
+
+		//$data = array();
+
+		/*foreach($records as $record ){
+
+				$data[] = array(
+						"id"=>$record->exporter_id,
+						"name"=>$record->exporter_name,
+						"email"=>$record->exporter_email,
+						"post_date"=>$record->post_date,
+						"status"=>$record->status
+				);
+		}*/
+
+		if($records->num_rows() > 0){
+		$exporter_list = [];
+
+		array_map(function($item) use(&$exporter_list){
+			$exporter_list[] = (new list_category($item))->to_array();
 			//$category_list[0]['curr_category'] = "subcategory";
 		}, $records->result_array());
 		}

@@ -30,6 +30,24 @@ class Admin extends CI_Controller {
 	 $this->load->view("admin/master", $this->master);
  }
 
+ function tinymce_upload() {
+		$config['upload_path'] = './assets/upload/';
+		$config['allowed_types'] = 'jpg|png|jpeg';
+		$config['max_size'] = 0;
+		$this->load->library('upload', $config);
+		if ( ! $this->upload->do_upload('file')) {
+			$this->output->set_header('HTTP/1.0 500 Server Error');
+			exit;
+		} else {
+			$file = $this->upload->data();
+			$this->output
+				->set_content_type('application/json', 'utf-8')
+				->set_output(json_encode(['location' => base_url().'assets/upload/'.$file['file_name']]))
+				->_display();
+			exit;
+		}
+	}
+
  private function hash_password($password) {
 	 return password_hash($password, PASSWORD_DEFAULT);
  }
@@ -613,6 +631,22 @@ class Admin extends CI_Controller {
 			}
 	}
 
+	public function Exporter_category(){
+		if($_SESSION['admin_id'] == null || $_SESSION['admin_id'] == ""){
+			redirect("Admin/Logout");
+			}else{
+			//$this->load->model('admin/invoice/Invoice_admin','Invoice_admin', true);
+			//$this->data['data'] = $this->Invoice_admin->list_invoice();
+			//$this->data
+			$this->load->model('Admin/Exporter/Exporter_query','Exporter_query', true);
+			$this->data['data'] = $this->Exporter_query->exporter_category_list();
+
+			$this->master["custume_css"] = $this->load->view('admin/exporter_category/custume_css.php', [], TRUE);
+			$this->master["custume_js"] = $this->load->view('admin/exporter_category/custume_js.php', [], TRUE);
+			$this->master["content"] = $this->load->view("admin/exporter_category/content.php",$this->data, TRUE);
+			$this->render();
+			}
+	}
 	public function Submit_subcategory(){
 			$this->load->model('Admin/Exporter/Exporter_query','Exporter_query', true);
 			$this->form_validation->set_rules('category_id', 'category_id', 'trim|required');
@@ -679,6 +713,69 @@ class Admin extends CI_Controller {
 			redirect("Admin/Exporter_subcategory");
 	}
 
+	public function Submit_category(){
+			$this->load->model('Admin/Exporter/Exporter_query','Exporter_query', true);
+			$this->form_validation->set_rules('category_title', 'subcategory_title', 'trim|required');
+
+			if($this->form_validation->run() == TRUE)
+			{
+				$is_save = true;
+				$category_old_id = $this->input->post('category_old_id');
+				$category_title = $this->input->post('category_title');
+				$is_draft = $this->input->post('is_draft');
+
+				if($is_draft != null || $is_draft != ""){
+					 $is_draft= 0;
+				}else{
+					 $is_draft = 1;
+				}
+
+				$category_title = str_replace("''","`",$category_title);
+
+				$category_slug = str_replace("&","and",$category_title);
+		 		$slug = str_replace(" ","_",$category_slug);
+
+				$post_date = date("Y-m-d H:i:s");
+
+				if(empty($category_old_id)){
+					$category_old_id = NULL;
+				}
+
+				$category_order = $this->Exporter_query->get_last_order_category();
+				if(!$category_order){
+					$category_order = 1;
+				}
+
+				$category[] = [
+							"category_id" => null,
+							"category_old_id" => $category_old_id,
+							"category_title" => $category_title,
+							"category_slug" => $slug,
+							"category_order" => $category_order,
+							"post_date" => $post_date,
+							"post_by" => $_SESSION['admin_id'],
+							"delete_date" => null,
+							"delete_by" => null,
+							"status" =>  $is_draft
+				];
+
+				$category_submit = $this->Exporter_query->category_save($category);
+
+				if($category_submit){
+					$is_save = true;
+					$this->session->set_flashdata('success', "subcategory data has been saved");
+				}else{
+					$is_save = false;
+					$this->session->set_flashdata('error', "subcategory data failed to save");
+				}
+
+			}else{
+				$is_save = false;
+				$this->session->set_flashdata('error', "make sure the form is filled in correctly");
+			}
+			redirect("Admin/Exporter_category");
+	}
+
 	public function Subcategory_list_data()
 	{
 			$this->load->model('Admin/Exporter/Exporter_query','Exporter_query', true);
@@ -693,6 +790,20 @@ class Admin extends CI_Controller {
 
 	}
 
+	public function Category_list_data()
+	{
+			$this->load->model('Admin/Exporter/Exporter_query','Exporter_query', true);
+
+			$postData = $this->input->get();
+
+			//$exporter_list = $this->Exporter_query->get_list();
+
+			$category_list = $this->Exporter_query->getCategory($postData);
+
+			echo json_encode($category_list);
+
+	}
+
 	public function News_management(){
 		if($_SESSION['admin_id'] == null || $_SESSION['admin_id'] == ""){
 			redirect("Admin/Logout");
@@ -701,6 +812,19 @@ class Admin extends CI_Controller {
 			$this->master["custume_js"] = $this->load->view('admin/news_managment/custume_js.php', [], TRUE);
 			$this->master["content"] = $this->load->view("admin/news_managment/content.php",$this->data, TRUE);
 			$this->render();
+			}
+	}
+
+	public function News_category(){
+		if($_SESSION['admin_id'] == null || $_SESSION['admin_id'] == ""){
+			redirect("Admin/Logout");
+			}else{
+				$this->load->model('Admin/News/News_query','News_query', true);
+				//$this->data['data'] = $this->News_query->news_category_list();
+				$this->master["custume_css"] = $this->load->view('admin/news_category/custume_css.php', [], TRUE);
+				$this->master["custume_js"] = $this->load->view('admin/news_category/custume_js.php', [], TRUE);
+				$this->master["content"] = $this->load->view("admin/news_category/content.php",$this->data, TRUE);
+				$this->render();
 			}
 	}
 
@@ -920,6 +1044,237 @@ class Admin extends CI_Controller {
 		}
 	}
 
+	public function Update_news(){
+		if($_SESSION['admin_id'] == null || $_SESSION['admin_id'] == ""){
+			redirect("Admin/Logout");
+		}else{
+				$this->load->model('Admin/Langguage/langguage_query','langguage_query', true);
+				$this->load->model('Admin/News/News_query','News_query', true);
+				$this->form_validation->set_rules('news_id', 'news_id', 'trim|required');
+				$this->form_validation->set_rules('trans_key', 'trans_key', 'trim|required');
+				$this->form_validation->set_rules('tag_id', 'tag_id', 'trim|required');
+				$this->form_validation->set_rules('title[bahasa]', 'title', 'trim|required|min_length[3]');
+				$this->form_validation->set_rules('content[bahasa]', 'content', 'trim|required|min_length[3]');
+				$this->form_validation->set_rules('is_draft', 'is_draft', 'trim');
+
+				if($this->form_validation->run() == TRUE)
+				{
+
+					$is_save = true;
+
+					$news_id = $this->input->post('news_id');
+					$trans_key = $this->input->post('trans_key');
+					$detail_news_id = $news_id;
+
+
+					$date = date_create();
+					$update_date = date("Y-m-d H:i:s");
+					$created_date = date("Y-m-d H:i:s");
+
+
+					if($is_save == true){
+
+						if($_FILES['thumbnail']['error'] === 0) {
+							$upload_config['upload_path'] = 'assets/' . $this->config->item('news');
+							$upload_config['allowed_types'] = 'jpg|jpeg|png|svg';
+							$upload_config['max_height'] = 500;
+							$upload_config['max_width'] = 500;
+							$upload_config['file_name'] = "news-thumbnail"."-".date_timestamp_get($date);
+							$this->upload->initialize($upload_config);
+							if($this->upload->do_upload('thumbnail')) {
+								$news_thumbnail = $this->upload->data('file_name');
+								$save_status = true;
+							} else {
+								$this->session->set_flashdata('error', 'File thumbnail: ' . $this->upload->display_errors('', ''));
+								$save_status = false;
+								echo $upload_config;
+								die();
+							}
+						}else{
+								$news_thumbnail = $this->News_query->get_news_thumbnail($news_id);
+						}
+
+					}else{
+						$is_save = false;
+					}
+
+
+					if($is_save == true){
+						if($_FILES['header']['error'] === 0) {
+							$upload_config['upload_path'] = 'assets/' . $this->config->item('news');
+							$upload_config['allowed_types'] = 'jpg|jpeg|png|svg';
+							$upload_config['max_height'] = 768;
+							$upload_config['max_width'] = 1360;
+							$upload_config['file_name'] = "news-header"."-".date_timestamp_get($date);
+							$this->upload->initialize($upload_config);
+							if($this->upload->do_upload('header')) {
+								$news_header = $this->upload->data('file_name');
+								$is_save = true;
+							} else {
+								$this->session->set_flashdata('error', 'File header: ' . $this->upload->display_errors('', ''));
+								$is_save = false;
+							}
+						}else{
+								$news_header = $this->News_query->get_news_header($news_id);
+						}
+
+					}else{
+						$is_save = false;
+					}
+
+					if($is_save){
+						$data['title'] = $this->input->post('title');
+
+						$data['content'] = $this->input->post('content');
+						$data['tag_id'] = $this->input->post('tag_id');
+						$data['news_thumbnail_type'] = $this->input->post('news_thumbnail_type');
+
+						$lower_name = strtolower($data['title']['english']);
+						$lower_name	= preg_replace("/[^a-zA-Z0-9]/", "", $lower_name);
+						$slug = str_replace(" ","_",$lower_name);
+
+						$post_date = $this->input->post('published_at');
+						$post_date = date('Y-m-d H:i:s', strtotime($post_date));
+
+
+						$data['is_active'] = $this->input->post('is_draft');
+
+						if($data['is_active'] != null || $data['is_active'] != ""){
+							$data['status'] = 2;
+						}else{
+							$data['status'] = 1;
+						}
+
+						$news = [
+									"news_id" => $news_id,
+									"news_slug" => $slug,
+									"news_title" => $data['title']['english'],
+									"tag_id" => $data['tag_id'],
+									"news_thumbnail_type" => $data['news_thumbnail_type'],
+									"news_thumbnail" => $news_thumbnail,
+									"news_header" => $news_header,
+									"news_youtube" => null,
+									"news_content" => $data['content']['english'],
+									"status" => $data['status']
+						];
+
+						$short_translations = [
+							"trans_key" => $trans_key,
+							"english" => $data['title']['english'],
+							"bahasa" => $data['title']['bahasa'],
+							"spanyol" => $data['title']['spanyol'],
+							"updated_by" => $_SESSION['admin_id'],
+							"updated_at" => $update_date
+						];
+
+						$long_translations = [
+							"trans_key" => $trans_key,
+							"english" => $data['content']['english'],
+							"bahasa" => $data['content']['bahasa'],
+							"spanyol" => $data['content']['spanyol'],
+							"updated_by" => $_SESSION['admin_id'],
+							"updated_at" => $update_date
+						];
+
+						$update_news = $this->News_query->update_news($news);
+						$update_short_translations = $this->langguage_query->update_short_translations($short_translations);
+						$update_long_translations = $this->langguage_query->update_long_translations($long_translations);
+
+						if($update_news && $update_short_translations && $update_long_translations){
+							$is_save = true;
+							$this->session->set_flashdata('success', "news data has been update");
+						}else{
+							$is_save = false;
+							$this->session->set_flashdata('error', "news data failed update");
+						}
+
+					}else{
+						$this->session->set_flashdata('error', "image news failed to upload");
+					}
+
+				}else{
+					$is_save = false;
+					$this->session->set_flashdata('error', "make sure the form is filled in correctly");
+
+				}
+				//echo validation_errors();
+				redirect("Admin/detail_news/".$detail_news_id);
+		}
+	}
+
+	public function Submit_news_category(){
+		if($_SESSION['admin_id'] == null || $_SESSION['admin_id'] == ""){
+			redirect("Admin/Logout");
+		}else{
+			$this->load->model('Admin/News/News_query','News_query', true);
+
+			$this->form_validation->set_rules('tag_title', 'tag_title', 'trim|required');
+			$this->form_validation->set_rules('is_draft', 'is_draft', 'trim');
+
+			if($this->form_validation->run() == TRUE)
+			{
+					$is_save = true;
+					$last_order = $this->News_query->get_last_tag_order();
+
+					if($last_order == 0){
+						$tag_order = 1;
+					}else{
+						$tag_order = $last_order + 1;
+					}
+
+
+					$date = date_create();
+					$post_date = date("Y-m-d H:i:s");
+
+					if($is_save){
+
+						$tag_title = $this->input->post('tag_title');
+
+						$lower_name = strtolower($data['title']['english']);
+						$lower_name	= preg_replace("/[^a-zA-Z0-9]/", "", $lower_name);
+						$slug = str_replace(" ","_",$lower_name);
+
+						$data['is_active'] = $this->input->post('is_draft');
+
+						if($data['is_active'] != null || $data['is_active'] != ""){
+							$data['status'] = 2;
+						}else{
+							$data['status'] = 1;
+						}
+
+						$tag[] = [
+									"tag_id" => null,
+									"tag_title" => $tag_title,
+									"tag_slug" => $slug,
+									"tag_order" => $tag_order,
+									"post_date" => $post_date,
+									"post_by" => $_SESSION['admin_id'],
+									"delete_date" => null,
+									"delete_by" => null,
+									"status" => $data['status']
+						];
+
+						$submit_tag = $this->News_query->add_tag($tag);
+
+						if($submit_tag){
+							$is_save = true;
+							$this->session->set_flashdata('success', "category news data has been saved");
+						}else{
+							$is_save = false;
+							$this->session->set_flashdata('error', "category news failed saved");
+						}
+					}else{
+						$is_save = false;
+						$this->session->set_flashdata('error', "an error occurs contact the developer");
+					}
+			}else{
+				$is_save = false;
+				$this->session->set_flashdata('error', "make sure the form is filled in correctly");
+			}
+		}
+		redirect("Admin/News_category");
+	}
+
 	public function delete_news($news_id){
 			$this->load->model('Admin/News/News_query','News_query', true);
 
@@ -981,18 +1336,23 @@ class Admin extends CI_Controller {
 			}
 	}
 
+
+
 	public function Inquiry_list_data()
 	{
-
 			$this->load->model('Admin/Inquery/Inquery_query','Inquery_query', true);
-
 			$postData = $this->input->get();
 			//$exporter_list = $this->Exporter_query->get_list();
-
 			$Inquery_list = $this->Inquery_query->Inquery_list($postData);
-
 			echo json_encode($Inquery_list);
+	}
 
+	public function Tag_list_data()
+	{
+			$this->load->model('Admin/News/News_query','News_query', true);
+			$postData = $this->input->get();
+			$Tag_list = $this->News_query->tag_list_data($postData);
+			echo json_encode($Tag_list);
 	}
 
 	public function Inquiry_detail($inquiry_id){
@@ -1006,6 +1366,7 @@ class Admin extends CI_Controller {
 
 			$this->data['data'] = $this->Inquery_query->Inquery_detail($inquiry_id);
 			$this->data['data']['importer'] = $this->Importer_query->importer_category_list();
+
 			//var_dump($this->data['data']['detail_news']);
 
 
@@ -1062,6 +1423,64 @@ class Admin extends CI_Controller {
 				$this->session->set_flashdata('error', "inquiry failed to update");
 				redirect("Admin/Inquiry_detail/".$inquiry_id);
 			}
+	}
+
+
+	public function submit_inquery_importer_list(){
+		$this->load->model('Admin/Inquery/Inquery_query','Inquery_query', true);
+		$exporter_id = $this->input->get('exporter_id');
+		$inquiry_id = $this->input->get('inquiry_id');
+		$product_id = $this->input->get('category_id');
+		$importer_id = $this->input->get('subcategory_id');
+		$post_date = date("Y-m-d H:i:s");
+		$post_by = $_SESSION['admin_id'];
+
+
+
+			$inquiry_importer_list []= [
+						"importer_inquiry_id" => null,
+						"inquiry_id" => $inquiry_id,
+						"importer_id" => $importer_id,
+						"product_id" => $product_id,
+						"exporter_id" => $exporter_id,
+						"post_date" => $post_date,
+						"post_by" => $post_by,
+						"update_date" => $post_date,
+						"update_by" => $post_by,
+						"delete_date" => null,
+						"delete_by" => null,
+						"status" => 1
+			];
+
+			$inquery_importer_list_ = $this->Inquery_query->inquery_importer_list_save($inquiry_importer_list);
+			echo json_encode($inquery_importer_list);
+
+	}
+
+	public function delete_importer_inquiry($inquiry,$importer_inquiry_id){
+		$this->load->model('Admin/Inquery/Inquery_query','Inquery_query', true);
+
+		$inquiry = $inquiry;
+		$importer_inquiry_id = $importer_inquiry_id;
+		$delete_date = date("Y-m-d H:i:s");
+		$delete_by = $_SESSION['admin_id'];
+
+		$delete = [
+			"importer_inquiry_id " => $importer_inquiry_id,
+			"delete_date" => $delete_date,
+			"delete_by" => $delete_by,
+			"status" => 2
+		];
+
+		$importer_inquiry_delete = $this->Inquery_query->inquiry_importer_delete($delete,$importer_inquiry_id);
+
+		if($importer_inquiry_delete){
+			$this->session->set_flashdata('success', "Importer list has been delete");
+		}else{
+			$this->session->set_flashdata('error', "Importer list failed delete");
+		}
+			redirect("Admin/Inquiry_detail/".$inquiry);
+
 	}
 
 	/*public function News_add(){
@@ -1751,6 +2170,8 @@ class Admin extends CI_Controller {
 
 	}
 
+
+
 	public function get_list_importer_product_category(){
 		$this->load->model('Admin/Importer/Importer_query','Importer_query', true);
 		//$category_id = $this->input->get('category_id');
@@ -1817,7 +2238,7 @@ class Admin extends CI_Controller {
 					$register['status'] = true;
 					$register['message'] = "Sorry, your message not send to ".$email.",please contact administrator ";
 				}else{
-					
+
 					$update = [
 						"send_email" => 1
 					];

@@ -72,7 +72,7 @@ $("#imgInp_2").change(function() {
                 ],
                 toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | print preview media fullpage | forecolor backcolor emoticons",
                 image_title: true,
-                images_upload_url :'<?php echo base_url("Admin/tinymce_upload")?>',
+                images_upload_url :'tiny_upload',
                 automatic_uploads: true,
                 file_picker_types: 'image',
                 images_upload_handler : function(blobInfo, success, failure) {

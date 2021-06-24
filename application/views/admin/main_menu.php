@@ -1,15 +1,15 @@
 <!-- Navigation Menu-->
 <ul class="navigation-menu">
       <li class="has-submenu">
-          <a href="<?php echo base_url();?>Admin"><i class="dripicons-home"></i> Dashborad</a>
+          <a href="<?php echo base_url();?>Admin"><i class="dripicons-home"></i> Dashboard</a>
       </li>
       <li class="has-submenu">
           <a href="#"><i class="dripicons-suitcase"></i> Exporter<i class="mdi mdi-chevron-down mdi-drop"></i></a>
           <ul class="submenu megamenu">
               <li>
                   <ul>
-                      <li><a href="<?php echo base_url()?>Admin/Expoter_management">Managamnet</a></li>
-                      <li><a href="<?php echo base_url()?>Admin/expirate_list">Categories</a></li>
+                      <li><a href="<?php echo base_url()?>Admin/Expoter_management">Management</a></li>
+                      <li><a href="<?php echo base_url()?>Admin/Exporter_category">Categories</a></li>
                       <li><a href="<?php echo base_url()?>Admin/Exporter_subcategory">Sub Categories</a></li>
                   </ul>
               </li>
@@ -26,8 +26,8 @@
           <ul class="submenu megamenu">
               <li>
                   <ul>
-                      <li><a href="<?php echo base_url()?>Admin/News_management">Managamnet</a></li>
-                      <li><a href="<?php echo base_url()?>Admin/News_categories">Categories</a></li>
+                      <li><a href="<?php echo base_url()?>Admin/News_management">Management</a></li>
+                      <li><a href="<?php echo base_url()?>Admin/News_category">Categories</a></li>
                   </ul>
               </li>
           </ul>
@@ -36,7 +36,7 @@
 
 
       <li class="has-submenu">
-          <a href="#"><i class="dripicons-suitcase"></i> Other Fiture<i class="mdi mdi-chevron-down mdi-drop"></i></a>
+          <a href="#"><i class="dripicons-suitcase"></i> Other Features<i class="mdi mdi-chevron-down mdi-drop"></i></a>
           <ul class="submenu megamenu">
               <li>
                   <ul>

@@ -101,6 +101,105 @@ class News_query extends CI_Model {
 	}
 }
 
+function tag_list_data($postData=null){
+	require_once('list_tag.php');
+	$response = array();
+
+	## Read value
+	$draw = $postData['draw'];
+	$start = $postData['start'];
+	$rowperpage = $postData['length']; // Rows display per page
+	$columnIndex = $postData['order'][0]['column']; // Column index
+	$columnName = $postData['columns'][$columnIndex]['data']; // Column name
+	$columnSortOrder = $postData['order'][0]['dir']; // asc or desc
+	$searchValue = $postData['search']['value']; // Search value
+
+	## Search
+	$searchQuery = "";
+	if($searchValue != ''){
+		$searchQuery = "(tag_title like '%".$searchValue."%')";
+	}
+
+	/*
+	if($searchValue != ''){
+	$searchQuery = " (exporter_name like '%".$searchValue."%' or
+	exporter_email like '%".$searchValue."%' or
+	post_date like'%".$searchValue."%' or
+	status like'%".$searchValue."%' ) ";
+}
+*/
+
+
+## Total number of records without filtering
+$this->db->select('count(*) as allcount');
+$records = $this->db->get('itpc_tag')->result();
+$totalRecords = $records[0]->allcount;
+
+## Total number of record with filtering
+$this->db->select('count(*) as allcount');
+if($searchQuery != '')
+$this->db->where($searchQuery);
+$records = $this->db->get('itpc_tag')->result();
+$totalRecordwithFilter = $records[0]->allcount;
+
+
+## Fetch records
+//$this->db->select('*');
+$this->db->select([
+	'a.tag_id as id',
+	'a.tag_title as tag_title',
+	'a.post_date as post_date',
+	'b.admin_name as post_by',
+	'a.status as status',
+	]);
+	if($searchQuery != '')
+	$this->db->where($searchQuery);
+	$this->db->where('a.delete_date', null);
+	$this->db->order_by($columnName, $columnSortOrder);
+	$this->db->limit($rowperpage, $start);
+	//$records = $this->db->get('itpc_exporter')->result();
+	$this->db->join('itpc_admin b','a.post_by = b.admin_id');
+	$records = $this->db->get('itpc_tag a');
+
+	//$data = array();
+
+	/*foreach($records as $record ){
+
+	$data[] = array(
+	"id"=>$record->exporter_id,
+	"name"=>$record->exporter_name,
+	"email"=>$record->exporter_email,
+	"post_date"=>$record->post_date,
+	"status"=>$record->status
+	);
+}*/
+
+if($records->num_rows() > 0){
+	$list_tag = [];
+
+	array_map(function($item) use(&$list_tag){
+		$list_tag[] = (new list_tag($item))->to_array();
+		//$category_list[0]['curr_category'] = "subcategory";
+	}, $records->result_array());
+}
+
+
+## Response
+
+if($list_tag){
+
+	$response = array(
+	"draw" => intval($draw),
+	"iTotalRecords" => $totalRecords,
+	"iTotalDisplayRecords" => $totalRecordwithFilter,
+	"aaData" => $list_tag
+	);
+	return $response;
+}else{
+	return FALSE;
+}
+}
+
 function tag_list(){
 	$this->db->select([
 		'a.tag_id as tag_id',
@@ -133,11 +232,71 @@ function get_last_order(){
 
 }
 
+function get_last_tag_order(){
+	$this->db->select([
+		'a.tag_order as tag_order',
+	]);
+	$this->db->order_by('a.tag_order','DESC');
+	$query = $this->db->get('itpc_tag a');
+	if($query){
+		foreach($query->result() as $row){
+		 return $row->tag_order;
+		}
+	}else{
+		return false;
+	}
+
+}
+
+function get_news_thumbnail($news_id){
+	$this->db->select([
+		'a.news_thumbnail as news_thumbnail',
+	]);
+		$this->db->where('a.news_id', $news_id);
+	$query = $this->db->get('itpc_news a');
+	if($query){
+		foreach($query->result() as $row){
+		 return $row->news_thumbnail;
+		}
+	}else{
+		return false;
+	}
+}
+
+function get_news_header($news_id){
+	$this->db->select([
+		'a.news_header as news_header',
+	]);
+		$this->db->where('a.news_id', $news_id);
+	$query = $this->db->get('itpc_news a');
+	if($query){
+		foreach($query->result() as $row){
+		 return $row->news_header;
+		}
+	}else{
+		return false;
+	}
+}
+
 function add_news($news){
   $result =	$this->db->insert_batch('itpc_news', $news);
   if(!$result)
      $this->session->set_flashdata('error', 'Gagal menyimpan data');
   return $result;
+}
+
+
+function add_tag($tag){
+  $result =	$this->db->insert_batch('itpc_tag', $tag);
+  if(!$result)
+     $this->session->set_flashdata('error', 'Gagal menyimpan data');
+  return $result;
+}
+
+function update_news($news){
+      $this->db->where('news_id',$news['news_id']);
+      $result = $this->db->update('itpc_news', $news);
+      return true;
 }
 
 function delete_news($news){

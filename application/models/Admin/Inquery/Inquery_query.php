@@ -179,5 +179,24 @@ function update_approved($update){
 	}
 }
 
+function inquery_importer_list_save($inquiry_importer_list){
+	$result =	$this->db->insert_batch('itpc_importer_inquiry',$inquiry_importer_list);
+	if($result){
+		 return true;
+	}else{
+		 return false;
+	}
+}
+
+function inquiry_importer_delete($delete,$importer_inquiry_id){
+	$this->db->where('importer_inquiry_id',$importer_inquiry_id);
+	$result = $this->db->update('itpc_importer_inquiry',$delete);
+	if($result){
+		return true;
+	}else{
+		return false;
+	}
+}
+
 
 }

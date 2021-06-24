@@ -165,7 +165,8 @@
 								<div id="feed-container"></div>
 								<div class="card-body">
 									<div class="row">
-										<input type="hidden" name="exporter_id" id="exporter_id" class="form-control" required placeholder="Type something" value="<?php echo $data['expoter_data'][0]['exporter_id']; ?>"/>
+										<input type="hidden" name="exporter_id" id="exporter_id" class="form-control" required placeholder="Type something" value="<?php echo $data['inquiry_detail'][0]['exporter_id']; ?>"/>
+										<input type="hidden" name="inquiry_id" id="inquiry_id" class="form-control" required placeholder="Type something" value="<?php echo $data['inquiry_detail'][0]['inquiry_id']; ?>"/>
 										<input type="hidden" name="<?php echo $this->security->get_csrf_token_name(); ?>" value="<?php echo $this->security->get_csrf_hash(); ?>">
 										<div class="col-md-6">
 													<div class="form-group">

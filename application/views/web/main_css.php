@@ -3,6 +3,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>ITPC</title>
 <meta name="description" content="">
+<link rel="icon" href="<?php echo base_url();?>assets/website/icon.png" type="image/png" sizes="120x120">
 
 <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
 <!--Style-->
@@ -32,9 +33,3 @@
 <script src="<?php echo $this->config->item('frontend'); ?>js/js_lib.js"></script>
 <script src="<?php echo $this->config->item('frontend'); ?>js/js_run.js"></script>
 <script src="<?php echo $this->config->item('frontend'); ?>js/jquery.infinitescroll.js"></script>
-
-
-
-
-
-

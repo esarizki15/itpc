@@ -82,6 +82,7 @@ $('form#category_form').submit(function(e) {
 
 
     var exporter_id = $("#exporter_id").val();
+    var inquiry_id = $("#inquiry_id").val();
     var category_id = $("#category_id").val();
     var subcategory_id = $("#subcategory_id").val();
 
@@ -93,9 +94,9 @@ $('form#category_form').submit(function(e) {
       e.preventDefault();
     $.ajax({
         type: "GET",
-        url: "<?php echo site_url('Admin/submit_expoter_category');?>",
+        url: "<?php echo site_url('Admin/submit_inquery_importer_list');?>",
         //data: form.serialize(), // <--- THIS IS THE CHANGE
-        data:{exporter_id: exporter_id, category_id: category_id , subcategory_id: subcategory_id},
+        data:{exporter_id: exporter_id, inquiry_id: inquiry_id,category_id: category_id , subcategory_id: subcategory_id},
         dataType: "json",
         success: function(data){
               //$('#feed-container').prepend(data);
@@ -127,7 +128,7 @@ function getRealData() {
            var html = '';
            var i;
            for(i=0,no=1; i<data.length; i++,no++){
-               html += '<tr><td>'+no+'</td><td>'+data[i].importer_name+'</td><td>'+data[i].category_title+'</td><td><a class="btn btn-danger waves-effect waves-light" href="<?php echo base_url();?>Admin/delete_expoter_categories/'+data[i].importer_inquiry_id+'" ><i class="fas fa-trash-alt"></i></td></tr>';
+               html += '<tr><td>'+no+'</td><td>'+data[i].importer_name+'</td><td>'+data[i].category_title+'</td><td><a class="btn btn-danger waves-effect waves-light" href="<?php echo base_url();?>Admin/delete_importer_inquiry/'+data[i].inquiry_id+'/'+data[i].importer_inquiry_id+'" ><i class="fas fa-trash-alt"></i></td></tr>';
            }
            $('#list_importer_categories').html(html);
         },

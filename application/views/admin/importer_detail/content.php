@@ -37,7 +37,7 @@
 									<div class="row">
 										<input type="hidden" name="<?php echo $this->security->get_csrf_token_name(); ?>" value="<?php echo $this->security->get_csrf_hash(); ?>">
 										<div class="col-md-6">
-											<input type="text" name="importer_id" id="importer_id" class="form-control" required placeholder="Type something" value="<?php echo $item_detail['importer_id'];?>"/>
+											<input type="hidden" name="importer_id" id="importer_id" class="form-control" required placeholder="Type something" value="<?php echo $item_detail['importer_id'];?>"/>
 											<div class="form-group">
 												<label>Importer Name<span style="color:red">*</span></label>
 												<input type="text" name="importer_name" class="form-control" required placeholder="Type something" value="<?php echo $item_detail['importer_name'];?>"/>

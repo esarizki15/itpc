@@ -35,7 +35,7 @@ class detail_news {
 				case 'post_date':
 				if(array_key_exists($key, $arr)){
 							date_default_timezone_set('Asia/Jakarta');
-							$date_publish = (new DateTime())->createFromFormat('Y-m-d H:i:s', $arr[$key])->format('m/d/Y');
+							$date = (new DateTime())->createFromFormat('Y-m-d H:i:s', $arr[$key])->format('m/d/Y');
 							$this->$key = $date;
 						}
 						break;

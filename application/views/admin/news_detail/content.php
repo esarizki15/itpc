@@ -25,7 +25,7 @@
 			<div class="card-body">
 				<div class="card-body">
 					<h4 class="mt-0 header-title">Form Detail News</h4>
-					<form action="<?php echo base_url(); ?>Admin/Update_news" method="post" enctype="multipart/form-data">
+					<form action="<?php echo base_url(); ?>Admin/Update_news" method="POST" enctype="multipart/form-data">
 						<?php
 						 foreach ($data['detail_news'] as $key_news => $item_news) {
 					 ?>
@@ -33,6 +33,8 @@
 							<div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
 								<div class="card-body">
 									<div class="row">
+										<input type="hidden" name="news_id" value="<?php echo $item_news['news_id'];?>">
+										<input type="hidden" name="trans_key" value="<?php echo $item_news['trans_key'];?>">
 										<input type="hidden" name="<?php echo $this->security->get_csrf_token_name(); ?>" value="<?php echo $this->security->get_csrf_hash(); ?>">
 										<div class="col-md-6">
 											<div class="form-group">
@@ -82,9 +84,8 @@
 												 </select>
 										 </div>
 										</div>
-
-
 										<div class="col-md-6">
+
 											<div class="input-group">
 												 <input type="text" class="form-control" placeholder="mm/dd/yyyy" value="<?php echo $item_news['post_date']; ?>" name="published_at" id="published_at">
 												 <div class="input-group-append bg-custom b-0"><span class="input-group-text"><i class="mdi mdi-calendar"></i></span></div>
