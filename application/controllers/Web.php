@@ -1213,6 +1213,8 @@ class WEB extends CI_Controller
 
 
         $auth_code = $this->session->user_logged['auth_code'];
+        //pr($this->input->get('detail'));exit;
+
         $exporter_id =  $this->User_query->detail_exporter($this->session->user_logged['user_id'])['exporter_detail'][0]['id'];
         $get_auth_code = $this->Auth->cek_auth($auth_code);
 
@@ -1220,7 +1222,8 @@ class WEB extends CI_Controller
             if ($get_auth_code['user_id'] == $exporter_id) {
                 $page = $this->input->post('page', true);
                 $limit = 10;
-                $list_inquiry['data'] = $this->Inquiry_query->get_list_inquiry($limit, $page, $exporter_id);
+                $list_inquiry['data'] = $this->Inquiry_query->get_detail_inquiry($this->input->get('detail'));
+                //pr($list_inquiry);exit;
 
                 if ($list_inquiry['data']) {
                     $list_inquiry['status'] = true;
@@ -1246,6 +1249,7 @@ class WEB extends CI_Controller
         $user_id = $this->session->user_logged['user_id'];
         $list_inquiry['user_id'] = $user_id;
         $list_inquiry['detail_user'] = $this->User_query->detail_exporter($user_id);
+        //pr($list_inquiry);exit;
         //pr($list_inquiry);exit;
         $this->master["content"] = $this->load->view("web/dashboard/inquiry_progress.php", $list_inquiry, true);
         $this->render();

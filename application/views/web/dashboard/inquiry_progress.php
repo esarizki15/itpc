@@ -13,14 +13,15 @@
         
         <?php 
         if($data){
-        foreach($data as $item) { ?>
+          //echo count($data);exit;
+        foreach($data['detail'] as $item) { ?>
   				<div class="box_exporter" style="displa:none">
   					<div class="progres_row rows">
               <span class="titleProgress">Progress (<?=$item['progress']?>%)</span>
               <span class="titleProgress"><?php if($item['progress'] < 100){?> Status (On Progress)<?php } else{echo "finish";} ?></span>
               <div class="progress-bar">
                 <div id="progressbar"></div>
-                <input type="hidden" class="persentasenya" value="<?=$item['progress']?>" >
+                <input type="hidden" class="persentasenya" value="<?php echo $item['progress'];?>" >
               </div>
             </div>
             <div class="rows">
@@ -36,7 +37,7 @@
                   <div class="item_inquiry">
                     <div class="group_inquiry">
                       <label>Inquiry Title</label>
-                      <p><?=$item['inquiry_title']?></p>
+                      <p><?php echo $item['inquiry_title'];?></p>
                     </div><!--end.group_inquiry-->
 
                     <div class="group_inquiry">
@@ -67,7 +68,7 @@
 
                     <div class="group_inquiry">
                       <label>Product Capacity</label>
-                      <p></p>
+                      <p><?=$item['product_capacity']?></p>
                     </div><!--end.group_inquiry-->
 
                   </div>
@@ -123,8 +124,10 @@
 
 <script type="text/javascript">
 $(document).ready(function() {
+  var nilai = <?php echo intval($data['detail'][0]['progress']); ?>;
+  
  $( "#progressbar" ).progressbar({
-    value: $(this).next().val()
+    value: nilai
   });
 
 });
