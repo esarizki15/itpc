@@ -102,8 +102,8 @@ class Home_data_query extends CI_Model{
 
         $this->db->where('status', 1);
         $this->db->where('delete_date', null);
-        $this->db->order_by('indo_product_id','ASC');
-        $this->db->limit(4);
+        $this->db->order_by('indo_product_id','DESC');
+        $this->db->limit(12);
         $query = $this->db->get('itpc_indo_product');
         $indonesia_product = [];
         array_map(function($item) use(&$indonesia_product){

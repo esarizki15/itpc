@@ -155,7 +155,7 @@ $(document).ready(function() {
               stagePadding:60,
           },
           1000:{
-              items:3,
+              items:5,
               margin:55,
               stagePadding:250,
           }

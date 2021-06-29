@@ -198,5 +198,116 @@ function inquiry_importer_delete($delete,$importer_inquiry_id){
 	}
 }
 
+function Inquery_inbox($inquiry_id){
+	require_once('list_inbox.php');
+	$this->db->select([
+		'a.inbox_id as inbox_id',
+		'a.inbox_content as inbox_content',
+		'a.inbox_read as inbox_read',
+		'a.post_date as post_date'
+	]);
+
+	$this->db->where('a.inquiry_id', $inquiry_id);
+	$this->db->where('a.delete_date', null);
+	$this->db->where('a.status', 1);
+	$this->db->order_by('a.inbox_id', DESC);
+	$query = $this->db->get('itpc_inbox a');
+
+	$list_inbox = [];
+	array_map(function($item) use(&$list_inbox){
+		$list_inbox[] = (new list_inbox($item))->to_array();
+	}, $query->result_array());
+
+	$query->free_result();
+	$this->db->reset_query();
+
+	return $list_inbox;
+
+}
+
+
+function Inbox_list($postData=null){
+	require_once('list_inbox.php');
+	$response = array();
+
+	## Read value
+	$draw = $postData['draw'];
+	$start = $postData['start'];
+	$rowperpage = $postData['length']; // Rows display per page
+	$columnIndex = $postData['order'][0]['column']; // Column index
+	$columnName = $postData['columns'][$columnIndex]['data']; // Column name
+	$columnSortOrder = $postData['order'][0]['dir']; // asc or desc
+	$searchValue = $postData['search']['value']; // Search value
+
+	## Search
+	$searchQuery = "";
+	if($searchValue != ''){
+		$searchQuery = "(inbox_content like '%".$searchValue."%' or inbox_content like '%".$searchValue."%' )";
+	}
+
+## Total number of records without filtering
+$this->db->select('count(*) as allcount');
+$records = $this->db->get('itpc_inbox')->result();
+$totalRecords = $records[0]->allcount;
+
+## Total number of record with filtering
+$this->db->select('count(*) as allcount');
+if($searchQuery != '')
+$this->db->where($searchQuery);
+$records = $this->db->get('itpc_inbox')->result();
+$totalRecordwithFilter = $records[0]->allcount;
+
+
+## Fetch records
+//$this->db->select('*');
+$this->db->select([
+	'a.inbox_id as inbox_id',
+	'a.inbox_content as inbox_content',
+	'a.inbox_read as inbox_read',
+	'a.post_date as post_date'
+	]);
+	if($searchQuery != '')
+	$this->db->where($searchQuery);
+	$this->db->where('a.delete_date', null);
+	$this->db->order_by($columnName, $columnSortOrder);
+	$this->db->limit($rowperpage, $start);
+	$inbox = $this->db->get('itpc_inbox a');
+
+
+if($inbox->num_rows() > 0){
+	$list_inbox = [];
+
+	array_map(function($item) use(&$list_inbox){
+		$list_inbox[] = (new list_inbox($item))->to_array();
+	}, $inbox->result_array());
+}
+
+
+## Response
+
+if($list_inbox){
+
+	$response = array(
+	"draw" => intval($draw),
+	"iTotalRecords" => $totalRecords,
+	"iTotalDisplayRecords" => $totalRecordwithFilter,
+	"aaData" => $list_inbox
+	);
+	return $response;
+}else{
+	return FALSE;
+}
+}
+
+
+function Inbox_submit($inbox){
+	$result =	$this->db->insert_batch('itpc_inbox',$inbox);
+	if($result){
+		 return true;
+	}else{
+		 return false;
+	}
+}
+
 
 }

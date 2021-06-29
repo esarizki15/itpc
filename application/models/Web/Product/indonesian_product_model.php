@@ -11,7 +11,7 @@ class Indonesian_product_model extends CI_Model{
 
       $this->db->where('status', 1);
       $this->db->where('delete_date', null);
-      $this->db->order_by('indo_product_id','ASC');
+      $this->db->order_by('indo_product_id','DESC');
       $this->db->limit($limit, $start);
       //$this->db->limit(4);
       $query = $this->db->get('itpc_indo_product');

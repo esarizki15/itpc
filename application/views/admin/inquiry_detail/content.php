@@ -152,6 +152,10 @@
 	</div> <!-- end col -->
 </div> <!-- end row -->
 
+
+
+
+
 <?php
 		if($approvel_status != "waiting"){
 ?>
@@ -173,6 +177,7 @@
                              <select class="js-states form-control" name="category_id" id="category_id" data-live-search="true">
 															 	<option value="0">Select a category</option>
 																 <?php
+
  																	foreach ($data['importer'] as $key_importer_categories => $item_importer_categories) {
  																?>
  																 <option value="<?php echo $item_importer_categories['category_id']; ?>"><?php echo $item_importer_categories['category_title']; ?></option>
@@ -221,6 +226,58 @@
           </div>
 			</div>
 		</div>
+
+		<div class="row">
+			<div class="col-12">
+					<div class="card m-b-30">
+						 <div class="card-body">
+							 	<div id="feed-inbox"></div>
+							 <form class="" id="inbox_form" action="#">
+								 <input type="hidden" name="exporter_id_inbox" id="exporter_id_inbox" class="form-control" required placeholder="Type something" value="<?php echo $data['inquiry_detail'][0]['exporter_id']; ?>"/>
+								 <input type="hidden" name="inquiry_id_inbox" id="inquiry_id_inbox" class="form-control" required placeholder="Type something" value="<?php echo $data['inquiry_detail'][0]['inquiry_id']; ?>"/>
+								<input type="hidden" name="<?php echo $this->security->get_csrf_token_name(); ?>" value="<?php echo $this->security->get_csrf_hash(); ?>">
+							 <div class="form-group">
+								 	<h3>Inbox Form</h3>
+									 <div>
+											 <textarea required class="form-control" rows="5" name="inbox_content" id="inbox_content" required></textarea>
+									 </div>
+							 </div>
+						   <div class="form-group">
+								 <div class="text-center">
+									 <button type="submit" class="btn btn-primary waves-effect waves-light">
+											 Submit
+									 </button>
+								 </div>
+							 </div>
+						 </form>
+						 </div>
+					</div>
+			</div>
+		</div>
+
+		<div class="row">
+			 <div class="col-12">
+					 <div class="card m-b-30">
+
+							 <div class="card-body">
+								 <h3>Inbox List</h3>
+									<table id="empTable"  class="table table-striped table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+											<thead>
+													<tr>
+															<th>No</th>
+															<th>Post date</th>
+															<th>Inbox Message</th>
+															<th>Status</th>
+															<th>Action</th>
+													</tr>
+											</thead>
+											<tbody></tbody>
+									</table>
+							 </div>
+						</div>
+				</div>
+		</div>
+
 
 	</div>
 </div>

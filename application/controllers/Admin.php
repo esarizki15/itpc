@@ -1366,7 +1366,7 @@ class Admin extends CI_Controller {
 
 			$this->data['data'] = $this->Inquery_query->Inquery_detail($inquiry_id);
 			$this->data['data']['importer'] = $this->Importer_query->importer_category_list();
-
+			$this->data['data']['list_inbox'] = $this->Inquery_query->Inquery_inbox($inquiry_id);
 			//var_dump($this->data['data']['detail_news']);
 
 
@@ -1375,6 +1375,43 @@ class Admin extends CI_Controller {
 			$this->master["content"] = $this->load->view("admin/inquiry_detail/content.php",$this->data, TRUE);
 			$this->render();
 			}
+	}
+
+	public function Get_inbox_list(){
+			$this->load->model('Admin/Inquery/Inquery_query','Inquery_query', true);
+			$inquiry_id = $this->input->get();
+			$inbox_list = $this->Inquery_query->Inbox_list($inquiry_id);
+			echo json_encode($inbox_list);
+	}
+
+	public function Submit_inbox_data(){
+		$this->load->model('Admin/Inquery/Inquery_query','Inquery_query', true);
+		$inbox_content = $this->input->get('inbox_content');
+		$exporter_id = $this->input->get('exporter_id');
+		$inquiry_id = $this->input->get('inquiry_id');
+		$post_date = date("Y-m-d H:i:s");
+		$post_by = $_SESSION['admin_id'];
+
+
+
+			$inbox []= [
+						"inbox_id " => null,
+						"inbox_content" => $inbox_content,
+						"inbox_read" => 0,
+						"inquiry_id" => $inquiry_id,
+						"exporter_id" => $exporter_id,
+						"post_date" => $post_date,
+						"post_by" => $post_by,
+						"update_date" => $post_date,
+						"update_by" => $post_by,
+						"delete_date" => null,
+						"delete_by" => null,
+						"status" => 1
+			];
+
+			$inbox_submit = $this->Inquery_query->Inbox_submit($inbox);
+			echo json_encode($inbox_submit);
+
 	}
 
 	public function get_importer_list(){
@@ -1835,7 +1872,7 @@ class Admin extends CI_Controller {
 		echo json_encode($importer_filter);
 	}
 
-	public function Slider_managment(){
+	public function Slider_management(){
 		if($_SESSION['admin_id'] == null || $_SESSION['admin_id'] == ""){
 			redirect("Admin/Logout");
 			}else{
@@ -1967,7 +2004,7 @@ class Admin extends CI_Controller {
 					$is_save = false;
 					$this->session->set_flashdata('error', "make sure the form is filled in correctly");
 				}
-					redirect("Admin/Slider_managment/");
+					redirect("Admin/Slider_management/");
 			}
 	}
 
@@ -1987,19 +2024,47 @@ class Admin extends CI_Controller {
 		}
 
 		$update = [
+					"update_date" => $update_date,
+					"update_by" => $update_by,
+					"status" => $status
+		];
+		$slider_status = $this->Slider_query->slider_status_update($update,$slider_id);
+
+		if($slider_status){
+				$this->session->set_flashdata('success', "slider data has been update");
+		}else{
+				$this->session->set_flashdata('error', "slider failed update");
+		}
+
+		redirect("Admin/Slider_management");
+
+	}
+
+	public function slider_delete($slider_id){
+
+		$this->load->model('Admin/Slider/Slider_query','Slider_query', true);
+
+		$delete_date = date("Y-m-d H:i:s");
+		$delete_by = $_SESSION['admin_id'];
+
+		$status = $this->Slider_query->cek_status($slider_id);
+		$status = 2;
+
+
+		$update = [
 					"update_date" => $delete_date,
 					"update_by" => $delete_by,
 					"status" => $status
 		];
-		$slider_status = $this->Slider_query->exporter_delete($update,$slider_id);
+		$slider_status = $this->Slider_query->slider_status_update($update,$slider_id);
 
-		if($exporter_category_delete){
-				$this->session->set_flashdata('success', "exporter category data has been delete");
+		if($slider_status){
+				$this->session->set_flashdata('success', "slider data has been update");
 		}else{
-				$this->session->set_flashdata('error', "exporter category failed delete");
+				$this->session->set_flashdata('error', "slider failed update");
 		}
 
-		redirect("Admin/Expoter_management");
+		redirect("Admin/Slider_management");
 
 	}
 

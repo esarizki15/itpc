@@ -136,7 +136,7 @@
 													}
 												?>
 												<a href="<?php echo base_url();?>Admin/slider_status_update/<?php echo $item_useful['slider_id']; ?>" class="btn <?php echo $status; ?> waves-effect waves-light"><i class="fas fa-check"></i></a>
-												<a href="" class="btn btn-danger waves-effect waves-light"><i class="fas fa-trash-alt"></i></a>
+												<a href="<?php echo base_url();?>Admin/slider_delete/<?php echo $item_useful['slider_id']; ?>" class="btn btn-danger waves-effect waves-light"><i class="fas fa-trash-alt"></i></a>
 										</td>
 								 	 </tr>
 

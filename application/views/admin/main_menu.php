@@ -43,7 +43,7 @@
                       <li><a href="<?php echo base_url()?>Admin/About_managment">About Us</a></li>
                       <li><a href="<?php echo base_url()?>Admin/Contact_managment">Contact Us</a></li>
                       <li><a href="<?php echo base_url()?>Admin/Indonesia_product_managment">Indonesia Product</a></li>
-                      <li><a href="<?php echo base_url()?>Admin/Slider_managment">Slider Home</a></li>
+                      <li><a href="<?php echo base_url()?>Admin/Slider_management">Slider Home</a></li>
                       <li><a href="<?php echo base_url()?>Admin/Useful_link_managment">Useful links</a></li>
                   </ul>
               </li>

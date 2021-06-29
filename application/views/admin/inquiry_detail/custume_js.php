@@ -1,4 +1,18 @@
 <!-- Parsley js -->
+<script src="<?php echo $this->config->item('admin_source'); ?>plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="<?php echo $this->config->item('admin_source'); ?>plugins/datatables/dataTables.bootstrap4.min.js"></script>
+<!-- Buttons examples -->
+<script src="<?php echo $this->config->item('admin_source'); ?>plugins/datatables/dataTables.buttons.min.js"></script>
+<script src="<?php echo $this->config->item('admin_source'); ?>plugins/datatables/buttons.bootstrap4.min.js"></script>
+<script src="<?php echo $this->config->item('admin_source'); ?>plugins/datatables/jszip.min.js"></script>
+<script src="<?php echo $this->config->item('admin_source'); ?>plugins/datatables/pdfmake.min.js"></script>
+<script src="<?php echo $this->config->item('admin_source'); ?>plugins/datatables/vfs_fonts.js"></script>
+<script src="<?php echo $this->config->item('admin_source'); ?>plugins/datatables/buttons.html5.min.js"></script>
+<script src="<?php echo $this->config->item('admin_source'); ?>plugins/datatables/buttons.print.min.js"></script>
+<script src="<?php echo $this->config->item('admin_source'); ?>plugins/datatables/buttons.colVis.min.js"></script>
+<!-- Responsive examples -->
+<script src="<?php echo $this->config->item('admin_source'); ?>plugins/datatables/dataTables.responsive.min.js"></script>
+<script src="<?php echo $this->config->item('admin_source'); ?>plugins/datatables/responsive.bootstrap4.min.js"></script>
 <script src="<?php echo $this->config->item('admin_source'); ?>plugins/parsleyjs/parsley.min.js"></script>
 
 <script>
@@ -109,6 +123,33 @@ $('form#category_form').submit(function(e) {
  });
 </script>
 
+<script>
+
+$('form#inbox_form').submit(function(e) {
+
+    //var form = $(this);
+
+
+    var inbox_content = $("#inbox_content").val();
+    var exporter_id = $("#exporter_id_inbox").val();
+    var inquiry_id = $("#inquiry_id_inbox").val();
+      e.preventDefault();
+    $.ajax({
+        type: "GET",
+        url: "<?php echo site_url('Admin/Submit_inbox_data');?>",
+        //data: form.serialize(), // <--- THIS IS THE CHANGE
+        data:{inbox_content: inbox_content , exporter_id: exporter_id , inquiry_id: inquiry_id},
+        dataType: "json",
+        success: function(data){
+              //$('#feed-container').prepend(data);
+              $('#feed-inbox').prepend(data);
+        },
+        error: function() { alert("Error posting feed."); }
+    });
+
+ });
+</script>
+
 
 <script>
 $('document').ready(function () {
@@ -138,4 +179,52 @@ function getRealData() {
 }
 
 });
+</script>
+
+
+<script type="text/javascript">
+	var save_method; //for save method string
+	$(document).ready(function() {
+    setInterval(function () {getRealData()}, 1000);//request every x seconds
+		//datatables
+		var table = $('#empTable').DataTable({
+			"processing": true,
+			"serverSide": true,
+      "crossDomain": true,
+      "contentType":"application/json; charset=utf-8",
+      "order": [], //Line ini sudah tidak diperlukan
+			// Load data dari ajax
+			"ajax": {
+				"url": "<?php echo base_url()?>index.php/Admin/Get_inbox_list",
+				"type": "GET" //(untuk mendapatkan data)
+			},
+			// Tambahkan bagian ini:
+			"columns": [                              // Membuat nomor pada datatable (bukan ID user)
+        { "data": null,"sortable": false,
+           render: function (data, type, row, meta) {
+                     return meta.row + meta.settings._iDisplayStart + 1;
+                    }
+        },
+        {data: 'post_date', name: 'post_date'},
+				{data: 'inbox_content', name: 'inbox_content' },
+				{data: 'inbox_read', name: 'inbox_read'},
+				{
+					data:'inbox_id',
+					mRender: function (data) {
+						 return '<a class="btn btn-info waves-effect waves-light" href="<?php echo base_url()?>Admin/exporter_detail/'+ data +'"><i class="fas fa-pencil-alt"></i></a> | \n\
+						 <a class="btn btn-danger waves-effect waves-light" href="<?php echo base_url()?>Admin/exporter_delete/'+ data +'" onclick="javascript:return confirm(\'Anda yakin?\');"><i class="fas fa-trash-alt"></i></a>';
+				 }
+			 }
+			],
+			//Set column definition initialisation properties.
+			"columnDefs":[
+                                // membuat kolom 0 (No.) dan kolom 1 (ID) tidak dapat di search dan sorting
+				{"searchable": false, "orderable": false, "targets": [3,4]},
+			],
+		});
+    setInterval( function () {
+    table.ajax.reload(null, false);
+  }, 8000 );
+	});
+
 </script>

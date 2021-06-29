@@ -13,7 +13,7 @@ class Slider_query extends CI_Model {
 				'a.status as status'
 			]);
 			$this->db->join('short_translations b','a.trans_key = b.trans_key');
-	    $this->db->where('a.status', 1);
+	    $this->db->where('a.status !=', 2);
 			$this->db->where('a.delete_date', null);
 			$query = $this->db->get('itpc_slider a');
 
@@ -33,6 +33,18 @@ class Slider_query extends CI_Model {
 			}else{
 				return false;
 			}
+	}
+
+
+	public slider_detail(){
+		$this->db->select([
+			'a.slider_id as slider_id',
+			'b.bahasa as title_bahasa',
+			'a.file_patch as file_patch',
+			'a.link as link',
+			'a.post_date as post_date',
+			'a.status as status'
+		]);
 	}
 
 	function submit($slider){
@@ -56,6 +68,12 @@ class Slider_query extends CI_Model {
 		}else{
 			return false;
 		}
+	}
+
+	function slider_status_update($update,$slider_id){
+		$this->db->where('slider_id',$slider_id);
+		$result = $this->db->update('itpc_slider', $update);
+		return true;
 	}
 
 
