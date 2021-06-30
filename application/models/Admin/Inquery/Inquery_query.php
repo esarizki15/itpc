@@ -102,6 +102,21 @@ class Inquery_query extends CI_Model {
 	}
 }
 
+function Inquery_progress($inquiry_id){
+	$this->db->select([
+		'progress as progress',
+	]);
+	$this->db->where('inquiry_id', $inquiry_id);
+	$query = $this->db->get('itpc_inquiry');
+	if($query){
+		foreach($query->result() as $row){
+		 return $row->progress;
+		}
+	}else{
+		return false;
+	}
+}
+
 
 function Inquery_detail($inquiry_id){
 
@@ -306,6 +321,16 @@ function Inbox_submit($inbox){
 		 return true;
 	}else{
 		 return false;
+	}
+}
+
+function Update_progress($update,$inquiry_id){
+	$this->db->where('inquiry_id',$inquiry_id);
+	$result = $this->db->update('itpc_inquiry',$update);
+	if($result){
+		return true;
+	}else{
+		return false;
 	}
 }
 

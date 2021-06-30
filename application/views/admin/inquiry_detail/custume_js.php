@@ -15,6 +15,10 @@
 <script src="<?php echo $this->config->item('admin_source'); ?>plugins/datatables/responsive.bootstrap4.min.js"></script>
 <script src="<?php echo $this->config->item('admin_source'); ?>plugins/parsleyjs/parsley.min.js"></script>
 
+
+<script src="<?php echo $this->config->item('admin_source'); ?>plugins/ion-rangeslider/js/ion.rangeSlider.min.js"></script>
+
+
 <script>
      $(document).ready(function() {
          $('form').parsley();
@@ -227,4 +231,41 @@ function getRealData() {
   }, 8000 );
 	});
 
+</script>
+
+
+
+
+<script>
+  $(document).ready(function () {
+      $("#range_01").ionRangeSlider({
+          type: "single",
+          grid: true,
+          skin: "modern",
+          min: 0,
+          max: 100,
+          from: <?php echo $data['progress'];?>,
+          onChange: function (val) {
+              // see inside console developer tools to see returned properties
+              console.log(val);
+              // here you put ajax request
+              //var progress = val.from;
+              var progress = val.from;
+              var inquiry_id = $("#inquiry_id_inbox").val();
+              $.ajax({
+                  type: 'GET',
+                  url: "<?php echo site_url('Admin/Update_progress');?>",
+                  data: {
+                      progress: progress,
+                      inquiry_id: inquiry_id  // send this paramter
+                  },
+                  async : true,
+                  dataType: 'json',
+                  success: function (data) {
+
+                  }
+              });
+          }
+      });
+  });
 </script>

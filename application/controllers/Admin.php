@@ -1367,6 +1367,7 @@ class Admin extends CI_Controller {
 			$this->data['data'] = $this->Inquery_query->Inquery_detail($inquiry_id);
 			$this->data['data']['importer'] = $this->Importer_query->importer_category_list();
 			$this->data['data']['list_inbox'] = $this->Inquery_query->Inquery_inbox($inquiry_id);
+			$this->data['data']['progress'] = $this->Inquery_query->Inquery_progress($inquiry_id);
 			//var_dump($this->data['data']['detail_news']);
 
 
@@ -2319,6 +2320,28 @@ class Admin extends CI_Controller {
 
 			echo json_encode($register);
 
+	}
+
+	public function Update_progress(){
+		$this->load->model('Admin/Inquery/Inquery_query','Inquery_query', true);
+
+		$progress_data = $this->input->get();
+
+		 $progress = $progress_data['progress'];
+		 $inquiry_id = $progress_data['inquiry_id'];
+
+		$update_date = date("Y-m-d H:i:s");
+		$updated_by = $_SESSION['admin_id'];
+
+		$update = [
+					"inquiry_id " => $inquiry_id,
+					"progress" => $progress,
+					"update_date" => $update_date,
+					"update_by" => $updated_by
+		];
+
+		$update_progress = $this->Inquery_query->Update_progress($update,$inquiry_id);
+		echo json_encode($update_progress);
 	}
 
 
