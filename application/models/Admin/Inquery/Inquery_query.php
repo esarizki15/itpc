@@ -241,7 +241,7 @@ function Inquery_inbox($inquiry_id){
 }
 
 
-function Inbox_list($postData=null){
+function Inbox_list($postData=null,$inquiry_id){
 	require_once('list_inbox.php');
 	$response = array();
 
@@ -253,6 +253,7 @@ function Inbox_list($postData=null){
 	$columnName = $postData['columns'][$columnIndex]['data']; // Column name
 	$columnSortOrder = $postData['order'][0]['dir']; // asc or desc
 	$searchValue = $postData['search']['value']; // Search value
+	$inquiry_id = $inquiry_id;
 
 	## Search
 	$searchQuery = "";
@@ -283,6 +284,7 @@ $this->db->select([
 	]);
 	if($searchQuery != '')
 	$this->db->where($searchQuery);
+	$this->db->where('a.inquiry_id',$inquiry_id);
 	$this->db->where('a.delete_date', null);
 	$this->db->order_by($columnName, $columnSortOrder);
 	$this->db->limit($rowperpage, $start);

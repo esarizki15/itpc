@@ -1380,8 +1380,9 @@ class Admin extends CI_Controller {
 
 	public function Get_inbox_list(){
 			$this->load->model('Admin/Inquery/Inquery_query','Inquery_query', true);
-			$inquiry_id = $this->input->get();
-			$inbox_list = $this->Inquery_query->Inbox_list($inquiry_id);
+			$postData = $this->input->get();
+			$inquiry_id = $postData[0]['inquiry_id'];
+			$inbox_list = $this->Inquery_query->Inbox_list($postData,$inquiry_id);
 			echo json_encode($inbox_list);
 	}
 

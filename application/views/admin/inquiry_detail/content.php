@@ -157,7 +157,6 @@
 		<div class="card m-b-30">
 			<div class="card-body">
 				<h4 class="mt-0 header-title">Progress Bar</h4>
-					<h5 class="font-14 m-b-20 mt-0">Default</h5>
 					<input type="text" id="range_01">
 			</div>
 		</div>

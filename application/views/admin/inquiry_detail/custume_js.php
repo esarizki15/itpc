@@ -190,6 +190,7 @@ function getRealData() {
 	var save_method; //for save method string
 	$(document).ready(function() {
     setInterval(function () {getRealData()}, 1000);//request every x seconds
+  
 		//datatables
 		var table = $('#empTable').DataTable({
 			"processing": true,
@@ -200,7 +201,8 @@ function getRealData() {
 			// Load data dari ajax
 			"ajax": {
 				"url": "<?php echo base_url()?>index.php/Admin/Get_inbox_list",
-				"type": "GET" //(untuk mendapatkan data)
+				"type": "GET", //(untuk mendapatkan data)
+         "data": $('#inquiry_id').val()
 			},
 			// Tambahkan bagian ini:
 			"columns": [                              // Membuat nomor pada datatable (bukan ID user)
