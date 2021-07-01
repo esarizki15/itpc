@@ -134,6 +134,22 @@ class Exporter_query extends CI_Model {
 	}
 }
 
+function exporter_category_detail($category_id){
+	$this->db->select([
+		'a.category_id as category_id',
+		'a.category_old_id as category_old_id',
+		'a.category_title as category_title',
+		'a.status as status'
+	]);
+	$this->db->where('a.category_id', $category_id);
+	$query = $this->db->get('itpc_category a');
+	if($query){
+			return $query->result_array();
+	}else{
+		return false;
+	}
+}
+
 
 
 	function cek_expoter_name($exporter_name){
@@ -636,6 +652,26 @@ function getCategory($postData=null){
 	public function exporter_category_delete($update,$ex_cat_id){
 		$this->db->where('ex_cat_id',$ex_cat_id);
 		$result = $this->db->update('itpc_exporter_category',$update);
+		if($result){
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+	public function category_delete($update,$category_id){
+		$this->db->where('category_id',$category_id);
+		$result = $this->db->update('itpc_category',$update);
+		if($result){
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+	public function category_update($category){
+		$this->db->where('category_id',$category['category_id']);
+		$result = $this->db->update('itpc_category',$category);
 		if($result){
 			return true;
 		}else{

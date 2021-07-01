@@ -529,6 +529,28 @@ class Admin extends CI_Controller {
 
 	}
 
+	public function Exporter_category_delete($category_id){
+		$this->load->model('Admin/Exporter/Exporter_query','Exporter_query', true);
+
+		$delete_date = date("Y-m-d H:i:s");
+		$delete_by = $_SESSION['admin_id'];
+
+		$update = [
+					"delete_date" => $delete_date,
+					"delete_by" => $delete_by,
+					"status" => 2
+		];
+		$category_delete = $this->Exporter_query->category_delete($update,$category_id);
+
+		if($category_delete){
+				$this->session->set_flashdata('success', "exporter category data has been delete");
+		}else{
+				$this->session->set_flashdata('error', "exporter category failed delete");
+		}
+
+		redirect("Admin/Exporter_category");
+	}
+
 
 	public function login()
  	{
@@ -647,6 +669,24 @@ class Admin extends CI_Controller {
 			$this->render();
 			}
 	}
+
+	public function Exporter_category_detail($category_id){
+		if($_SESSION['admin_id'] == null || $_SESSION['admin_id'] == ""){
+			redirect("Admin/Logout");
+			}else{
+			//$this->load->model('admin/invoice/Invoice_admin','Invoice_admin', true);
+			//$this->data['data'] = $this->Invoice_admin->list_invoice();
+			//$this->data
+			$this->load->model('Admin/Exporter/Exporter_query','Exporter_query', true);
+			$this->data['data'] = $this->Exporter_query->exporter_category_detail($category_id);
+
+			$this->master["custume_css"] = $this->load->view('admin/exporter_category_detail/custume_css.php', [], TRUE);
+			$this->master["custume_js"] = $this->load->view('admin/exporter_category_detail/custume_js.php', [], TRUE);
+			$this->master["content"] = $this->load->view("admin/exporter_category_detail/content.php",$this->data, TRUE);
+			$this->render();
+			}
+	}
+
 	public function Submit_subcategory(){
 			$this->load->model('Admin/Exporter/Exporter_query','Exporter_query', true);
 			$this->form_validation->set_rules('category_id', 'category_id', 'trim|required');
@@ -774,6 +814,64 @@ class Admin extends CI_Controller {
 				$this->session->set_flashdata('error', "make sure the form is filled in correctly");
 			}
 			redirect("Admin/Exporter_category");
+	}
+
+	public function Update_category(){
+
+		$this->load->model('Admin/Exporter/Exporter_query','Exporter_query', true);
+		$this->form_validation->set_rules('category_id', 'category_id', 'trim|required');
+		$this->form_validation->set_rules('category_title', 'category_title', 'trim|required');
+
+		if($this->form_validation->run() == TRUE)
+		{
+
+			$is_save = true;
+			$category_id = $this->input->post('category_id');
+			$category_old_id = $this->input->post('category_old_id');
+			$category_title = $this->input->post('category_title');
+			$is_draft = $this->input->post('is_draft');
+
+			if($is_draft != null || $is_draft != ""){
+				 $is_draft= 0;
+			}else{
+				 $is_draft = 1;
+			}
+
+			$category_title = str_replace("''","`",$category_title);
+
+			$category_slug = str_replace("&","and",$category_title);
+			$slug = str_replace(" ","_",$category_slug);
+
+			if(empty($category_old_id)){
+				$category_old_id = NULL;
+			}
+
+			$category = [
+						"category_id" => $category_id,
+						"category_old_id" => $category_old_id,
+						"category_title" => $category_title,
+						"category_slug" => $slug,
+						"delete_date" => null,
+						"delete_by" => null,
+						"status" =>  $is_draft
+			];
+
+			$category_update = $this->Exporter_query->category_update($category);
+
+			if($category_update){
+				$is_save = true;
+				$this->session->set_flashdata('success', "category data has been update");
+			}else{
+				$is_save = false;
+				$this->session->set_flashdata('error', "category data failed to update");
+			}
+
+		}else{
+			$is_save = false;
+			$this->session->set_flashdata('error', "make sure the form is filled in correctly");
+		}
+
+		redirect("Admin/Exporter_category_detail/".$category_id);
 	}
 
 	public function Subcategory_list_data()
