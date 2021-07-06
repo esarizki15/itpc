@@ -337,7 +337,9 @@ function exporter_category_detail($category_id){
 		]);
 		$this->db->where('a.category_id', $category_id);
 		$this->db->where('a.delete_date', NULL);
+		$this->db->where('b.delete_date', NULL);
 		$this->db->where('a.status', 1);
+		$this->db->join('itpc_category b','a.category_id = b.category_id');
 		$this->db->order_by('a.subcategory_title','ASC');
 		$query = $this->db->get('itpc_subcategory a');
 		if($query){
@@ -346,6 +348,26 @@ function exporter_category_detail($category_id){
 			return false;
 		}
 
+	}
+
+	function exporter_subcategory_detail($subcategory_id){
+		$this->db->select([
+			'a.subcategory_id as subcategory_id',
+			'a.subcategory_title as subcategory_title',
+			'a.subcategory_old_id	 as subcategory_old_id',
+			'b.category_title as category_title',
+			'b.category_id as category_id',
+			'a.status as status'
+		]);
+		$this->db->where('a.subcategory_id', $subcategory_id);
+		$this->db->join('itpc_category b','a.category_id = b.category_id');
+		$this->db->where('a.delete_date', null);
+		$query = $this->db->get('itpc_subcategory a');
+		if($query){
+				return $query->result_array();
+		}else{
+			return false;
+		}
 	}
 
 	public function exporter_category_list(){
@@ -472,6 +494,7 @@ function getSubcategory($postData=null){
 		$this->db->where($searchQuery);
 		$this->db->join('itpc_category b','a.category_id = b.category_id');
 		$this->db->where('a.delete_date', null);
+		$this->db->where('b.delete_date', null);
 		$this->db->order_by($columnName, $columnSortOrder);
 		$this->db->limit($rowperpage, $start);
 		//$records = $this->db->get('itpc_exporter')->result();
@@ -669,9 +692,29 @@ function getCategory($postData=null){
 		}
 	}
 
+	public function subcategory_delete($update,$subcategory_id){
+		$this->db->where('subcategory_id',$subcategory_id);
+		$result = $this->db->update('itpc_subcategory',$update);
+		if($result){
+			return true;
+		}else{
+			return false;
+		}
+	}
+
 	public function category_update($category){
 		$this->db->where('category_id',$category['category_id']);
 		$result = $this->db->update('itpc_category',$category);
+		if($result){
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+	public function subcategory_update($subcategory){
+		$this->db->where('subcategory_id',$subcategory['subcategory_id']);
+		$result = $this->db->update('itpc_subcategory',$subcategory);
 		if($result){
 			return true;
 		}else{

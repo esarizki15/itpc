@@ -82,7 +82,9 @@
               for(i=0; i<response.length; i++){
                   html += '<option value='+response[i].importer_id+'>'+response[i].importer_name+'</option>';
               }
-              $('#subcategory_id').html(html);
+              option_all = '<option value="all">All</option>';
+              html_all = option_all+html;
+              $('#subcategory_id').html(html_all);
 
 
           }
@@ -190,7 +192,7 @@ function getRealData() {
 	var save_method; //for save method string
 	$(document).ready(function() {
     setInterval(function () {getRealData()}, 1000);//request every x seconds
-  
+
 		//datatables
 		var table = $('#empTable').DataTable({
 			"processing": true,

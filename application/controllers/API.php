@@ -1920,6 +1920,41 @@ class API extends CI_Controller {
 				return json_encode($indonesia_product_data);
 		}
 	}
+
+	public function test_send_email(){
+		$this->load->library('email');
+		$actived_link = base_url();
+
+		$this->data['data']['username'] = "ITPC Test";
+		$this->data['data']['email'] = "dharmomo04@gmail.com";
+		$this->data['data']['password'] = "pass1234";
+		$this->data['data']['link'] = $actived_link;
+
+		$send_to = "dharma@tedihouse.com";
+
+		$message = $this->load->view('email/actived_account.php',$this->data,TRUE);
+		$this->email->from('itpcmaster2020@gmail.com', 'ITPC system');
+		$this->email->to($send_to);
+		$this->email->cc('itpcmaster2020@gmail.com');
+		$this->email->reply_to('itpcmaster2020@gmail.com');
+		$this->email->subject('ITPC Actived account');
+		$this->email->message($message);
+		//$this->email->attach(base_url().'assets/confirm/'.$name_file);
+		$this->email->send();
+
+		if($this->email->send(FALSE)){
+			$register['data'] = null;
+			$register['status'] = true;
+			$register['message'] = "Sorry, your message not send to ".$email.",please contact administrator ";
+		}else{
+			$register['data'] = null;
+			$register['status'] = true;
+			$register['message'] = "Congratulations, you have successfully registered, please check your email (".$send_to.") for account activation";
+		}
+
+		echo json_encode($register);
+
+	}
 			//$message = $this->load->view('email/actived_account.php',$this->data,TRUE);
 
 		/*public function submit_data_inquiry_file()

@@ -552,6 +552,29 @@ class Admin extends CI_Controller {
 	}
 
 
+	public function Exporter_subcategory_delete($subcategory_id){
+		$this->load->model('Admin/Exporter/Exporter_query','Exporter_query', true);
+
+		$delete_date = date("Y-m-d H:i:s");
+		$delete_by = $_SESSION['admin_id'];
+
+		$update = [
+					"delete_date" => $delete_date,
+					"delete_by" => $delete_by,
+					"status" => 2
+		];
+		$subcategory_delete = $this->Exporter_query->subcategory_delete($update,$subcategory_id);
+
+		if($subcategory_delete){
+				$this->session->set_flashdata('success', "exporter category data has been delete");
+		}else{
+				$this->session->set_flashdata('error', "exporter category failed delete");
+		}
+
+		redirect("Admin/Exporter_subcategory");
+	}
+
+
 	public function login()
  	{
 		$this->session->sess_destroy();
@@ -649,6 +672,26 @@ class Admin extends CI_Controller {
 			$this->master["custume_css"] = $this->load->view('admin/exporter_subcategory/custume_css.php', [], TRUE);
 			$this->master["custume_js"] = $this->load->view('admin/exporter_subcategory/custume_js.php', [], TRUE);
 			$this->master["content"] = $this->load->view("admin/exporter_subcategory/content.php",$this->data, TRUE);
+			$this->render();
+			}
+	}
+
+
+	public function Exporter_subcategory_detail($subcategory_id){
+
+		if($_SESSION['admin_id'] == null || $_SESSION['admin_id'] == ""){
+		 	redirect("Admin/Logout");
+			}else{
+			//$this->load->model('admin/invoice/Invoice_admin','Invoice_admin', true);
+			//$this->data['data'] = $this->Invoice_admin->list_invoice();
+			//$this->data
+			$this->load->model('Admin/Exporter/Exporter_query','Exporter_query', true);
+			$this->data['data']['category_list'] = $this->Exporter_query->exporter_category_list();
+			$this->data['data']['subcategory_data'] = $this->Exporter_query->exporter_subcategory_detail($subcategory_id);
+
+			$this->master["custume_css"] = $this->load->view('admin/exporter_subcategory_detail/custume_css.php', [], TRUE);
+			$this->master["custume_js"] = $this->load->view('admin/exporter_subcategory_detail/custume_js.php', [], TRUE);
+			$this->master["content"] = $this->load->view("admin/exporter_subcategory_detail/content.php",$this->data, TRUE);
 			$this->render();
 			}
 	}
@@ -872,6 +915,63 @@ class Admin extends CI_Controller {
 		}
 
 		redirect("Admin/Exporter_category_detail/".$category_id);
+	}
+
+	public function Update_subcategory(){
+		$this->load->model('Admin/Exporter/Exporter_query','Exporter_query', true);
+		$this->form_validation->set_rules('subcategory_id', 'subcategory_id', 'trim|required');
+		$this->form_validation->set_rules('category_id', 'category_id', 'trim|required');
+		$this->form_validation->set_rules('subcategory_old_id', 'subcategory_old_id', 'trim|required');
+		$this->form_validation->set_rules('subcategory_title', 'subcategory_title', 'trim|required');
+
+		if($this->form_validation->run() == TRUE)
+		{
+			$is_save = true;
+			$subcategory_id = $this->input->post('subcategory_id');
+			$category_id = $this->input->post('category_id');
+			$subcategory_old_id = $this->input->post('subcategory_old_id');
+			$subcategory_title = $this->input->post('subcategory_title');
+			$is_draft = $this->input->post('is_draft');
+
+			if($is_draft != null || $is_draft != ""){
+				 $is_draft= 0;
+			}else{
+				 $is_draft = 1;
+			}
+
+			$subcategory_title = str_replace("''","`",$subcategory_title);
+
+			$subcategory_slug = str_replace("&","and",$subcategory_title);
+			$slug = str_replace(" ","_",$category_slug);
+
+			if(empty($subcategory_old_id)){
+				$subcategory_old_id = NULL;
+			}
+
+			$subcategory = [
+						"subcategory_id" => $subcategory_id,
+						"category_id" => $category_id,
+						"subcategory_old_id" => $subcategory_old_id,
+						"subcategory_title" => $subcategory_title,
+						"subcategory_slug" => $subslug,
+						"status" =>  $is_draft
+			];
+
+			$subcategory_update = $this->Exporter_query->subcategory_update($subcategory);
+
+			if($subcategory_update){
+				$is_save = true;
+				$this->session->set_flashdata('success', "category data has been update");
+			}else{
+				$is_save = false;
+				$this->session->set_flashdata('error', "category data failed to update");
+			}
+
+		}else{
+			$is_save = false;
+			$this->session->set_flashdata('error', "make sure the form is filled in correctly");
+		}
+		redirect("Admin/Exporter_subcategory_detail/".$subcategory_id);
 	}
 
 	public function Subcategory_list_data()
@@ -1572,7 +1672,31 @@ class Admin extends CI_Controller {
 		$post_date = date("Y-m-d H:i:s");
 		$post_by = $_SESSION['admin_id'];
 
+		if($importer_id == "all"){
+			$data['id_product'] = $this->Inquery_query->all_category_importir_id($product_id);
 
+			for($i=0;$i < count($data['id_product']); $i++) {
+							$inquiry_importer_all [] = [
+									"importer_inquiry_id" => null,
+									"inquiry_id" => $inquiry_id,
+									"importer_id" => 	$data['id_product'][$i]['importer_id'],
+									"product_id" => 	$data['id_product'][$i]['product_id'],
+									"exporter_id" => $exporter_id,
+									"post_date" => $post_date,
+									"post_by" => $post_by,
+									"update_date" => $post_date,
+									"update_by" => $post_by,
+									"delete_date" => null,
+									"delete_by" => null,
+									"status" => 1
+							];
+
+				}
+					$inquery_importer_all = $this->Inquery_query->inquery_importer_all_save($inquiry_importer_all);
+				echo json_encode($inquery_importer_list);
+
+
+		}else{
 
 			$inquiry_importer_list []= [
 						"importer_inquiry_id" => null,
@@ -1589,8 +1713,12 @@ class Admin extends CI_Controller {
 						"status" => 1
 			];
 
-			$inquery_importer_list_ = $this->Inquery_query->inquery_importer_list_save($inquiry_importer_list);
+			$inquery_importer_list = $this->Inquery_query->inquery_importer_list_save($inquiry_importer_list);
 			echo json_encode($inquery_importer_list);
+
+		}
+
+
 
 	}
 

@@ -203,6 +203,15 @@ function inquery_importer_list_save($inquiry_importer_list){
 	}
 }
 
+function inquery_importer_all_save($inquiry_importer_all){
+	$result =	$this->db->insert_batch('itpc_importer_inquiry',$inquiry_importer_all);
+	if($result){
+		 return true;
+	}else{
+		 return false;
+	}
+}
+
 function inquiry_importer_delete($delete,$importer_inquiry_id){
 	$this->db->where('importer_inquiry_id',$importer_inquiry_id);
 	$result = $this->db->update('itpc_importer_inquiry',$delete);
@@ -331,6 +340,22 @@ function Update_progress($update,$inquiry_id){
 	$result = $this->db->update('itpc_inquiry',$update);
 	if($result){
 		return true;
+	}else{
+		return false;
+	}
+}
+
+function all_category_importir_id($category_id){
+	$this->db->select([
+		'a.product_id as product_id',
+		'a.importer_id as importer_id'
+	]);
+	$this->db->where('a.category_id', $category_id);
+	$this->db->where('a.delete_date', null);
+	$this->db->where('a.status', 1);
+	$query = $this->db->get('itpc_importer_product a');
+	if($query){
+			return $query->result_array();
 	}else{
 		return false;
 	}

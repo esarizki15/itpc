@@ -198,7 +198,7 @@
 										</div>
 										<div class="col-md-6">
 													<div class="form-group">
-                             <select class="js-states form-control" name="subcategory_id" id="subcategory_id" data-live-search="true">
+                             <select class="js-states form-control" name="subcategory_id" id="subcategory_id" data-live-search="true">\
 															 <option value="0">Select a subcategory</option>
                              </select>
                          </div>
