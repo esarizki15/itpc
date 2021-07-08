@@ -234,7 +234,7 @@ function Inquery_inbox($inquiry_id){
 	$this->db->where('a.inquiry_id', $inquiry_id);
 	$this->db->where('a.delete_date', null);
 	$this->db->where('a.status', 1);
-	$this->db->order_by('a.inbox_id', DESC);
+	$this->db->order_by('a.inbox_id', 'DESC');
 	$query = $this->db->get('itpc_inbox a');
 
 	$list_inbox = [];
