@@ -209,7 +209,7 @@ class Home_data_query extends CI_Model{
       $this->db->join('long_translations lt','it.trans_key = lt.trans_key', 'left');
       $this->db->join('short_translations st','it.trans_key = st.trans_key', 'left');
       $this->db->where('delete_date', null);
-      $this->db->order_by('slider_id', DESC);
+      $this->db->order_by('slider_id', 'DESC');
       $query = $this->db->get('itpc_slider it');
       $data = $query->result_array();
       //pr($data);exit;
@@ -217,7 +217,7 @@ class Home_data_query extends CI_Model{
     }
 
 
-    public function news_all($lang= null,$limit = null, $start = null,$category) {
+    public function news_all($lang= '',$limit = null, $start = null,$category=null) {
     // pr($start);exit;
       require_once('News_latest.php');
       require_once('Exporter_home.php');
@@ -272,7 +272,7 @@ class Home_data_query extends CI_Model{
       ];
 
     }
-    public function news_total($lang= null,$limit = null, $start = null,$category) {
+    public function news_total($lang= null,$limit = null, $start = null,$category=null) {
 
       require_once('News_latest.php');
       require_once('Exporter_home.php');
@@ -389,6 +389,31 @@ class Home_data_query extends CI_Model{
         'about' => $about_us
       ];
 
+    }
+
+    public function get_inquiry_additional($exporter_id){
+     // require_once('Exporter_product.php');
+      $this->db->select([
+        'file_id as id',
+        'file_patch as image'
+      ]);
+      $this->db->where('inquiry_id', $exporter_id);
+      $this->db->where('status', 1);
+      //$this->db->where('delete_date', null);
+      $query = $this->db->get('itpc_files_inquiry');
+     //pr($query->result_array());exit;
+      return $query->result_array();
+    }
+    public function delete_inquiry_file($update) {
+      $this->db->where('file_id',$update['file_id']);
+      $result = $this->db->update('itpc_files_inquiry',$update);
+    
+      if($result){
+        return true;
+      }else{
+        return false;
+      }
+    
     }
 
    public function save_contact_us($param){
