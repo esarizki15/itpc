@@ -23,6 +23,13 @@
   });
 </script>
 
+<script>
+  $("#categoryId").select2({
+      placeholder: "Select a coutry",
+      allowClear: true
+  });
+</script>
+
 <script type='text/javascript'>
 $(document).ready(function(){
 	var counter = 2;

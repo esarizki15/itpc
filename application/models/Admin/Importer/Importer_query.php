@@ -121,7 +121,8 @@ class Importer_query extends CI_Model {
 		$this->db->where('a.status', 1);
 		$this->db->join('itpc_importer_product b','a.product_id = b.product_id','LEFT');
 		$this->db->join('itpc_importer c','a.importer_id = c.importer_id','LEFT');
-		$this->db->join('itpc_importer_category d','a.product_id = d.category_id','LEFT');
+		$this->db->join('itpc_importer_product e','a.product_id = e.product_id','LEFT');
+		$this->db->join('itpc_importer_category d','e.category_id = d.category_id','LEFT');
 		$this->db->group_by('a.importer_inquiry_id');
 
 		$query = $this->db->get('itpc_importer_inquiry a');
