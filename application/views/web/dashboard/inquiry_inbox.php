@@ -23,7 +23,7 @@
                             <input type="hidden" class="detail_id_inbox" value='<?php echo $item['inbox_id'];?>' >
                             <input type="hidden" value='<?php echo $item['inbox_content'];?>' >
                             <input type="hidden" value='<?php echo $item['inquiry_id'];?>' >
-                            <div class="block_inbox <?php if($item['inbox_read']==1){echo "active";}?>">
+                            <div class="block_inbox <?php if($item['inbox_read']==0){echo "active";}?>">
                               <h3>Your Progress (100%)</h3>
                               <span class="date_inbox"><?=$item['post_date'];?></span>
                             </div>
@@ -34,14 +34,16 @@
                   </div><!--end.cols2-->
                  
                  
-                  <div class="cols2 rescontent" style="display:none">
+                  <div class="cols2 rescontent" >
                     <span class="infoSmall"><strong>Message</strong></span>
                     <div class="isi-inbox_row">
                       <div class="isi_boxnya">
                         <p>Thank you your inquiry is being reviewed. Usually it takes 2-3 working days.</p>
                       </div>
                       <div class="form_group">
-                        <button type="button" class="bt_block_blue buttonAddInquiry">
+<button type="button" class="bt_block_blue buttonAddInquiry allread">
+<input type="hidden" value='<?php  if(@$data['inbox']) echo $data['inbox'][0]['inquiry_id'];?>' >
+                        
                           I have read all the messages
                         </button>
                       </div>
@@ -80,13 +82,41 @@ $(document).ready(function() {
             headers: {
                 "auth_code":auth_code
             },
-            data: 'inquiry_id='+inquiry_id&'inbox_id='+idnya ,
+            data:{inquiry_id:inquiry_id,inbox_id:idnya}  ,
             success: function (response) {
-              thiss.next().next().next().removeClass('active')
+              thiss.children().next().next().next().removeClass('active')
+              console.log(thiss.children().next().next().removeClass('active'))
+              thiss.children().next().next().removeClass('active')
               $('.rescontent').show();
               $('.isi_boxnya').html(content);
             },
         });
+
+
+});
+
+$('.allread').click(function() {
+   
+   var inquiry_id=$(this).children().val();
+   var auth_code='<?php echo $data['auth_code'] ?>';
+   var thiss=$(this);
+   var basedomain= '<?=base_url()?>';
+   //console.log(inquiry_id+','+idnya)
+     $.ajax({
+           url: basedomain+"API/inbox_read",
+           type: "POST",
+           headers: {
+               "auth_code":auth_code
+           },
+           data:{inquiry_id:inquiry_id}  ,
+           success: function (response) {
+             thiss.children().next().next().next().removeClass('active')
+             console.log(thiss.children().next().next().removeClass('active'))
+             $('.block_inbox').removeClass('active')
+             $('.rescontent').show();
+            
+           },
+       });
 
 
 });

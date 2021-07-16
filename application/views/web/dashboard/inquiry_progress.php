@@ -28,7 +28,7 @@
               <div class="tabs_menu_inquiry">
                 <a href="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en' : $this->uri->segment(1)."/web_importer_list?detail=".$item['inquiry_id']) ?>" class="tabs_menunya">Importer Lists</a>
                 <a href="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en' : $this->uri->segment(1)."/web_inquiry_inbox/".$item['inquiry_id']) ?>" class="tabs_menunya">Inbox</a>
-                <a href="#" class="tabs_menunya">Additional File</a>
+                <a href="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en' : $this->uri->segment(1)."/web_add_additional/".$item['inquiry_id']) ?>" class="tabs_menunya">Additional File</a>
               </div>
             </div>
             <div class="list_inquiry rows">

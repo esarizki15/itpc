@@ -895,6 +895,53 @@ class WEB extends CI_Controller
         $this->master["content"] = $this->load->view("web/dashboard/add_product.php", $update_product, true);
         $this->render();
     }
+    public function web_add_additional($id,$lang = '')
+    {
+        $this->load->model('API/Web/User_query', 'User_query', true);
+        $this->load->model('API/Web/Home_data_query', 'Home_data_query', true);
+        $this->load->model('API/Authentication/Auth', 'Auth', true);
+
+        $this->form_validation->set_rules('exporter_id', 'exporter_id', 'trim|required|numeric');
+
+        if ($this->session->user_logged) {
+            $exporter_id =  $this->User_query->detail_exporter($this->session->user_logged['user_id'])['exporter_detail'][0]['id'];
+            $auth_code = $this->session->user_logged['auth_code'];
+            $get_auth_code = $this->Auth->cek_auth($auth_code);
+            if ($get_auth_code) {
+                if ($get_auth_code['user_id'] == $exporter_id) {
+                   // pr($id);exit;
+                    $update_product['data'] = $this->Home_data_query->get_inquiry_additional($id);
+                    // pr($update_product);exit;
+                    $update_product['ex_id']=$id;
+                    if ($update_product['data']) {
+                        $update_product['status'] = true;
+                        $update_product['message'] = "Data displayed successfully";
+                    } else {
+                        $update_product['data'] = null;
+                        $update_product['status'] = false;
+                        $update_product['message'] = "Data is not displayed";
+                    }
+                } else {
+                    $update_product['data'] = null;
+                    $update_product['status'] = false;
+                    $update_product['message'] = "Your exporter ID cannot be found, please contact the admin";
+                }
+            } else {
+                $update_product['data'] = null;
+                $update_product['status'] = false;
+                $update_product['message'] = "Wrong auth code please re-login";
+            }
+        } else {
+            $update_product['data'] = null;
+            $update_product['status'] = false;
+            $update_product['message'] = validation_errors();
+        }
+        if(@$update_product['data']) $update_product['totaldataproduk']=count($update_product['data']);
+        else $update_product['totaldataproduk']=0;
+        //pr($update_product);exit;
+        $this->master["content"] = $this->load->view("web/dashboard/add_additional.php", $update_product, true);
+        $this->render();
+    }
     public function w_add_category_exporter()
     {
        
@@ -1011,7 +1058,71 @@ class WEB extends CI_Controller
         }
         redirect($this->redirection('web_add_product'));
     }
+    public function store_files()
+    {
+        $date = date_create();
+        if (!empty($_FILES['ex_pro_image']['name'])) {
+            $upload_config['upload_path'] = './assets/website/exporter_files_add/';
+            //pr($upload_config['upload_path'] );exit;
+            $upload_config['allowed_types'] = 'jpg|jpeg|png|svg';
+            $upload_config['max_width']            = 1024;
+            $upload_config['max_height']           = 768;
+            $upload_config['file_name'] = "ex_pro_image"."-".date_timestamp_get($date).'-'.md5($_FILES['ex_pro_image']['name']).'.'.str_replace('image/', '', $_FILES['ex_pro_image']['type']);
+            $upload_config['max_size'] = 2000;
 
+            $this->load->library('upload', $upload_config);
+            $this->upload->initialize($upload_config);
+
+            $data=array();
+            if (!$this->upload->do_upload('ex_pro_image')) {
+                $data = array('error' => $this->upload->display_errors());
+                $this->session->set_flashdata('flsh_msg', $data['error']);
+                redirect($this->redirection('web_add_product'));
+            } else {
+                $data = array('image_metadata' => $this->upload->data());
+            }
+        }
+        $this->load->model('API/Inquiry/Inquiry_query', 'Inquiry_query', true);
+        $this->form_validation->set_rules('inquiry_id', 'inquiry_id', 'trim|required|numeric');
+      
+        if ($this->form_validation->run() == true) {
+            //pr('masuk');exit; // pr('ss');exit;
+            $images = array();
+            $id = $this->input->post('inquiry_id');
+            $ex_pro_image = $upload_config['file_name'];
+            $date = date_create();
+             $post_date = date("Y-m-d H:i:s");
+
+            $product[] = [
+                                          'file_id' => null,
+                                          'inquiry_id' => $id,
+                                          'file_patch' => $ex_pro_image,
+                                          'file_device' => 'web',
+                                          'post_date' => $post_date,
+                                          'post_by' => $this->session->user_logged['user_id'],
+                                          'delete_date' => null,
+                                          'delete_by' => null,
+                                          'status' => 1,
+                              ];
+            //pr($product);exit;
+            $add_product = $this->Inquiry_query->submit_inquiry_file($product);
+
+            if ($add_product) {
+                $product_img_path['data'] = 'success';
+                $product_img_path['status'] = true;
+                $product_img_path['message'] = "managed to save the product image";
+            } else {
+                $product_img_path['data'] = null;
+                $product_img_path['status'] = false;
+                $product_img_path['message'] = "failed to save product images";
+            }
+        } else {
+            $product_img_path['data'] = null;
+            $product_img_path['status'] = false;
+            $product_img_path['message'] = "an error occurred in uploading the file, make sure the form contains the correct contents";
+        }
+        redirect($this->redirection('web_add_additional/'.$this->input->post('inquiry_id')));
+    }
     public function web_add_inquiry($lang = '')
     {
         $this->load->model('API/Exporter/Exporter_category_query', 'Exporter_category_query', true);
@@ -1305,5 +1416,42 @@ class WEB extends CI_Controller
         $inbox['data']['exporter_id']=$auth_code;
         $this->master["content"] = $this->load->view("web/dashboard/inquiry_inbox.php", $inbox, true);
         $this->render();
+    }
+
+    public function delete_inquiry_file(){
+        $this->load->model('API/Web/Home_data_query','Home_data_query', true);
+        $this->form_validation->set_rules('ex_pro_id', 'ex_pro_id', 'trim|required|numeric');
+
+        if($this->form_validation->run() == TRUE)
+        {
+
+            $ex_pro_id = $this->input->post('ex_pro_id');
+            $delete_date = date("Y-m-d H:i:s");
+
+
+            $update = [
+                    'file_id' => $ex_pro_id,
+                    'delete_date' => $delete_date,
+                    'delete_by' => $delete_by,
+                    'status' => 3
+            ];
+
+            $product_delete['data'] = $this->Home_data_query->delete_inquiry_file($update);
+
+            if($product_delete['data']){
+                $product_delete['status'] = true;
+                $product_delete['message'] = "Data delete is successful";
+            }else{
+                $product_delete['data'] = null;
+                $product_delete['status'] = true;
+                $product_delete['message'] = "Data delete is failed";
+            }
+        }else{
+            $product_delete['data'] = null;
+            $product_delete['status'] = false;
+            $product_delete['message'] = validation_errors();
+        }
+        echo json_encode($product_delete); //send data to script
+        return json_encode($product_delete);
     }
 }
