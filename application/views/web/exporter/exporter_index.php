@@ -144,7 +144,7 @@
                 <?php foreach($exporter['it_ex'] as $item) {  ?>
                 <div class="top_row_list_exporter">
                   <div class="thumb_list_exporter">
-                    <img src="<?php echo $this->config->item('website_assets').'exporter/'.$item['imagenya']; ?>">
+                    <img src="<?php echo $this->config->item('website_assets').'exporter/'.$item['exporter_logo']; ?>">
                   </div><!--en.dthumb_list_exporter-->
                   <div class="caption_list_exporter">
                     <h3><?=$item['exporter_name']; ?></h3>
@@ -270,6 +270,7 @@ function loadData(page,category) {
       var Str = "";
       var myArr=response['exporter']['it_ex'];
       $(myArr).each(function( index ) {
+        console.log(myArr[index]);
         var categoryName = "";
         if(myArr[index]["category"] != undefined){
           categoryName = myArr[index]["category"]["category_title"];
@@ -277,7 +278,7 @@ function loadData(page,category) {
         if(myArr[index] !== null){
             Str=Str+'<div class="top_row_list_exporter">';
             Str=Str+'<div class="thumb_list_exporter">';
-            Str=Str+'<img src="<?php echo $this->config->item('website_assets')."exporter/"; ?>'+myArr[index]["imagenya"]+'">';
+            Str=Str+'<img src="<?php echo $this->config->item('website_assets')."exporter/"; ?>'+myArr[index]["exporter_logo"]+'">';
             Str=Str+'</div>';
             Str=Str+'<div class="caption_list_exporter">';
             Str=Str+'<h3>'+myArr[index]["exporter_name"]+'</h3>';
