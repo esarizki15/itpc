@@ -221,7 +221,8 @@ function getSubCategory(){
         var myArr = JSON.parse(response);
         var Str = "";
         Str=Str+ "<option disabled value=0 ";
-        Str+=(selectedSubcategory == 0) ? 'selected' :'' +">Sub Category</option>";
+        Str+="selected";
+        Str+=">Sub Category</option>";
         $(myArr).each(function( index ) {
           Str=Str+ "<option value='"+myArr[index]['id']+"' title='"+myArr[index]['title'] +"'";
           if(myArr[index]['id'] == selectedSubcategory) Str+="selected";
