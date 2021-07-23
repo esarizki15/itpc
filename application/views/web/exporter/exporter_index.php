@@ -102,7 +102,7 @@
                       </select>
                   </div>
                 </div><!--end.row_filter-->
-                <div class="row_filter">
+                <!-- <div class="row_filter">
                   <label class="title_row">Select Sub Category</label>
                   <div class="custom_select field">
                   <select name="subcategory" id="subcategory" class="subcatbawah">
@@ -112,7 +112,8 @@
                             <?php } ?>
                   </select>
                   </div>
-                </div><!--end.row_filter-->
+                </div> -->
+                <!-- end.row_filter -->
                 <div class="row_filter">
                   <label class="title_row">Sort Category</label>
                   <div class="sort_by_Radio">

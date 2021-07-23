@@ -168,11 +168,10 @@ class Exporter_list_query extends CI_Model{
             $this->db->where('a.exporter_id', $val['exporter_id']);
             $this->db->limit(1);
             $imagenya = $this->db->get('itpc_exporter a')->result_array();
-
             $it_ex[$x]['imagenya']=$imagenya[0]['ex_pro_image'];
-            if ($it_ex[$x]['category'] === "") {
-                $it_ex[$x] = null;
-            }
+            // if ($it_ex[$x]['category'] === "") {
+            //     $it_ex[$x] = null;
+            // }
         }
 
         //pr($it_ex);exit;
