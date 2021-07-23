@@ -310,6 +310,7 @@ class WEB extends CI_Controller
             // trigger setelah tombol cari di hit, query nya belum
             $dataExporter = $this->Exporter_list_query->search($exporterName, $category,$order,$subcategoryId, $limit, $start);
         }
+        // print(json_encode($dataExporter));exit;
         $data=array();
         $data['id_ex']  = $this->User_query->detail_exporter($this->session->user_logged['user_id'])['exporter_detail'][0]['id'];
         $data['category'] = $this->Exporter_category_query->category_list();

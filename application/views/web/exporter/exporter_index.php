@@ -191,6 +191,7 @@
 var start = parseInt('<?=$start?>');
 var page = parseInt('<?=$page?>');
 var selectedSubcategory = '<?=intval($this->input->get('subcategory'))?>';
+var isLoad = false;
 winscroll(start);
 TreeCat();
 search();
@@ -240,17 +241,14 @@ function getSubCategory(){
 function winscroll(start,category){
   $(window).scroll(function() {
     var currentPage = page - 1;
-      if($(window).scrollTop() + $(window).height() >= $(document).height()) {
-          if(currentPage < page) {
-            loadData(page,category);
-            // page = page + 1
-          }
+      if($(window).scrollTop() + $(window).height() >= ($(document).height() * 0.7)) {
+          if(!isLoad) loadData();
       }
   });
 }
 /*Load more Function*/
-function loadData(page,category) {
-  console.log('sini')
+function loadData() {
+    isLoad = true;
     var currentUrl = location.href;
     var isIncludeStart = currentUrl.includes("start=");
     // currentUrl+="&start="+start;
@@ -265,13 +263,12 @@ function loadData(page,category) {
         },
     })
     .done(function( response ) {
-      console.log(response);
+      // console.log(response);
       page = response["page"];
       start = response["start"];
       var Str = "";
       var myArr=response['exporter']['it_ex'];
       $(myArr).each(function( index ) {
-        console.log(myArr[index]);
         var categoryName = "";
         if(myArr[index]["category"] != undefined){
           categoryName = myArr[index]["category"]["category_title"];
@@ -306,6 +303,7 @@ function loadData(page,category) {
         }
         });
         $('.row_list_exporternya').append(Str);
+        isLoad=false;
     });
 }
 
