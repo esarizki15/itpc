@@ -122,7 +122,6 @@ class Exporter_list_query extends CI_Model{
  }
     public function search($name, $categoryId,$order,$subcategoryId, $limit=2, $start=0)
     {
-
         $this->db->select([
         'it_ex.*'
       ]);
@@ -178,8 +177,8 @@ class Exporter_list_query extends CI_Model{
 
         //pr($it_ex);exit;
         return [
-          'data' => $it_ex,
-          'start' => $start += count($it_ex),
+          'it_ex' => $it_ex,
+          // 'start' => $start += count($it_ex),
           // 'category' => $category,
         ];
     }

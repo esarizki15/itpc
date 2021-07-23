@@ -244,22 +244,22 @@ class Inquiry_query extends CI_Model{
 
 
   public function importer_inquiry($limit,$start,$inquiry_id){
+    // var_dump($limit, $start, $inquiry_id);exit;
     require_once('Importer_inquiry.php');
     $this->db->select([
       'a.importer_id as importer_id',
       'b.importer_name as importer_name',
       'a.importer_id as link'
     ]);
-    $this->db->where('a.inquiry_id', $inquiry_id);
+    $this->db->where('a.inquiry_id', intval($inquiry_id));
     $this->db->where('a.delete_date', null);
     $this->db->where('a.status', 1);
     $this->db->where('b.delete_date', null);
     $this->db->where('b.status', 1);
     $this->db->join('itpc_importer b','a.importer_id = b.importer_id');
     $this->db->order_by('b.importer_name','ASC');
-    $this->db->limit($limit, $start);
+    $this->db->limit(intval($limit), intval($start));
     $query = $this->db->get('itpc_importer_inquiry a');
-
     if($query->num_rows() > 0){
       $importer_inquiry = [];
       array_map(function($item) use(&$importer_inquiry){
@@ -283,11 +283,11 @@ class Inquiry_query extends CI_Model{
       }else{
         return false;
       }
-
       $last_page = intval($total_data / 10);
       return [
         'importer_list' => $importer_inquiry,
         'total_data' => $total_data,
+        'start'=> $start+count($importer_inquiry),
         'last_page' => $last_page
         ];
     }else{

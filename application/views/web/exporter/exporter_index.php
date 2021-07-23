@@ -3,34 +3,37 @@
     <div class="wrapper">
       <div class="title_top_exporter">
         <h3>Trade with<br/>Indonesia</h3>
-        <p>Search & Find Indonesian exporter for your business</p>
+        <!-- <p>Search & Find Indonesian exporter for your business</p> -->
       </div><!--end.title_top_exporter-->
-      <!-- <form method="get" action="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en'."/web_exporter_search_result" : $this->uri->segment(1)."/web_exporter_search_result") ?>"> -->
-        <div class="row_input_filter">
-          <div class="input_big_text">
+      <!-- <form method="get" action="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en'."/web_index_exporter" : $this->uri->segment(1)."/web_index_exporter") ?>"> -->
+        <!-- <div class="row_input_filter"> -->
+          <!-- <div class="input_big_text">
             <div class="group_no_line">
               <label>Exporter Name</label>
               <input type="text" class="input_exporter exporter_name" name="name" placeholder="Ex. Category">
             </div>
-          </div>
+          </div> -->
 
-          <div class="input_small_text">
+          <!-- <div class="input_small_text">
             <div class="group_no_line">
               <label>Category</label>
               <div class="custom_select field">
                 <select name="categoryId" id="category_atas" required>
                   <option selected disabled value="0">-- Pilih Category --</option>
                   <?php foreach($category as $itemcat){ ?>
-                          <option value="<?=$itemcat['id']?>" catTitle="<?=$itemcat['title']?>"><?=$itemcat['title']?></option>
+                          <option <?php if($selectedCategory==$itemcat['id']) echo('selected') ?> value="<?=$itemcat['id']?>" catTitle="<?=$itemcat['title']?>"><?=$itemcat['title']?></option>
                         <?php } ?>
                 </select>
               </div>
             </div>
-          </div><!--end.input_big_text-->
-          <button href="javascript:void(0)" class="orange_big searchexporter">Search</button>
-        </div><!--end,row_input_filter-->
+          </div> -->
+          <!--end.input_big_text-->
+          <!-- <button href="javascript:void(0)" class="orange_big">Search</button> -->
+        <!-- </div> -->
+        <!--end,row_input_filter-->
       <!-- </form> -->
-    </div><!--end,wrapper-->
+    </div>
+    <!--end,wrapper-->
   </section>
 
   <section id="bottom-exporter-list" class="section padSection">
@@ -83,41 +86,53 @@
           <div class="left_content_exporter">
             <div class="item_left_content">
               <h3>Filter</h3>
-              <div class="row_filter">
-                <label class="title_row">Select Category</label>
-                <div class="custom_select field">
-                    <select name="category" id="category" class="catbawah">
-                      <option selected disabled value="0">Category</option>
-                      <?php foreach($category as $itemcat){ ?>
-                        <option value="<?=$itemcat['id']?>" catTitle="<?=$itemcat['title']?>"><?=$itemcat['title']?></option>
-                      <?php } ?>
-                    </select>
-                </div>
-              </div><!--end.row_filter-->
-              <div class="row_filter">
-                <label class="title_row">Select Sub Category</label>
-                <div class="custom_select field">
-                <select name="subcategory" id="subcategory" class="subcatbawah">
-                          <option selected disabled value="0">Sub Category</option>
-                </select>
-                </div>
-              </div><!--end.row_filter-->
-              <div class="row_filter">
-                <label class="title_row">Sort Category</label>
-                <div class="sort_by_Radio">
-                 <label class="radio_container">Newest First
-                   <input type="radio" checked="checked" name="radio" value="newor" class="pilihan">
-                    <span class="checkmark"></span>
-                  </label>
-                  <label class="radio_container">Oldest First
-                    <input type="radio" name="radio" value="oldor" class="pilihan">
-                    <span class="checkmark"></span>
-                  </label>
-                  <label class="radio_container">By Title
-                    <input type="radio" name="radio" value="titor" class="pilihan" >
-                    <span class="checkmark" ></span>
-                  </label>
+              <form method="get" action="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en'."/web_index_exporter" : $this->uri->segment(1)."/web_index_exporter") ?>">
+                <div class="row_filter">
+                  <label class="title_row">Exporter Name</label>
+                  <input type="text" value="<?=$this->input->get('name')?>" class="input_exporter exporter_name" name="name" style="width:100%;" placeholder="Ex. Category">
                 </div><!--end.row_filter-->
+                <div class="row_filter">
+                  <label class="title_row">Select Category</label>
+                  <div class="custom_select field">
+                      <select name="category" id="category" class="catbawah">
+                        <option <?php if($this->input->get('category')==0 ||$this->input->get('category')==null) echo('selected')?> value="0">Category</option>
+                        <?php foreach($category as $itemcat){ ?>
+                          <option value="<?=$itemcat['id']?>" <?php if($this->input->get('category')==$itemcat['id']) echo('selected') ?> catTitle="<?=$itemcat['title']?>"><?=$itemcat['title']?></option>
+                        <?php } ?>
+                      </select>
+                  </div>
+                </div><!--end.row_filter-->
+                <div class="row_filter">
+                  <label class="title_row">Select Sub Category</label>
+                  <div class="custom_select field">
+                  <select name="subcategory" id="subcategory" class="subcatbawah">
+                            <option <?php if($this->input->get('subcategory')==0 ||$this->input->get('subcategory')==null) echo('selected')?> value="0">Sub Category</option>
+                            <?php foreach($selectedSubcategory as $itemcat){ ?>
+                              <option value="<?=$itemcat['id']?>" catTitle="<?=$itemcat['title']?>"><?=$itemcat['title']?></option>
+                            <?php } ?>
+                  </select>
+                  </div>
+                </div><!--end.row_filter-->
+                <div class="row_filter">
+                  <label class="title_row">Sort Category</label>
+                  <div class="sort_by_Radio">
+                    <label class="radio_container">Newest First
+                    <input type="radio" <?php if($this->input->get('radio')=="newor" || $this->input->get('radio') == null) echo('checked')?> name="radio" value="newor" class="pilihan">
+                      <span class="checkmark"></span>
+                    </label>
+                    <label class="radio_container">Oldest First
+                      <input type="radio" name="radio" value="oldor" class="pilihan" <?php if($this->input->get('radio')=="oldor") echo('checked')?>>
+                      <span class="checkmark"></span>
+                    </label>
+                    <label class="radio_container">By Title
+                      <input type="radio" name="radio" value="titor" class="pilihan" <?php if($this->input->get('radio')=="titor") echo('checked')?>>
+                      <span class="checkmark" ></span>
+                    </label>
+                </div><!--end.row_filter-->
+                <div class="row_filter">
+                  <button href="javascript:void(0)" class="orange_big" style="width:100%; height:50px;">Search</button>
+                </div>
+              </form>
               </div>
             </div><!--end.item_left_content-->
           </div><!--end.list_bottom_exporter-->
@@ -174,43 +189,56 @@
  <script>
 var start = parseInt('<?=$start?>');
 var page = parseInt('<?=$page?>');
+var selectedSubcategory = '<?=intval($this->input->get('subcategory'))?>';
 winscroll(start);
 TreeCat();
 search();
 sortcategory();
 SortOrder();
-
+$(document).ready(function() {
+  getSubCategory();
+});
 function TreeCat(){
     $('#category').on("change",function () {
-        var categoryId = $(this).find('option:selected').val();
-        var basedomain= '<?=base_url()?>';
-
-        $.ajax({
-            url: basedomain+"en/web_add_category",
-            type: "POST",
-            data: "categoryId="+categoryId,
-            success: function (response) {
-              var myArr = JSON.parse(response);
-              var Str = "";
-              Str=Str+ "<option selected disabled value='0'>Sub Category</option>";
-              $(myArr).each(function( index ) {
-                Str=Str+ "  <option value='"+myArr[index]['id']+"' title='"+myArr[index]['title'] +"'>"+myArr[index]['title'] + "</option>";
-              });
-              $('#subcategory').html(Str);
-              search();
-              sortcategory();
-              SortOrder();
-
-            },
-        });
+        getSubCategory();
     });
+}
+function getSubCategory(){
+  console.log(selectedSubcategory)
+  var categoryId = $('#category').val();
+  if(categoryId == null || categoryId == 0) {
+    var Str = "";
+    Str=Str+ "<option selected disabled value='0'>Sub Category</option>";
+    $('#subcategory').html(Str);
+    return false;
+  } 
+  var basedomain= '<?=base_url()?>';
+  $.ajax({
+      url: basedomain+"en/web_add_category",
+      type: "POST",
+      data: "categoryId="+categoryId,
+      success: function (response) {
+        var myArr = JSON.parse(response);
+        var Str = "";
+        Str=Str+ "<option disabled value=0 ";
+        Str+=(selectedSubcategory == 0) ? 'selected' :'' +">Sub Category</option>";
+        $(myArr).each(function( index ) {
+          Str=Str+ "<option value='"+myArr[index]['id']+"' title='"+myArr[index]['title'] +"'";
+          if(myArr[index]['id'] == selectedSubcategory) Str+="selected";
+          Str+=">"+myArr[index]['title'] + "</option>";
+        });
+        $('#subcategory').html(Str);
+        // search();
+        // sortcategory();
+        // SortOrder();
+
+      },
+  });
 }
 function winscroll(start,category){
   $(window).scroll(function() {
     var currentPage = page - 1;
       if($(window).scrollTop() + $(window).height() >= $(document).height()) {
-          console.log(start);
-          console.log(page);
           if(currentPage < page) {
             loadData(page,category);
             // page = page + 1
@@ -220,69 +248,128 @@ function winscroll(start,category){
 }
 /*Load more Function*/
 function loadData(page,category) {
-    var basedomain= '<?=base_url()?>';
-    var categoryId = "";
-        if($('.catbawah').find('option:selected').val() !== 0){
-            var categoryId = $('.catbawah').find('option:selected').val();
-        }
-    var subcategory=$('.subcatbawah').find('option:selected').val();
-      console.log("categoryId = ", categoryId);
-      console.log("subCategory = ", subcategory);
+  console.log('sini')
+    var currentUrl = location.href;
+    var isIncludeStart = currentUrl.includes("start=");
+    // currentUrl+="&start="+start;
+    // currentUrl+="&json=1"
     $.ajax({
         dataType: "json",
         type: "GET",
-        url: basedomain+"en/web_index_exporter",
-        data: { 'start':start,
-                'page' : page += 1,
-                'categoryId':categoryId,
-                'subCategory':subcategory,
-               }
+        url: currentUrl,
+        data:{
+          "start":start,
+          "json":1,
+        },
     })
     .done(function( response ) {
+      console.log(response);
       page = response["page"];
       start = response["start"];
-      // var myArr = JSON.parse(response);
-      // param = myArr['news']['category'];
-            var Str = "";
-            var myArr=response['exporter']['it_ex'];
-              $(myArr).each(function( index ) {
-                var categoryName = "";
-                if(myArr[index]["category"] != undefined){
-                  categoryName = myArr[index]["category"]["category_title"];
-                }
-                if(myArr[index] !== null){
-                    Str=Str+'<div class="top_row_list_exporter">';
-                    Str=Str+'<div class="thumb_list_exporter">';
-                    Str=Str+'<img src="<?php echo $this->config->item('website_assets')."exporter/"; ?>'+myArr[index]["imagenya"]+'">';
-                    Str=Str+'</div>';
-                    Str=Str+'<div class="caption_list_exporter">';
-                    Str=Str+'<h3>'+myArr[index]["exporter_name"]+'</h3>';
-                    Str=Str+'<p>'+myArr[index]["exporter_address"]+'</p> ';
-                    Str=Str+'<div class="label_link"> ';
-                    Str=Str+'<i class="fa fa-tags" aria-hidden="true"></i> ';
-                    Str=Str+'<span>'+categoryName+'</span> ';
-                    Str=Str+'</div> ';
-                    Str=Str+'</div> ';
-                    Str=Str+'</div>';
-                    Str=Str+'<div class="bottom_row_list_exporter"> ';
-                    Str=Str+'<div class="link_exporter"> ';
-                    Str=Str+'<div class="item_call"> ';
-                    Str=Str+'<i class="fa fa-phone" aria-hidden="true"></i> ';
-                    Str=Str+'<span>'+myArr[index]["exporter_phone"]+'</span> ';
-                    Str=Str+'</div> ';
-                    Str=Str+'<div class="item_call"> ';
-                    Str=Str+'<i class="fa fa-link" aria-hidden="true"></i> ';
-                    Str=Str+'<span>'+myArr[index]["exporter_link"]+'</span> ';
-                    Str=Str+'</div> ';
-                    Str=Str+'</div> ';
-                    Str=Str+'<a href="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en'."/web_index_exporter_detail/" : $this->uri->segment(1)."/web_index_exporter_detail/") ?>'+myArr[index]["exporter_slug"]+'" class="see_detail">DETAILS ></a> ';
-                    Str=Str+'</div> ';
-                }
-               });
-              //  $(".row_list_exporternya").attr("tabindex",-1).focus();
-               $('.row_list_exporternya').append(Str);
+      var Str = "";
+      var myArr=response['exporter']['it_ex'];
+      $(myArr).each(function( index ) {
+        var categoryName = "";
+        if(myArr[index]["category"] != undefined){
+          categoryName = myArr[index]["category"]["category_title"];
+        }
+        if(myArr[index] !== null){
+            Str=Str+'<div class="top_row_list_exporter">';
+            Str=Str+'<div class="thumb_list_exporter">';
+            Str=Str+'<img src="<?php echo $this->config->item('website_assets')."exporter/"; ?>'+myArr[index]["imagenya"]+'">';
+            Str=Str+'</div>';
+            Str=Str+'<div class="caption_list_exporter">';
+            Str=Str+'<h3>'+myArr[index]["exporter_name"]+'</h3>';
+            Str=Str+'<p>'+myArr[index]["exporter_address"]+'</p> ';
+            Str=Str+'<div class="label_link"> ';
+            Str=Str+'<i class="fa fa-tags" aria-hidden="true"></i> ';
+            Str=Str+'<span>'+categoryName+'</span> ';
+            Str=Str+'</div> ';
+            Str=Str+'</div> ';
+            Str=Str+'</div>';
+            Str=Str+'<div class="bottom_row_list_exporter"> ';
+            Str=Str+'<div class="link_exporter"> ';
+            Str=Str+'<div class="item_call"> ';
+            Str=Str+'<i class="fa fa-phone" aria-hidden="true"></i> ';
+            Str=Str+'<span>'+myArr[index]["exporter_phone"]+'</span> ';
+            Str=Str+'</div> ';
+            Str=Str+'<div class="item_call"> ';
+            Str=Str+'<i class="fa fa-link" aria-hidden="true"></i> ';
+            Str=Str+'<span>'+myArr[index]["exporter_link"]+'</span> ';
+            Str=Str+'</div> ';
+            Str=Str+'</div> ';
+            Str=Str+'<a href="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en'."/web_index_exporter_detail/" : $this->uri->segment(1)."/web_index_exporter_detail/") ?>'+myArr[index]["exporter_slug"]+'" class="see_detail">DETAILS ></a> ';
+            Str=Str+'</div> ';
+        }
+        });
+        $('.row_list_exporternya').append(Str);
     });
 }
+
+// function loadData(page,category) {
+//     var basedomain= '<?=base_url()?>';
+//     var categoryId = "";
+//         if($('.catbawah').find('option:selected').val() !== 0){
+//             var categoryId = $('.catbawah').find('option:selected').val();
+//         }
+//     var subcategory=$('.subcatbawah').find('option:selected').val();
+//       console.log("categoryId = ", categoryId);
+//       console.log("subCategory = ", subcategory);
+//     $.ajax({
+//         dataType: "json",
+//         type: "GET",
+//         url: basedomain+"en/web_index_exporter",
+//         data: { 'start':start,
+//                 'page' : page += 1,
+//                 'categoryId':categoryId,
+//                 'subCategory':subcategory,
+//                }
+//     })
+//     .done(function( response ) {
+//       page = response["page"];
+//       start = response["start"];
+//       // var myArr = JSON.parse(response);
+//       // param = myArr['news']['category'];
+//             var Str = "";
+//             var myArr=response['exporter']['it_ex'];
+//               $(myArr).each(function( index ) {
+//                 var categoryName = "";
+//                 if(myArr[index]["category"] != undefined){
+//                   categoryName = myArr[index]["category"]["category_title"];
+//                 }
+//                 if(myArr[index] !== null){
+//                     Str=Str+'<div class="top_row_list_exporter">';
+//                     Str=Str+'<div class="thumb_list_exporter">';
+//                     Str=Str+'<img src="<?php echo $this->config->item('website_assets')."exporter/"; ?>'+myArr[index]["imagenya"]+'">';
+//                     Str=Str+'</div>';
+//                     Str=Str+'<div class="caption_list_exporter">';
+//                     Str=Str+'<h3>'+myArr[index]["exporter_name"]+'</h3>';
+//                     Str=Str+'<p>'+myArr[index]["exporter_address"]+'</p> ';
+//                     Str=Str+'<div class="label_link"> ';
+//                     Str=Str+'<i class="fa fa-tags" aria-hidden="true"></i> ';
+//                     Str=Str+'<span>'+categoryName+'</span> ';
+//                     Str=Str+'</div> ';
+//                     Str=Str+'</div> ';
+//                     Str=Str+'</div>';
+//                     Str=Str+'<div class="bottom_row_list_exporter"> ';
+//                     Str=Str+'<div class="link_exporter"> ';
+//                     Str=Str+'<div class="item_call"> ';
+//                     Str=Str+'<i class="fa fa-phone" aria-hidden="true"></i> ';
+//                     Str=Str+'<span>'+myArr[index]["exporter_phone"]+'</span> ';
+//                     Str=Str+'</div> ';
+//                     Str=Str+'<div class="item_call"> ';
+//                     Str=Str+'<i class="fa fa-link" aria-hidden="true"></i> ';
+//                     Str=Str+'<span>'+myArr[index]["exporter_link"]+'</span> ';
+//                     Str=Str+'</div> ';
+//                     Str=Str+'</div> ';
+//                     Str=Str+'<a href="<?php echo base_url("".$this->uri->segment(1) == '' ? 'en'."/web_index_exporter_detail/" : $this->uri->segment(1)."/web_index_exporter_detail/") ?>'+myArr[index]["exporter_slug"]+'" class="see_detail">DETAILS ></a> ';
+//                     Str=Str+'</div> ';
+//                 }
+//                });
+//               //  $(".row_list_exporternya").attr("tabindex",-1).focus();
+//                $('.row_list_exporternya').append(Str);
+//     });
+// }
 function search(){
   $('.searchexporter').on("click",function () {
         var categoryId = "";
@@ -344,6 +431,7 @@ function search(){
 
 function sortcategory(){
   $('.catbawah').on("change",function () {
+    return false;
         var categoryId = "";
         if($('.catbawah').find('option:selected').val() !== 0){
             var categoryId = $('.catbawah').find('option:selected').val();
@@ -466,6 +554,7 @@ function filtersubcategory(){
 function SortOrder(){
 
   $('.pilihan').on("change",function () {
+        return false;
         var categoryId = "";
         if($('.catbawah').find('option:selected').val() !== 0){
             var categoryId = $('.catbawah').find('option:selected').val();
